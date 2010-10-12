@@ -1,0 +1,64 @@
+= Guard::Test
+
+Test::Unit guard allows to automatically & intelligently launch tests when files are modified.
+
+- Compatible with Test::Unit 2.1.1.
+- Tested on Ruby 1.8.7 & 1.9.2.
+
+== Install
+
+Please be sure to have {guard}[http://github.com/guard/guard] installed before continue.
+
+Install the gem:
+
+    gem install guard-test
+
+Add it to your Gemfile (inside test group):
+
+    gem 'guard-test'
+
+Add guard definition to your Guardfile with:
+
+    guard init test
+
+== Usage
+
+Please read {guard usage doc}[http://github.com/guard/guard#readme]
+
+== Guardfile
+
+Test::Unit guard can be really be adapted to all kind of projects.
+Please read {guard doc}[http://github.com/guard/guard#readme] for more info about Guardfile DSL.
+
+=== Standard ruby gems
+
+    guard 'test' do
+      watch('^lib/(.*)\.rb')        { |m| "test/lib/#{m[1]}_test.rb" }
+      watch('^test/(.*)_test.rb')   
+      watch('^test/test_helper.rb') { "test" }
+    end
+
+=== Rails app
+
+    guard 'test' do
+      watch('^app/models/(.*)\.rb')                       { |m| "test/unit/#{m[1]}_test.rb" }
+      watch('^app/controllers/(.*)\.rb')                  { |m| "test/functional/#{m[1]}_test.rb" }
+      watch('^app/controllers/application_controller.rb') { "test/functional" }
+      watch('^app/controllers/application_controller.rb') { "test/integration" }
+      watch('^app/views/(.*)\.rb')                        { "test/integration" }
+      watch('^lib/(.*)\.rb')                              { |m| "test/lib/#{m[1]}_test.rb" }
+      watch('^test/(.*)_test.rb')
+      watch('^test/factories.rb')                         { "test/unit" }
+      watch('^test/test_helper.rb')                       { "test" }
+    end
+
+== Development
+
+- Source hosted at {GitHub}[http://github.com/guard/guard-test]
+- Report issues/Questions/Feature requests on {GitHub Issues}[http://github.com/guard/guard-test/issues]
+
+Pull requests are very welcome! Make sure your patches are well tested. Please create a topic branch for every separate change you make.
+
+== Authors
+
+{Rémy Coutable}[http://github.com/rymai]
