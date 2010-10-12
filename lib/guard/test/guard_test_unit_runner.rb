@@ -56,10 +56,8 @@ private
       end
     end
     
-    message = guard_message(@examples_count, @failures.size, @pendings.size, elapsed_time, :color => true)
-    image   = guard_image(@failures.size, @pendings.size)
-    puts("\r\e #{message}")
-    notify(message, image)
+    puts("\r\e #{guard_message(@examples_count, @failures.size, @pendings.size, elapsed_time, :color => true)}")
+    notify(guard_message(@examples_count, @failures.size, @pendings.size, elapsed_time), guard_image(@failures.size, @pendings.size))
   end
   
   def output(something, color=nil, level=nil)
