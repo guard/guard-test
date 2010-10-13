@@ -16,7 +16,6 @@ class GuardTestUnitRunner < Test::Unit::UI::Console::TestRunner
     @examples_count = 0
     @failures = []
     @pendings = []
-    $stdout.sync = true
   end
   
 private
@@ -46,18 +45,21 @@ private
   end
   
   def summary(elapsed_time)
-    (1..@examples_count).each_with_index do |example, index|
-      if @failures.include?(index)
+    (1..@examples_count).each do |example|
+      if @failures.include?(example)
         print("\e[0;31mF\e[0m")
-      elsif @pendings.include?(index)
+      elsif @pendings.include?(example)
         print("\e[0;33m*\e[0m")
       else
         print("\e[0;32m.\e[0m")
       end
     end
+    puts("\r\e \r\e")
     
-    puts("\r\e #{guard_message(@examples_count, @failures.size, @pendings.size, elapsed_time, :color => true)}")
-    notify(guard_message(@examples_count, @failures.size, @pendings.size, elapsed_time), guard_image(@failures.size, @pendings.size))
+    cli_message, notify_message = guard_messages(@examples_count, @failures.size, @pendings.size, elapsed_time)
+    image = guard_image(@failures.size, @pendings.size)
+    puts(cli_message)
+    notify(notify_message, image)
   end
   
   def output(something, color=nil, level=nil)
