@@ -7,6 +7,7 @@ Test::Unit guard allows to automatically & intelligently launch tests when files
 
 == Important note about the current limitations
 
+- The gem is not yet available on Rubygems.
 - Currently, failing/pending tests are not displayed "verbosely" (only a red "F" is displayed).
 - Results of TestCases are displayed in one time when all tests are finished.
 
