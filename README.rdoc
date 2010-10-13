@@ -5,10 +5,12 @@ Test::Unit guard allows to automatically & intelligently launch tests when files
 - Compatible with Test::Unit 2.1.1.
 - Tested on Ruby 1.8.7 & 1.9.2.
 
-**Important note about the current limitations (will be fixed as soon as possible):**
+== Important note about the current limitations
 
 - Currently, failing/pending tests are not displayed "verbosely" (only a red "F" is displayed).
 - Results of TestCases are displayed in one time when all tests are finished.
+
+Will be fixed as soon as possible.
 
 == Install
 
