@@ -3,11 +3,9 @@ require "#{File.dirname(__FILE__)}/../test"
 module Formatter
   
   def output_results(test_count, assertion_count, failure_count, error_count, duration, options = {})
-    message = []
-    message << duration_text(duration, options) if options[:with_duration]
-    message << results_text(test_count, assertion_count, failure_count, error_count)
+    output(duration_text(duration, options)) if options[:with_duration]
     color = (failure_count > 0 ? "failure" : (error_count > 0 ? "error" : "pass"))
-    output(message.join, color)
+    output(results_text(test_count, assertion_count, failure_count, error_count), color)
   end
   
   def notify_results(test_count, assertion_count, failure_count, error_count, duration)
@@ -57,7 +55,7 @@ private
   end
   
   def duration_text(duration, options = {})
-    "\n#{"Finished " unless options[:short]}in #{duration} seconds\n"
+    "\n\n#{"Finished " unless options[:short]}in #{duration} seconds\n"
   end
   
 end
