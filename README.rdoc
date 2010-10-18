@@ -52,6 +52,19 @@ Please read {guard doc}[http://github.com/guard/guard#readme] for more info abou
       watch('^test/test_helper.rb')                       { "test" }
     end
 
+== Options
+
+Test::Unit guard allow you to choose between two different runners:
+  
+- 'default' (obviously, guard-test will use this by default): Display progress as chars ('.' for pass, 'F' for fail, 'E' for error) and errors when all the tests are finished.
+- 'fastfail': Display failures/errors messages as they happen, not at the end and passing tests with '.'.
+
+Set the desired runner by passing the :runner option to the <tt>guard</tt> method:
+
+    guard 'test', :runner => 'fastfail' do
+      ...
+    end
+
 == Development
 
 - Source hosted at {GitHub}[http://github.com/guard/guard-test]
