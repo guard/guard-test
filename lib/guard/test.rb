@@ -9,6 +9,7 @@ module Guard
     autoload :Inspector, 'guard/test/inspector'
     
     def start
+      Runner.set_test_unit_runner(options)
       UI.info "Guard::Test is guarding your tests!"
     end
     

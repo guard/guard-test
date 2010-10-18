@@ -3,15 +3,7 @@
 Test::Unit guard allows to automatically & intelligently launch tests when files are modified.
 
 - Compatible with Test::Unit 2.1.1.
-- Tested on Ruby 1.8.7 & 1.9.2.
-
-== Important note about the current limitations
-
-- The gem is not yet available on Rubygems.
-- Currently, failing/pending tests are not displayed "verbosely" (only a red "F" is displayed).
-- Results of TestCases are displayed in one time when all tests are finished.
-
-Will be fixed as soon as possible.
+- Tested on Ruby 1.8.6, 1.8.7, REE & 1.9.2 (display a annoying "uninitialized constant Test::Unit::UI::Console::Diff" warning though).
 
 == Install
 
@@ -25,7 +17,7 @@ Add it to your Gemfile (inside test group):
 
     gem 'guard-test'
 
-Add guard definition to your Guardfile with:
+Add guard definition to your Guardfile by running this command:
 
     guard init test
 
