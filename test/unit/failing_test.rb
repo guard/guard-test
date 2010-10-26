@@ -1,5 +1,3 @@
-require 'test/unit'
-
 class FailingTest < Test::Unit::TestCase
   def test_failing1
     sleep(1)

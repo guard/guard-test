@@ -1,5 +1,3 @@
-require 'test/unit'
-
 class SucceedingTest < Test::Unit::TestCase
   def test_succeeding1
     assert_equal(true, true)
