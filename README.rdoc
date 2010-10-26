@@ -1,9 +1,11 @@
 = Guard::Test
 
-Test::Unit guard allows to automatically & intelligently launch tests when files are modified.
+Guard::Test allows to automatically & intelligently launch tests when files are modified or created.
+
+== Compatibility
 
 - Compatible with Test::Unit 2.1.1.
-- Tested on Ruby 1.8.6, 1.8.7, REE & 1.9.2 (display a annoying "uninitialized constant Test::Unit::UI::Console::Diff" warning though).
+- Tested on Ruby 1.8.6, 1.8.7, REE & 1.9.2.
 
 == Install
 
@@ -11,67 +13,72 @@ Please be sure to have {guard}[http://github.com/guard/guard] installed before c
 
 Install the gem:
 
-    gem install guard-test
+  gem install guard-test
 
 Add it to your Gemfile (inside test group):
 
-    gem 'guard-test'
+  gem 'guard-test'
 
 Add guard definition to your Guardfile by running this command:
 
-    guard init test
+  guard init test
 
 == Usage
 
-Please read {guard usage doc}[http://github.com/guard/guard#readme]
+Please read {guard usage doc}[http://github.com/guard/guard#readme].
 
 == Guardfile
 
-Test::Unit guard can be really be adapted to all kind of projects.
+Guard::Test can be adapted to many kind of projects.
 Please read {guard doc}[http://github.com/guard/guard#readme] for more info about Guardfile DSL.
 
-=== Standard ruby gems
+=== Standard Ruby project
 
-    guard 'test' do
-      watch('^lib/(.*)\.rb')        { |m| "test/lib/#{m[1]}_test.rb" }
-      watch('^test/(.*)_test.rb')   
-      watch('^test/test_helper.rb') { "test" }
-    end
+  guard 'test' do
+    watch('^lib/(.*)\.rb')        { |m| "test/lib/#{m[1]}_test.rb" }
+    watch('^test/(.*)_test.rb')   
+    watch('^test/test_helper.rb') { "test" }
+  end
 
-=== Rails app
+=== Ruby On Rails project
 
-    guard 'test' do
-      watch('^app/models/(.*)\.rb')                       { |m| "test/unit/#{m[1]}_test.rb" }
-      watch('^app/controllers/(.*)\.rb')                  { |m| "test/functional/#{m[1]}_test.rb" }
-      watch('^app/controllers/application_controller.rb') { "test/functional" }
-      watch('^app/controllers/application_controller.rb') { "test/integration" }
-      watch('^app/views/(.*)\.rb')                        { "test/integration" }
-      watch('^lib/(.*)\.rb')                              { |m| "test/lib/#{m[1]}_test.rb" }
-      watch('^test/(.*)_test.rb')
-      watch('^test/factories.rb')                         { "test/unit" }
-      watch('^test/test_helper.rb')                       { "test" }
-    end
+  guard 'test' do
+    watch('^app/models/(.*)\.rb')                       { |m| "test/unit/#{m[1]}_test.rb" }
+    watch('^app/controllers/(.*)\.rb')                  { |m| "test/functional/#{m[1]}_test.rb" }
+    watch('^app/controllers/application_controller.rb') { "test/functional" }
+    watch('^app/controllers/application_controller.rb') { "test/integration" }
+    watch('^app/views/(.*)\.rb')                        { "test/integration" }
+    watch('^lib/(.*)\.rb')                              { |m| "test/lib/#{m[1]}_test.rb" }
+    watch('^test/(.*)_test.rb')
+    watch('^test/factories.rb')                         { "test/unit" }
+    watch('^test/test_helper.rb')                       { "test" }
+  end
 
 == Options
 
-Test::Unit guard allow you to choose between two different runners:
-  
-- 'default' (obviously, guard-test will use this by default): Display progress as chars ('.' for pass, 'F' for fail, 'E' for error) and errors when all the tests are finished.
-- 'fastfail': Display failures/errors messages as they happen, not at the end and passing tests with '.'.
+Guard::Test allows you to choose between two different runners (Guard::Test's runners are inherited from Test::Unit's console runner):
+- <tt>'default'</tt>: Display tests results as they happen, with different chars ('.' for pass, 'F' for fail, 'E' for error) and print failures/errors messages & backtraces when all the tests are finished. Obviously, this is the guard-test default.
+- <tt>'fastfail'</tt>: Display tests results as they happen and print failures/errors messages & backtraces immediately.
 
-Set the desired runner by passing the :runner option to the <tt>guard</tt> method:
+Set the desired runner by passing the <tt>:runner</tt> option to the <tt>guard</tt> method:
 
-    guard 'test', :runner => 'fastfail' do
-      ...
-    end
+  guard 'test', :runner => 'fastfail' do
+    ...
+  end
 
 == Development
 
-- Source hosted at {GitHub}[http://github.com/guard/guard-test]
-- Report issues/Questions/Feature requests on {GitHub Issues}[http://github.com/guard/guard-test/issues]
+- Source hosted on GitHub: http://github.com/guard/guard-test
+- Report issues/Questions/Feature requests on GitHub Issues: http://github.com/guard/guard-test/issues
 
-Pull requests are very welcome! Make sure your patches are well tested. Please create a topic branch for every separate change you make.
+Pull requests are very welcome!
+Make sure your patches are well tested.
+Please create a topic branch for every separate change you make.
 
-== Authors
+== Author
 
 {Rémy Coutable}[http://github.com/rymai]
+
+== Kudo
+
+Many thanks to {Thibaud Guillaume-Gentil}[http://github.com/thibaudgg] for creating the excellent Guard gem.
