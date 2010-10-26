@@ -11,12 +11,12 @@ private
   def add_fault(fault)
     @faults << fault
     nl
-    output("%3d) %s" % [@faults.length, fault.long_display])
+    puts_with_color("%3d) %s" % [@faults.length, fault.long_display])
     @already_outputted = true
   end
   
   def finished(elapsed_time)
-    output_and_notify_results(@result.run_count, @result.assertion_count, @result.failure_count, @result.error_count, elapsed_time, :with_duration => true)
+    print_and_notify_results(@result.run_count, @result.assertion_count, @result.failure_count, @result.error_count, elapsed_time, :with_duration => true)
   end
   
 end

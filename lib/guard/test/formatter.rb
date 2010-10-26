@@ -1,11 +1,9 @@
-require "#{File.dirname(__FILE__)}/../test"
-
 module Formatter
   
-  def output_results(test_count, assertion_count, failure_count, error_count, duration, options = {})
-    output(duration_text(duration, options)) if options[:with_duration]
+  def print_results(test_count, assertion_count, failure_count, error_count, duration, options = {})
+    puts_with_color(duration_text(duration, options)) if options[:with_duration]
     color = (failure_count > 0 ? "failure" : (error_count > 0 ? "error" : "pass"))
-    output(results_text(test_count, assertion_count, failure_count, error_count), color)
+    puts_with_color(results_text(test_count, assertion_count, failure_count, error_count), color)
   end
   
   def notify_results(test_count, assertion_count, failure_count, error_count, duration)
@@ -15,8 +13,8 @@ module Formatter
     )
   end
   
-  def output_and_notify_results(test_count, assertion_count, failure_count, error_count, duration, options = {})
-    output_results(test_count, assertion_count, failure_count, error_count, duration, options)
+  def print_and_notify_results(test_count, assertion_count, failure_count, error_count, duration, options = {})
+    print_results(test_count, assertion_count, failure_count, error_count, duration, options)
     notify_results(test_count, assertion_count, failure_count, error_count, duration)
   end
   
@@ -28,15 +26,15 @@ module Formatter
     Guard::Notifier.notify(message, :title => "Test::Unit results", :image => image)
   end
   
-  def output_single(something, color_name = "reset")
+  def print_with_color(something, color_name = "reset")
     something = "%s%s%s" % [color_sequence(color_name), something, color_sequence("reset")]
     $stdout.write(something)
     $stdout.flush
     true
   end
   
-  def output(something, color_name = "reset")
-    output_single(something, color_name)
+  def puts_with_color(something, color_name = "reset")
+    print_with_color(something, color_name)
     $stdout.puts
   end
   

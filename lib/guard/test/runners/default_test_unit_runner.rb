@@ -33,12 +33,12 @@ protected
   
   def add_fault(fault)
     @faults << fault
-    output_single(fault.single_character_display, fault_color_name(fault))
+    print_with_color(fault.single_character_display, fault_color_name(fault))
     @already_outputted = true
   end
   
   def test_finished(name)
-    output_single(".", "pass") unless @already_outputted
+    print_with_color(".", "pass") unless @already_outputted
     @already_outputted = false
   end
   
