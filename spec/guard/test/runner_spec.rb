@@ -15,7 +15,7 @@ describe Guard::Test::Runner do
       
       it "should run with the --runner options set to 'guard-default' and require default_test_unit_runner" do
         subject.should_receive(:system).with(
-          "ruby -r#{@lib_path.join('guard/test/runners/default_test_unit_runner')} -Itest " \
+          "ruby -rubygems -r#{@lib_path.join('guard/test/runners/default_test_unit_runner')} -Itest " \
           "-e \"%w[test/succeeding_test.rb].each { |f| load f }\" \"test/succeeding_test.rb\" --runner=guard-default"
         )
         dev_null { subject.run(["test/succeeding_test.rb"]) }
@@ -35,7 +35,7 @@ describe Guard::Test::Runner do
         
         it "should run with the --runner options set to 'guard-#{runner}' and require #{runner}_test_unit_runner" do
           subject.should_receive(:system).with(
-            "ruby -r#{@lib_path.join("guard/test/runners/#{runner}_test_unit_runner")} -Itest " \
+            "ruby -rubygems -r#{@lib_path.join("guard/test/runners/#{runner}_test_unit_runner")} -Itest " \
             "-e \"%w[test/succeeding_test.rb].each { |f| load f }\" \"test/succeeding_test.rb\" --runner=guard-#{runner}"
           )
           dev_null { subject.run(["test/succeeding_test.rb"]) }
@@ -48,7 +48,7 @@ describe Guard::Test::Runner do
         
         it "should load all the tests files" do
           subject.should_receive(:system).with(
-            "ruby -r#{@lib_path.join("guard/test/runners/#{runner}_test_unit_runner")} -Itest " \
+            "ruby -rubygems -r#{@lib_path.join("guard/test/runners/#{runner}_test_unit_runner")} -Itest " \
             "-e \"%w[test/unit/error/error_test.rb test/unit/failing_test.rb].each { |f| load f }\" " \
             "\"test/unit/error/error_test.rb\" \"test/unit/failing_test.rb\" --runner=guard-#{runner}"
           )
@@ -57,7 +57,7 @@ describe Guard::Test::Runner do
         
         it "should execute all the test files" do
           subject.should_receive(:system).with(
-            "ruby -r#{@lib_path.join("guard/test/runners/#{runner}_test_unit_runner")} -Itest " \
+            "ruby -rubygems -r#{@lib_path.join("guard/test/runners/#{runner}_test_unit_runner")} -Itest " \
             "-e \"%w[test/succeeding_test.rb test/unit/failing_test.rb].each { |f| load f }\" " \
             "\"test/succeeding_test.rb\" \"test/unit/failing_test.rb\" --runner=guard-#{runner}"
           )

@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'guard'
 require 'guard/guard'
 

@@ -19,7 +19,7 @@ module Guard
       private
         
         def test_unit_command(files)
-          cmd_parts = ["ruby"]
+          cmd_parts = ["ruby -rubygems"]
           cmd_parts << "-r#{File.dirname(__FILE__)}/runners/#{@test_unit_runner}_test_unit_runner"
           cmd_parts << "-Itest"
           cmd_parts << "-e \"%w[#{files.join(' ')}].each { |f| load f }\""
