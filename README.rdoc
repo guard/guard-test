@@ -60,9 +60,15 @@ Guard::Test allows you to choose between two different runners (Guard::Test's ru
 - <tt>'default'</tt>: Display tests results as they happen, with different chars ('.' for pass, 'F' for fail, 'E' for error) and print failures/errors messages & backtraces when all the tests are finished. Obviously, this is the guard-test default.
 - <tt>'fastfail'</tt>: Display tests results as they happen and print failures/errors messages & backtraces immediately.
 
-Set the desired runner by passing the <tt>:runner</tt> option to the <tt>guard</tt> method:
+Available options:
 
-  guard 'test', :runner => 'fastfail' do
+    :runner => 'fastfail' # default to 'default'
+    :bundler => false # don't use "bundle exec"
+    :rvm => ['1.8.7', '1.9.2'] # directly run your specs on multiple ruby
+
+Set the desired options as follow method:
+
+  guard 'test', :runner => 'fastfail', :bundle => false, :rvm => ['1.8.7', 'ree'] do
     ...
   end
 
