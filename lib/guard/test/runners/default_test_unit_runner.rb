@@ -1,6 +1,6 @@
 require "#{File.dirname(__FILE__)}/../formatter"
 require "#{File.dirname(__FILE__)}/../../test"
-gem 'test-unit' if RUBY_VERSION =~ %r(1\.9\.2) # Thanks Aaron! http://redmine.ruby-lang.org/issues/show/3561
+gem 'test-unit' if RUBY_VERSION >= '1.9' # Thanks Aaron! http://redmine.ruby-lang.org/issues/show/3561
 require 'test/unit'
 require 'test/unit/ui/console/testrunner'
 
