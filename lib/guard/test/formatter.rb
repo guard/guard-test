@@ -9,7 +9,7 @@ module Formatter
   def notify_results(test_count, assertion_count, failure_count, error_count, duration)
     notify(
       results_text(test_count, assertion_count, failure_count, error_count) + duration_text(duration, :short => true),
-      image(failure_count+error_count)
+      image(failure_count + error_count)
     )
   end
   
@@ -53,7 +53,16 @@ private
   end
   
   def duration_text(duration, options = {})
-    "\n\n#{"Finished " unless options[:short]}in #{duration} seconds\n"
+    "\n\n#{"Finished " unless options[:short]}in #{round_float(duration)} seconds\n"
+  end
+  
+  def round_float(float, decimals = 4)
+    if Float.instance_method(:round).arity == 0 # Ruby 1.8
+      factor = 10**decimals
+      (float*factor).round / factor.to_f
+    else # Ruby 1.9
+      float.round(decimals)
+    end
   end
   
 end
