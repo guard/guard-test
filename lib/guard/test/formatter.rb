@@ -9,7 +9,7 @@ module Formatter
   def notify_results(test_count, assertion_count, failure_count, error_count, duration)
     notify(
       results_text(test_count, assertion_count, failure_count, error_count) + duration_text(duration, :short => true),
-      image(failure_count)
+      image(failure_count+error_count)
     )
   end
   
