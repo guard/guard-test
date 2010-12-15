@@ -1,0 +1,4 @@
+== 0.1.4 (Dec 15, 2010)
+
+Bug fix:
+- Include errors count to determine the "flag" to display in notification {Pull Request}[https://github.com/guard/guard-test/pull/1] by {gregorymostizky}[https://github.com/gregorymostizky]
