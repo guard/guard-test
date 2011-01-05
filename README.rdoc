@@ -1,6 +1,6 @@
 = Guard::Test
 
-Guard::Test allows to automatically & intelligently launch tests when files are modified or created.
+Test::Unit guard allows to automatically & intelligently launch tests when files are modified or created.
 
 == Compatibility
 
@@ -9,7 +9,7 @@ Guard::Test allows to automatically & intelligently launch tests when files are 
 
 == Install
 
-Please be sure to have {guard}[http://github.com/guard/guard] installed before continue.
+Please be sure to have {Guard}[https://github.com/guard/guard] installed before continue.
 
 Install the gem:
 
@@ -19,39 +19,37 @@ Add it to your Gemfile (inside test group):
 
   gem 'guard-test'
 
-Add guard definition to your Guardfile by running this command:
+Add Guard definition to your Guardfile by running this command:
 
   guard init test
 
 == Usage
 
-Please read {guard usage doc}[http://github.com/guard/guard#readme].
+Please read {Guard usage doc}[https://github.com/guard/guard#readme].
 
 == Guardfile
 
 Guard::Test can be adapted to many kind of projects.
-Please read {guard doc}[http://github.com/guard/guard#readme] for more info about Guardfile DSL.
+Please read {Guard doc}[https://github.com/guard/guard#readme] for more info about Guardfile DSL.
 
 === Standard Ruby project
 
   guard 'test' do
-    watch('^lib/(.*)\.rb')        { |m| "test/lib/#{m[1]}_test.rb" }
-    watch('^test/(.*)_test.rb')   
-    watch('^test/test_helper.rb') { "test" }
+    watch(%r{lib/(.*)\.rb})      { |m| "test/lib/#{m[1]}_test.rb" }
+    watch(%r{test/(.*)_test.rb}) 
+    watch('test/test_helper.rb') { "test" }
   end
 
 === Ruby On Rails project
 
   guard 'test' do
-    watch('^app/models/(.*)\.rb')                       { |m| "test/unit/#{m[1]}_test.rb" }
-    watch('^app/controllers/(.*)\.rb')                  { |m| "test/functional/#{m[1]}_test.rb" }
-    watch('^app/controllers/application_controller.rb') { "test/functional" }
-    watch('^app/controllers/application_controller.rb') { "test/integration" }
-    watch('^app/views/(.*)\.rb')                        { "test/integration" }
-    watch('^lib/(.*)\.rb')                              { |m| "test/lib/#{m[1]}_test.rb" }
-    watch('^test/(.*)_test.rb')
-    watch('^test/factories.rb')                         { "test/unit" }
-    watch('^test/test_helper.rb')                       { "test" }
+    watch(%r{app/models/(.*)\.rb})                     { |m| "test/unit/#{m[1]}_test.rb" }
+    watch(%r{app/controllers/(.*)\.rb})                { |m| "test/functional/#{m[1]}_test.rb" }
+    watch(%r{app/views/(.*)\.rb})                      { "test/integration" }
+    watch(%r{lib/(.*)\.rb})                            { |m| "test/lib/#{m[1]}_test.rb" }
+    watch(%r{test/(.*)_test.rb})
+    watch('app/controllers/application_controller.rb') { ["test/functional", "test/integration"] }
+    watch('test/test_helper.rb')                       { "test" }
   end
 
 == Options
@@ -74,8 +72,8 @@ Set the desired options as follow method:
 
 == Development
 
-- Source hosted on GitHub: http://github.com/guard/guard-test
-- Report issues/Questions/Feature requests on GitHub Issues: http://github.com/guard/guard-test/issues
+- Source hosted on GitHub: https://github.com/guard/guard-test
+- Report issues/Questions/Feature requests on GitHub Issues: https://github.com/guard/guard-test/issues
 
 Pull requests are very welcome!
 Make sure your patches are well tested.
@@ -83,8 +81,8 @@ Please create a topic branch for every separate change you make.
 
 == Author
 
-{Rémy Coutable}[http://github.com/rymai]
+{Rémy Coutable}[https://github.com/rymai]
 
-== Kudo
+== Kudos
 
-Many thanks to {Thibaud Guillaume-Gentil}[http://github.com/thibaudgg] for creating the excellent Guard gem.
+Many thanks to {Thibaud Guillaume-Gentil}[https://github.com/thibaudgg] for creating the excellent Guard gem.
