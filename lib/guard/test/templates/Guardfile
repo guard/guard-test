@@ -1,13 +1,11 @@
 guard 'test' do
-  watch('^lib/(.*)\.rb')                              { |m| "test/lib/#{m[1]}_test.rb" }
-  watch('^test/(.*)_test.rb')
-  watch('^test/test_helper.rb')                       { "test" }
+  watch(%r{lib/(.*)\.rb})       { |m| "test/lib/#{m[1]}_test.rb" }
+  watch(%r{test/(.*)_test\.rb})
+  watch('test/test_helper.rb')  { "test" }
   
   # Rails example
-  watch('^app/models/(.*)\.rb')                       { |m| "test/unit/#{m[1]}_test.rb" }
-  watch('^app/controllers/(.*)\.rb')                  { |m| "test/functional/#{m[1]}_test.rb" }
-  watch('^app/controllers/application_controller.rb') { "test/functional" }
-  watch('^app/controllers/application_controller.rb') { "test/integration" }
-  watch('^app/views/(.*)\.rb')                        { "test/integration" }
-  watch('^test/factories.rb')                         { "test/unit" }
+  watch(%r{app/models/(.*)\.rb})                     { |m| "test/unit/#{m[1]}_test.rb" }
+  watch(%r{app/controllers/(.*)\.rb})                { |m| "test/functional/#{m[1]}_test.rb" }
+  watch(%r{app/views/(.*)\.rb})                      { "test/integration" }
+  watch('app/controllers/application_controller.rb') { ["test/functional", "test/integration"] }
 end
