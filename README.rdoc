@@ -30,7 +30,6 @@ Please read {Guard usage doc}[https://github.com/guard/guard#readme].
 == Guardfile
 
 Guard::Test can be adapted to many kind of projects.
-Please read {Guard doc}[https://github.com/guard/guard#readme] for more info about Guardfile DSL.
 
 === Standard Ruby project
 
@@ -51,6 +50,8 @@ Please read {Guard doc}[https://github.com/guard/guard#readme] for more info abo
     watch('app/controllers/application_controller.rb') { ["test/functional", "test/integration"] }
     watch('test/test_helper.rb')                       { "test" }
   end
+
+Please read {Guard doc}[https://github.com/guard/guard#readme] for more info about Guardfile DSL.
 
 == Options
 
