@@ -44,7 +44,7 @@ Guard::Test can be adapted to many kind of projects.
   guard 'test' do
     watch(%r{app/models/(.*)\.rb})                     { |m| "test/unit/#{m[1]}_test.rb" }
     watch(%r{app/controllers/(.*)\.rb})                { |m| "test/functional/#{m[1]}_test.rb" }
-    watch(%r{app/views/(.*)\.rb})                      { "test/integration" }
+    watch(%r{app/views/.*\.rb})                        { "test/integration" }
     watch(%r{lib/(.*)\.rb})                            { |m| "test/#{m[1]}_test.rb" }
     watch(%r{test/.*_test.rb})
     watch('app/controllers/application_controller.rb') { ["test/functional", "test/integration"] }
@@ -61,8 +61,8 @@ Guard::Test allows you to choose between two different runners (Guard::Test's ru
 
 Available options:
 
-    :runner => 'fastfail' # default to 'default'
-    :bundler => false # don't use "bundle exec"
+    :runner => 'fastfail'      # default to 'default'
+    :bundler => false          # don't use "bundle exec"
     :rvm => ['1.8.7', '1.9.2'] # directly run your specs on multiple ruby
 
 Set the desired options as follow method:
