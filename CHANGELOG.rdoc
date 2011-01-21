@@ -1,3 +1,8 @@
+== 0.1.5 (Jan 21, 2011)
+
+Changes:
+- Updated gem dependencies
+
 == 0.1.4 (Dec 15, 2010)
 
 Bug fix:
