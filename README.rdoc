@@ -34,8 +34,8 @@ Guard::Test can be adapted to many kind of projects.
 === Standard Ruby project
 
   guard 'test' do
-    watch(%r{lib/(.*)\.rb})      { |m| "test/lib/#{m[1]}_test.rb" }
-    watch(%r{test/(.*)_test.rb}) 
+    watch(%r{lib/(.*)\.rb})      { |m| "test/#{m[1]}_test.rb" }
+    watch(%r{test/.*_test\.rb})
     watch('test/test_helper.rb') { "test" }
   end
 
@@ -45,8 +45,8 @@ Guard::Test can be adapted to many kind of projects.
     watch(%r{app/models/(.*)\.rb})                     { |m| "test/unit/#{m[1]}_test.rb" }
     watch(%r{app/controllers/(.*)\.rb})                { |m| "test/functional/#{m[1]}_test.rb" }
     watch(%r{app/views/(.*)\.rb})                      { "test/integration" }
-    watch(%r{lib/(.*)\.rb})                            { |m| "test/lib/#{m[1]}_test.rb" }
-    watch(%r{test/(.*)_test.rb})
+    watch(%r{lib/(.*)\.rb})                            { |m| "test/#{m[1]}_test.rb" }
+    watch(%r{test/.*_test.rb})
     watch('app/controllers/application_controller.rb') { ["test/functional", "test/integration"] }
     watch('test/test_helper.rb')                       { "test" }
   end
