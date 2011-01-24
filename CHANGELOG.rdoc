@@ -1,3 +1,8 @@
+== 0.1.6 (Jan 24, 2011)
+
+Bugfix:
+- Fixed a bug introduced in 0.1.5 where test/ was not added to the $LOAD_PATH. Fix issue #2. (reported by {jgrau}[https://github.com/jgrau])
+
 == 0.1.5 (Jan 21, 2011)
 
 Changes:
