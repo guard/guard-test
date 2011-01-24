@@ -24,7 +24,7 @@ module Guard
           cmd_parts << "bundle exec" if bundler? && options[:bundler] != false
           cmd_parts << "ruby -rubygems"
           cmd_parts << "-r#{File.dirname(__FILE__)}/runners/#{@test_unit_runner}_test_unit_runner"
-          cmd_parts << "-Ilib"
+          cmd_parts << "-Ilib:test"
           cmd_parts << "-e \"%w[#{files.join(' ')}].each { |f| load f }\""
           cmd_parts << files.map { |f| "\"#{f}\"" }.join(' ')
           cmd_parts << "--runner=guard-#{@test_unit_runner}"

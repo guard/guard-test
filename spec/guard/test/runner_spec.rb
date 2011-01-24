@@ -12,7 +12,7 @@ describe Guard::Test::Runner do
 
       it "should run without bundler" do
         subject.should_receive(:system).with(
-          "ruby -rubygems -r#{@lib_path.join('guard/test/runners/default_test_unit_runner')} -Ilib " \
+          "ruby -rubygems -r#{@lib_path.join('guard/test/runners/default_test_unit_runner')} -Ilib:test " \
           "-e \"%w[test/succeeding_test.rb].each { |f| load f }\" \"test/succeeding_test.rb\" --runner=guard-default"
         )
         dev_null { subject.run(["test/succeeding_test.rb"]) }
@@ -24,7 +24,7 @@ describe Guard::Test::Runner do
         it "should run with rvm exec" do
           subject.should_receive(:system).with(
             "rvm 1.8.7,1.9.2 exec " \
-            "ruby -rubygems -r#{@lib_path.join('guard/test/runners/default_test_unit_runner')} -Ilib " \
+            "ruby -rubygems -r#{@lib_path.join('guard/test/runners/default_test_unit_runner')} -Ilib:test " \
             "-e \"%w[test/succeeding_test.rb].each { |f| load f }\" \"test/succeeding_test.rb\" --runner=guard-default"
           )
           subject.run(["test/succeeding_test.rb"], @options)
@@ -43,7 +43,7 @@ describe Guard::Test::Runner do
 
         it "should run with the --runner options set to 'guard-default' and require default_test_unit_runner" do
           subject.should_receive(:system).with(
-            "ruby -rubygems -r#{@lib_path.join('guard/test/runners/default_test_unit_runner')} -Ilib " \
+            "ruby -rubygems -r#{@lib_path.join('guard/test/runners/default_test_unit_runner')} -Ilib:test " \
             "-e \"%w[test/succeeding_test.rb].each { |f| load f }\" \"test/succeeding_test.rb\" --runner=guard-default"
           )
           dev_null { subject.run(["test/succeeding_test.rb"]) }
@@ -63,7 +63,7 @@ describe Guard::Test::Runner do
 
           it "should run with the --runner options set to 'guard-#{runner}' and require #{runner}_test_unit_runner" do
             subject.should_receive(:system).with(
-              "ruby -rubygems -r#{@lib_path.join("guard/test/runners/#{runner}_test_unit_runner")} -Ilib " \
+              "ruby -rubygems -r#{@lib_path.join("guard/test/runners/#{runner}_test_unit_runner")} -Ilib:test " \
               "-e \"%w[test/succeeding_test.rb].each { |f| load f }\" \"test/succeeding_test.rb\" --runner=guard-#{runner}"
             )
             dev_null { subject.run(["test/succeeding_test.rb"]) }
@@ -76,7 +76,7 @@ describe Guard::Test::Runner do
 
           it "should load all the tests files" do
             subject.should_receive(:system).with(
-              "ruby -rubygems -r#{@lib_path.join("guard/test/runners/#{runner}_test_unit_runner")} -Ilib " \
+              "ruby -rubygems -r#{@lib_path.join("guard/test/runners/#{runner}_test_unit_runner")} -Ilib:test " \
               "-e \"%w[test/unit/error/error_test.rb test/unit/failing_test.rb].each { |f| load f }\" " \
               "\"test/unit/error/error_test.rb\" \"test/unit/failing_test.rb\" --runner=guard-#{runner}"
             )
@@ -85,7 +85,7 @@ describe Guard::Test::Runner do
 
           it "should execute all the test files" do
             subject.should_receive(:system).with(
-              "ruby -rubygems -r#{@lib_path.join("guard/test/runners/#{runner}_test_unit_runner")} -Ilib " \
+              "ruby -rubygems -r#{@lib_path.join("guard/test/runners/#{runner}_test_unit_runner")} -Ilib:test " \
               "-e \"%w[test/succeeding_test.rb test/unit/failing_test.rb].each { |f| load f }\" " \
               "\"test/succeeding_test.rb\" \"test/unit/failing_test.rb\" --runner=guard-#{runner}"
             )
@@ -101,7 +101,7 @@ describe Guard::Test::Runner do
       it "should run with bundler" do
         subject.should_receive(:system).with(
           "bundle exec " \
-          "ruby -rubygems -r#{@lib_path.join('guard/test/runners/default_test_unit_runner')} -Ilib " \
+          "ruby -rubygems -r#{@lib_path.join('guard/test/runners/default_test_unit_runner')} -Ilib:test " \
           "-e \"%w[test/succeeding_test.rb].each { |f| load f }\" \"test/succeeding_test.rb\" --runner=guard-default"
         )
         dev_null { subject.run(["test/succeeding_test.rb"]) }
@@ -112,7 +112,7 @@ describe Guard::Test::Runner do
 
         it "should run without bundler" do
           subject.should_receive(:system).with(
-            "ruby -rubygems -r#{@lib_path.join('guard/test/runners/default_test_unit_runner')} -Ilib " \
+            "ruby -rubygems -r#{@lib_path.join('guard/test/runners/default_test_unit_runner')} -Ilib:test " \
             "-e \"%w[test/succeeding_test.rb].each { |f| load f }\" \"test/succeeding_test.rb\" --runner=guard-default"
           )
           subject.run(["test/succeeding_test.rb"], @options)
