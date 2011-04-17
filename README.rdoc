@@ -4,8 +4,8 @@ Test::Unit guard allows to automatically & intelligently launch tests when files
 
 == Compatibility
 
-- Compatible with Test::Unit 2.1.1.
-- Tested on Ruby 1.8.6, 1.8.7, REE & 1.9.2.
+- Compatible with Test::Unit 2.2.0.
+- Tested on Ruby 1.8.7, REE, 1.9.2, JRuby and Rubinius.
 
 == Install
 

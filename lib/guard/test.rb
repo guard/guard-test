@@ -9,7 +9,7 @@ module Guard
 
     def start
       Runner.set_test_unit_runner(options)
-      UI.info "Guard::Test is guarding your tests!"
+      UI.info "Guard::Test is running!"
     end
 
     def run_all
@@ -26,6 +26,6 @@ module Guard
       paths = Inspector.clean(paths)
       Runner.run(paths, options) unless paths.empty?
     end
-    
+
   end
 end

@@ -2,21 +2,28 @@ module Guard
   class Test
     module Runner
       class << self
-        attr_reader :test_unit_runner
 
-        AVAILABLE_TEST_UNIT_RUNNERS = %w[default fastfail]
+        def available_runners
+          @available_runners ||= Dir.open(File.join(File.dirname(__FILE__), 'runners')).map do |filename|
+            filename[/^(\w+)_test_unit_runner\.rb$/, 1]
+          end.compact
+        end
 
         def set_test_unit_runner(options={})
-          @test_unit_runner = AVAILABLE_TEST_UNIT_RUNNERS.include?(options[:runner]) ? options[:runner] : 'default'
+          @test_unit_runner = available_runners.include?(options[:runner]) ? options[:runner] : available_runners[0]
         end
 
         def run(paths, options={})
-          message = "\n" + (options[:message] || "Running (#{@test_unit_runner} runner): #{paths.join(' ') }")
+          message = options[:message] || "Running (#{@test_unit_runner} runner): #{paths.join(' ') }"
           UI.info(message, :reset => true)
           system(test_unit_command(paths, options))
         end
 
       private
+
+        def bundler?
+          @bundler ||= File.exist?("#{Dir.pwd}/Gemfile")
+        end
 
         def test_unit_command(files, options={})
           cmd_parts = []
@@ -29,10 +36,6 @@ module Guard
           cmd_parts << files.map { |f| "\"#{f}\"" }.join(' ')
           cmd_parts << "--runner=guard-#{@test_unit_runner}"
           cmd_parts.join(' ')
-        end
-
-        def bundler?
-          @bundler ||= File.exist?("#{Dir.pwd}/Gemfile")
         end
 
       end
