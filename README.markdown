@@ -5,7 +5,7 @@ Test::Unit guard allows to automatically & intelligently launch tests when files
 ## Compatibility
 
 - Compatible with Test::Unit ~> 2.2.
-- Tested on Ruby 1.8.7, REE, 1.9.2, JRuby and Rubinius.
+- Tested on Ruby 1.8.7, REE and 1.9.2.
 
 ## Install
 
@@ -66,21 +66,24 @@ Please read [Guard doc](https://github.com/guard/guard#readme) for more info abo
 ## Options
 
 Guard::Test allows you to choose between two different runners (Guard::Test's runners are inherited from Test::Unit's console runner):
+
 - `default`: Display tests results as they happen, with different chars ('.' for pass, 'F' for fail, 'E' for error) and print failures/errors messages & backtraces when all the tests are finished. Obviously, this is the guard-test default.
 - `fastfail`: Display tests results as they happen and print failures/errors messages & backtraces immediately.
 
 Available options:
 
 ```ruby
-:runner => 'fastfail'      # default to 'default'
-:bundler => false          # don't use "bundle exec"
-:rvm => ['1.8.7', '1.9.2'] # directly run your specs on multiple ruby
+:notify => false           # don't display Growl (or Libnotify) notification after the specs are done running, default: true
+:runner => 'fastfail'      # default: 'default'
+:bundler => false          # don't use "bundle exec" to run the test command, default: true if a you have a Gemfile
+:rvm => ['1.8.7', '1.9.2'] # directly run your specs on multiple Rubies, default: nil
+:verbose => true           # default: false
 ```
 
 Set the desired options as follow method:
 
 ```ruby
-guard 'test', :runner => 'fastfail', :bundle => false, :rvm => ['1.8.7', 'ree'] do
+guard 'test', :runner => 'fastfail', :bundler => false, :rvm => ['1.8.7', 'ree'] do
   ...
 end
 ```

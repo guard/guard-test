@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'guard'
 require 'guard/guard'
 
@@ -7,24 +8,38 @@ module Guard
     autoload :Runner,    'guard/test/runner'
     autoload :Inspector, 'guard/test/inspector'
 
+    def initialize(watchers=[], options={})
+      super
+
+      @runner = Runner.new(options)
+      unless @runner.bundler?
+        # Thanks Aaron and Eric! http://redmine.ruby-lang.org/issues/show/3561
+        # Eric Hodel: "whenever you use a gem that replaces stdlib functionality you should use #gem before #require."
+        gem 'test-unit'
+        require 'test/unit'
+      end
+    end
+
     def start
-      Runner.set_test_unit_runner(options)
-      UI.info "Guard::Test is running!"
+      ::Guard::UI.info "Guard::Test is running!"
+    end
+
+    def stop
+      true
+    end
+
+    def reload
+      true
     end
 
     def run_all
-      clean_and_run(["test"], :message => "Running all tests")
+      paths = Inspector.clean(['test'])
+      paths.empty? ? true : @runner.run(paths, :message => 'Running all tests')
     end
 
     def run_on_change(paths)
-      clean_and_run(paths)
-    end
-
-  private
-
-    def clean_and_run(paths, options={})
       paths = Inspector.clean(paths)
-      Runner.run(paths, options) unless paths.empty?
+      paths.empty? ? true : @runner.run(paths)
     end
 
   end
