@@ -1,44 +1,69 @@
+# encoding: utf-8
 module Guard
   class Test
-    module Runner
-      class << self
+    class Runner
 
-        def available_runners
-          @available_runners ||= Dir.open(File.join(File.dirname(__FILE__), 'runners')).map do |filename|
-            filename[/^(\w+)_test_unit_runner\.rb$/, 1]
+      class << self
+        def runners
+          @runners ||= Dir.open(File.join(File.dirname(__FILE__), 'runners')).map do |filename|
+            filename[/^(\w+)_guard_test_runner\.rb$/, 1]
           end.compact
         end
 
-        def set_test_unit_runner(options={})
-          @test_unit_runner = available_runners.include?(options[:runner]) ? options[:runner] : available_runners[0]
+        def run(paths=[], options={})
+          Runner.new(options).run(paths, options)
         end
+      end
 
-        def run(paths, options={})
-          message = options[:message] || "Running (#{@test_unit_runner} runner): #{paths.join(' ') }"
-          UI.info(message, :reset => true)
-          system(test_unit_command(paths, options))
-        end
+      def initialize(options={})
+        @runner  = self.class.runners.detect { |runner| runner == options[:runner] } || self.class.runners[0]
+        @options = {
+          :notify  => true,
+          :bundler => File.exist?("#{Dir.pwd}/Gemfile"),
+          :rvm     => nil,
+          :verbose => false
+        }.merge(options)
+      end
+
+      def run(paths, options={})
+        message = options[:message] || "Running (#{@runner} runner): #{paths.join(' ') }"
+        ::Guard::UI.info(message, :reset => true)
+        system(test_unit_command(paths))
+      end
+
+      def notify?
+        @options[:notify]
+      end
+
+      def bundler?
+        @options[:bundler]
+      end
+
+      def rvm?
+        @options[:rvm] && @options[:rvm].respond_to?(:join)
+      end
+
+      def verbose?
+        @options[:verbose]
+      end
 
       private
 
-        def bundler?
-          @bundler ||= File.exist?("#{Dir.pwd}/Gemfile")
-        end
+      def test_unit_command(paths)
+        cmd_parts = []
+        cmd_parts << "rvm #{@options[:rvm].join(',')} exec" if rvm?
+        cmd_parts << "bundle exec" if bundler?
+        cmd_parts << "ruby -Itest -rubygems"
+        cmd_parts << "-r bundler/setup" if bundler?
+        cmd_parts << "-r #{File.dirname(__FILE__)}/runners/#{@runner}_guard_test_runner"
+        cmd_parts << "-e \"%w[#{paths.join(' ')}].each { |path| load path }; GUARD_TEST_NOTIFY=#{notify?}\""
+        cmd_parts << paths.map { |path| "\"#{path}\"" }.join(' ')
+        cmd_parts << "--runner=guard-#{@runner}"
+        cmd_parts << "--verbose" if verbose?
 
-        def test_unit_command(files, options={})
-          cmd_parts = []
-          cmd_parts << "rvm #{options[:rvm].join(',')} exec" if options[:rvm].respond_to?(:join)
-          cmd_parts << "bundle exec" if bundler? && options[:bundler] != false
-          cmd_parts << "ruby -rubygems"
-          cmd_parts << "-r#{File.dirname(__FILE__)}/runners/#{@test_unit_runner}_test_unit_runner"
-          cmd_parts << "-Ilib:test"
-          cmd_parts << "-e \"%w[#{files.join(' ')}].each { |f| load f }\""
-          cmd_parts << files.map { |f| "\"#{f}\"" }.join(' ')
-          cmd_parts << "--runner=guard-#{@test_unit_runner}"
-          cmd_parts.join(' ')
-        end
-
+        cmd_parts.join(' ')
       end
+
     end
   end
 end

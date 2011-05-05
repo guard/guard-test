@@ -1,154 +1,223 @@
+# encoding: utf-8
 require 'spec_helper'
 
 describe Guard::Test::Runner do
 
-  describe ".available_runners" do
+  describe ".runners" do
     it "returns [default fastfail] base on files present in the runners folder" do
-      subject.available_runners.should == %w[default fastfail]
-    end
-  end
-
-  describe ".set_test_unit_runner" do
-    context "when not specifying a specific runner" do
-      it "sets test_unit_runner to default with no options given" do
-        subject.set_test_unit_runner
-        subject.instance_variable_get(:@test_unit_runner).should == 'default'
-      end
-    end
-
-    context "when given 'default' as the runner" do
-      it "sets test_unit_runner to default" do
-        subject.set_test_unit_runner(:runner => 'default')
-        subject.instance_variable_get(:@test_unit_runner).should == 'default'
-      end
-    end
-
-    context "when given 'fastfail' as the runner" do
-      it "sets test_unit_runner to fastfail" do
-        subject.set_test_unit_runner(:runner => 'fastfail')
-        subject.instance_variable_get(:@test_unit_runner).should == 'fastfail'
-      end
+      described_class.runners.should == %w[default fastfail]
     end
   end
 
   describe ".run" do
+    it "creates a new Runner instance" do
+      described_class.should_receive(:new).with({ :option1 => "foo", :option2 => "bar" }).and_return(mock('runner').as_null_object)
 
+      dev_null { described_class.run(["test/succeeding_test.rb"], { :option1 => "foo", :option2 => "bar" }) }
+    end
+
+    it "calls #run on the new Runner instance" do
+      described_class.should_receive(:new).with({ :option1 => "foo", :option2 => "bar" }).and_return(runner = mock('runner'))
+      runner.should_receive(:run).with(["test/succeeding_test.rb"], { :option1 => "foo", :option2 => "bar" })
+
+      dev_null { described_class.run(["test/succeeding_test.rb"], { :option1 => "foo", :option2 => "bar" }) }
+    end
+  end
+
+  describe "#initialize" do
+    describe "sets the @runner instance variable from options" do
+      it "uses the default runner without :runner option given" do
+        runner = described_class.new
+        runner.instance_variable_get(:@runner).should == 'default'
+      end
+
+      it "uses the given :runner option if available" do
+        runner = described_class.new(:runner => 'fastfail')
+        runner.instance_variable_get(:@runner).should == 'fastfail'
+      end
+
+      it "uses the default runner if the given :runner option is not an available runner" do
+        runner = described_class.new(:runner => 'unknown')
+        runner.instance_variable_get(:@runner).should == 'default'
+      end
+    end
+  end
+
+  describe "#run" do
     context "in empty folder" do
       before(:each) do
         Dir.stub(:pwd).and_return("empty")
-        subject.set_test_unit_runner
       end
 
-      it "runs without bundler" do
-        subject.should_receive(:system).with(
-          "ruby -rubygems -r#{@lib_path.join('guard/test/runners/default_test_unit_runner')} -Ilib:test " \
-          "-e \"%w[test/succeeding_test.rb].each { |f| load f }\" \"test/succeeding_test.rb\" --runner=guard-default"
-        )
-        dev_null { subject.run(["test/succeeding_test.rb"]) }
-      end
+      context "when no :bundler option was given on initialize" do
+        subject { described_class.new }
 
-      context "when specifying the rvm option" do
-        before(:each) { @options = { :rvm => ['1.8.7', '1.9.2'] } }
-
-        it "runs with rvm exec" do
+        it "runs without bundler" do
           subject.should_receive(:system).with(
-            "rvm 1.8.7,1.9.2 exec " \
-            "ruby -rubygems -r#{@lib_path.join('guard/test/runners/default_test_unit_runner')} -Ilib:test " \
-            "-e \"%w[test/succeeding_test.rb].each { |f| load f }\" \"test/succeeding_test.rb\" --runner=guard-default"
+            "ruby -Itest -rubygems -r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-e \"%w[test/succeeding_test.rb].each { |path| load path }; GUARD_TEST_NOTIFY=true\" " \
+            "\"test/succeeding_test.rb\" --runner=guard-default"
           )
-          subject.run(["test/succeeding_test.rb"], @options)
+
+          subject.run(["test/succeeding_test.rb"])
         end
       end
 
-      context "when no test_unit_runner is specified" do
-        before(:each) { subject.set_test_unit_runner }
+      context "when the :bundler option set to true on initialize" do
+        subject { described_class.new(:bundler => true) }
 
-        it "displays message with the tests that will be fired" do
-          Guard::UI.should_receive(:info).with(
-            "Running (default runner): test/unit/error/error_test.rb test/unit/failing_test.rb", :reset => true
-          )
-          dev_null { subject.run(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]) }
-        end
-
-        it "runs with the --runner options set to 'guard-default' and require default_test_unit_runner" do
+        it "runs with bundler" do
           subject.should_receive(:system).with(
-            "ruby -rubygems -r#{@lib_path.join('guard/test/runners/default_test_unit_runner')} -Ilib:test " \
-            "-e \"%w[test/succeeding_test.rb].each { |f| load f }\" \"test/succeeding_test.rb\" --runner=guard-default"
+            "bundle exec " \
+            "ruby -Itest -rubygems -r bundler/setup " \
+            "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-e \"%w[test/succeeding_test.rb].each { |path| load path }; GUARD_TEST_NOTIFY=true\" " \
+            "\"test/succeeding_test.rb\" --runner=guard-default"
           )
-          dev_null { subject.run(["test/succeeding_test.rb"]) }
-        end
-      end
 
-      %w[default fastfail].each do |runner|
-        context "when specifying the '#{runner}' test_unit_runner" do
-          before(:each) { subject.set_test_unit_runner(:runner => runner) }
-
-          it "displays message with the tests that will be fired" do
-            Guard::UI.should_receive(:info).with(
-              "Running (#{runner} runner): test/unit/error/error_test.rb test/unit/failing_test.rb", :reset => true
-            )
-            dev_null { subject.run(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]) }
-          end
-
-          it "runs with the --runner options set to 'guard-#{runner}' and require #{runner}_test_unit_runner" do
-            subject.should_receive(:system).with(
-              "ruby -rubygems -r#{@lib_path.join("guard/test/runners/#{runner}_test_unit_runner")} -Ilib:test " \
-              "-e \"%w[test/succeeding_test.rb].each { |f| load f }\" \"test/succeeding_test.rb\" --runner=guard-#{runner}"
-            )
-            dev_null { subject.run(["test/succeeding_test.rb"]) }
-          end
-
-          it "displays custom message if one given" do
-            Guard::UI.should_receive(:info).with("That test is failing!!!", :reset => true)
-            dev_null { subject.run(["test/unit/failing_test.rb"], :message => "That test is failing!!!") }
-          end
-
-          it "loads all the tests files" do
-            subject.should_receive(:system).with(
-              "ruby -rubygems -r#{@lib_path.join("guard/test/runners/#{runner}_test_unit_runner")} -Ilib:test " \
-              "-e \"%w[test/unit/error/error_test.rb test/unit/failing_test.rb].each { |f| load f }\" " \
-              "\"test/unit/error/error_test.rb\" \"test/unit/failing_test.rb\" --runner=guard-#{runner}"
-            )
-            dev_null { subject.run(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]) }
-          end
-
-          it "executes all the test files" do
-            subject.should_receive(:system).with(
-              "ruby -rubygems -r#{@lib_path.join("guard/test/runners/#{runner}_test_unit_runner")} -Ilib:test " \
-              "-e \"%w[test/succeeding_test.rb test/unit/failing_test.rb].each { |f| load f }\" " \
-              "\"test/succeeding_test.rb\" \"test/unit/failing_test.rb\" --runner=guard-#{runner}"
-            )
-            dev_null { subject.run(["test/succeeding_test.rb", "test/unit/failing_test.rb"]) }
-          end
+          subject.run(["test/succeeding_test.rb"])
         end
       end
     end
 
     context "in a folder containing a Gemfile" do
-      before(:each) { subject.set_test_unit_runner }
+      context "when no :bundler option was given on initialize" do
+        subject { described_class.new }
 
-      it "runs with bundler" do
-        subject.should_receive(:system).with(
-          "bundle exec " \
-          "ruby -rubygems -r#{@lib_path.join('guard/test/runners/default_test_unit_runner')} -Ilib:test " \
-          "-e \"%w[test/succeeding_test.rb].each { |f| load f }\" \"test/succeeding_test.rb\" --runner=guard-default"
-        )
-        dev_null { subject.run(["test/succeeding_test.rb"]) }
+        it "runs with bundler" do
+          subject.should_receive(:system).with(
+            "bundle exec " \
+            "ruby -Itest -rubygems -r bundler/setup " \
+            "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-e \"%w[test/succeeding_test.rb].each { |path| load path }; GUARD_TEST_NOTIFY=true\" " \
+            "\"test/succeeding_test.rb\" --runner=guard-default"
+          )
+
+          subject.run(["test/succeeding_test.rb"])
+        end
       end
 
-      context "when setting the bundler option to false" do
-        before(:each) { @options = { :bundler => false } }
+      context "when the :bundler option set to false on initialize" do
+        subject { described_class.new(:bundler => false) }
 
         it "runs without bundler" do
           subject.should_receive(:system).with(
-            "ruby -rubygems -r#{@lib_path.join('guard/test/runners/default_test_unit_runner')} -Ilib:test " \
-            "-e \"%w[test/succeeding_test.rb].each { |f| load f }\" \"test/succeeding_test.rb\" --runner=guard-default"
+            "ruby -Itest -rubygems -r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-e \"%w[test/succeeding_test.rb].each { |path| load path }; GUARD_TEST_NOTIFY=true\" " \
+            "\"test/succeeding_test.rb\" --runner=guard-default"
           )
-          subject.run(["test/succeeding_test.rb"], @options)
+
+          subject.run(["test/succeeding_test.rb"])
         end
       end
+
+      context "when no :runner option was given on initialize" do
+        subject { described_class.new }
+
+        it "displays message with the tests that will be fired" do
+          Guard::UI.should_receive(:info).with(
+            "Running (default runner): test/unit/error/error_test.rb test/unit/failing_test.rb", :reset => true
+          )
+
+          dev_null { subject.run(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]) }
+        end
+
+        it "runs with the --runner options set to 'guard-default' and require default_guard_test_runner" do
+          subject.should_receive(:system).with(
+            "bundle exec " \
+            "ruby -Itest -rubygems -r bundler/setup " \
+            "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-e \"%w[test/succeeding_test.rb].each { |path| load path }; GUARD_TEST_NOTIFY=true\" " \
+            "\"test/succeeding_test.rb\" --runner=guard-default"
+          )
+
+          subject.run(["test/succeeding_test.rb"])
+        end
+      end
+
+      %w[default fastfail].each do |runner|
+        context "when the :runner is '#{runner}'" do
+          subject { described_class.new(:runner => runner) }
+
+          it "displays a message mentionning the runner and the test files that will be run" do
+            Guard::UI.should_receive(:info).with(
+              "Running (#{runner} runner): test/unit/error/error_test.rb test/unit/failing_test.rb", :reset => true
+            )
+
+            dev_null { subject.run(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]) }
+          end
+
+          it "requires #{runner}_guard_test_runner and runs with the --runner=guard-#{runner} option in the command line" do
+            subject.should_receive(:system).with(
+              "bundle exec " \
+              "ruby -Itest -rubygems -r bundler/setup "\
+              "-r #{@lib_path.join("guard/test/runners/#{runner}_guard_test_runner")} " \
+              "-e \"%w[test/succeeding_test.rb].each { |path| load path }; GUARD_TEST_NOTIFY=true\" " \
+              "\"test/succeeding_test.rb\" --runner=guard-#{runner}"
+            )
+
+            subject.run(["test/succeeding_test.rb"])
+          end
+        end
+      end
+
+      context "when the :notify option is given" do
+        subject { described_class.new(:notify => false) }
+
+        it "sets GUARD_TEST_NOTIFY to false in the command line run" do
+          subject.should_receive(:system).with(
+            "bundle exec " \
+            "ruby -Itest -rubygems -r bundler/setup " \
+            "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-e \"%w[test/succeeding_test.rb].each { |path| load path }; GUARD_TEST_NOTIFY=false\" " \
+            "\"test/succeeding_test.rb\" --runner=guard-default"
+          )
+
+          subject.run(["test/succeeding_test.rb"])
+        end
+      end
+
+      context "when the :rvm option is given" do
+        subject { described_class.new(:rvm => ['1.8.7', '1.9.2']) }
+
+        it "runs with rvm exec" do
+          subject.should_receive(:system).with(
+            "rvm 1.8.7,1.9.2 exec " \
+            "bundle exec " \
+            "ruby -Itest -rubygems -r bundler/setup " \
+            "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-e \"%w[test/succeeding_test.rb].each { |path| load path }; GUARD_TEST_NOTIFY=true\" " \
+            "\"test/succeeding_test.rb\" --runner=guard-default"
+          )
+
+          subject.run(["test/succeeding_test.rb"])
+        end
+      end
+
+      context "when the :message option is given" do
+        it "displays it" do
+          Guard::UI.should_receive(:info).with("That test is failing!!!", :reset => true)
+          runner = described_class.new
+
+          dev_null { runner.run(["test/unit/failing_test.rb"], :message => "That test is failing!!!") }
+        end
+      end
+
+      it "loads and executes all the tests files" do
+        runner = described_class.new
+        runner.should_receive(:system).with(
+          "bundle exec " \
+          "ruby -Itest -rubygems -r bundler/setup " \
+          "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+          "-e \"%w[test/unit/error/error_test.rb test/unit/failing_test.rb].each { |path| load path }; GUARD_TEST_NOTIFY=true\" " \
+          "\"test/unit/error/error_test.rb\" \"test/unit/failing_test.rb\" --runner=guard-default"
+        )
+
+        runner.run(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"])
+      end
+
     end
 
-  end # .run
+  end # #run
 
 end

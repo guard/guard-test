@@ -1,5 +1,7 @@
+# encoding: utf-8
 require 'rspec'
 require 'guard/test'
+
 ENV["GUARD_ENV"] = 'test'
 
 RSpec.configure do |config|

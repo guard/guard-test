@@ -1,30 +1,31 @@
+# encoding: utf-8
 module Guard
   class Test
     module Inspector
-      class << self
 
+      class << self
         def clean(paths)
           paths.uniq!
           paths.compact!
-          clean_paths = paths.select { |p| test_file?(p) || test_folder?(p) }
+          paths = paths.select { |p| test_file?(p) || test_folder?(p) }
 
-          paths.each do |path|
+          paths.dup.each do |path|
             if File.directory?(path)
-              clean_paths.delete(path)
-              clean_paths = clean_paths + Dir.glob("#{path}/**/*_test.rb")
+              paths.delete(path)
+              paths += Dir.glob("#{path}/**/*_test.rb")
             end
           end
 
-          clean_paths.uniq!
-          clean_paths.compact!
+          paths.uniq!
+          paths.compact!
           clear_test_files_list
-          clean_paths.sort
+          paths.sort
         end
 
-      private
+        private
 
         def test_folder?(path)
-          path.match(/^\/?test/) && !path.match(/\..+$/)
+          path.match(/^\/?test/) && !path.match(/\..+$/) && File.directory?(path)
         end
 
         def test_file?(path)
@@ -32,14 +33,14 @@ module Guard
         end
 
         def test_files
-          @test_files ||= Dir.glob("test/**/*_test.rb")
+          @test_files ||= Dir.glob('test/**/test_*.rb') + Dir.glob('test/**/*_test.rb')
         end
 
         def clear_test_files_list
           @test_files = nil
         end
-
       end
+
     end
   end
 end

@@ -1,3 +1,4 @@
+# encoding: utf-8
 class FailingTest < Test::Unit::TestCase
   def test_failing1
     assert_equal(true, false)
