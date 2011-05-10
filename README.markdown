@@ -1,4 +1,4 @@
-# Guard::Test
+# Guard::Test ![travis-ci](http://travis-ci.org/guard/guard-test.png)
 
 Test::Unit guard allows to automatically & intelligently launch tests when files are modified or created.
 
