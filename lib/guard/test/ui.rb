@@ -4,7 +4,7 @@ require "#{File.dirname(__FILE__)}/result_helpers"
 module Guard
   class Test
     class UI
-      COLOR_CODE = { :pass => ';32', :failure => ';31', :pending => ';33', :error => ';35', :reset => '' }
+      COLOR_CODE = { :pass => ';32', :failure => ';31', :error => ';33', :reset => '' }
 
       class << self
         def results(result, elapsed_time, options={})
