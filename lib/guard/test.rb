@@ -1,6 +1,10 @@
 # encoding: utf-8
 require 'guard'
 require 'guard/guard'
+# Thanks Aaron and Eric! http://redmine.ruby-lang.org/issues/show/3561
+# Eric Hodel: "whenever you use a gem that replaces stdlib functionality you should use #gem before #require."
+gem 'test-unit'
+require 'test/unit'
 
 module Guard
   class Test < Guard
@@ -9,15 +13,8 @@ module Guard
     autoload :Inspector, 'guard/test/inspector'
 
     def initialize(watchers=[], options={})
-      super
-
       @runner = Runner.new(options)
-      unless @runner.bundler?
-        # Thanks Aaron and Eric! http://redmine.ruby-lang.org/issues/show/3561
-        # Eric Hodel: "whenever you use a gem that replaces stdlib functionality you should use #gem before #require."
-        gem 'test-unit'
-        require 'test/unit'
-      end
+      super
     end
 
     def start

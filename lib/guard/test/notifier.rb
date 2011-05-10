@@ -9,7 +9,7 @@ module Guard
       class << self
         def notify(result, elapsed_time)
           ::Guard::Notifier.notify(
-            ResultHelpers.summary(result) + "\n\n" + ResultHelpers.duration(elapsed_time) + "\n",
+            ResultHelpers.summary(result) + "\n\n" + ResultHelpers.duration(elapsed_time),
             :title => "Test::Unit results",
             :image => result.failure_count > 0 ? :failed : :success
           )

@@ -11,22 +11,24 @@ Test::Unit guard allows to automatically & intelligently launch tests when files
 
 Please be sure to have [Guard](https://github.com/guard/guard) installed before continue.
 
-Install the gem:
-
-```ruby
-gem install guard-test
-```
-
-Add it to your Gemfile (inside test group):
-
+If you're using Bundler, add it to your `Gemfile` (inside the `test` group):
 ```ruby
 gem 'guard-test'
 ```
 
-Add Guard definition to your Guardfile by running this command:
+and run:
+```bash
+$ bundle install
+```
 
-```ruby
-guard init test
+or manually install the gem:
+```bash
+$ gem install guard-test
+```
+
+Add Guard definition to your `Guardfile` by running this command:
+```bash
+$ guard init test
 ```
 
 ## Usage
@@ -35,27 +37,25 @@ Please read [Guard usage doc](https://github.com/guard/guard#readme).
 
 ## Guardfile
 
-Guard::Test can be adapted to many kind of projects.
+Guard::Test can be adapted to any kind of projects.
 
 ### Standard Ruby project
-
 ```ruby
 guard 'test' do
-  watch(%r{lib/(.*)\.rb})      { |m| "test/#{m[1]}_test.rb" }
-  watch(%r{test/.*_test\.rb})
+  watch(%r{lib/(.+)\.rb})      { |m| "test/#{m[1]}_test.rb" }
+  watch(%r{test/.+_test\.rb})
   watch('test/test_helper.rb') { "test" }
 end
 ```
 
 ### Ruby On Rails project
-
 ```ruby
 guard 'test' do
-  watch(%r{app/models/(.*)\.rb})                     { |m| "test/unit/#{m[1]}_test.rb" }
-  watch(%r{app/controllers/(.*)\.rb})                { |m| "test/functional/#{m[1]}_test.rb" }
-  watch(%r{app/views/.*\.rb})                        { "test/integration" }
-  watch(%r{lib/(.*)\.rb})                            { |m| "test/#{m[1]}_test.rb" }
-  watch(%r{test/.*_test.rb})
+  watch(%r{app/models/(.+)\.rb})                     { |m| "test/unit/#{m[1]}_test.rb" }
+  watch(%r{app/controllers/(.+)\.rb})                { |m| "test/functional/#{m[1]}_test.rb" }
+  watch(%r{app/views/.+\.rb})                        { "test/integration" }
+  watch(%r{lib/(.+)\.rb})                            { |m| "test/#{m[1]}_test.rb" }
+  watch(%r{test/.+_test.rb})
   watch('app/controllers/application_controller.rb') { ["test/functional", "test/integration"] }
   watch('test/test_helper.rb')                       { "test" }
 end
@@ -67,11 +67,11 @@ Please read [Guard doc](https://github.com/guard/guard#readme) for more info abo
 
 Guard::Test allows you to choose between two different runners (Guard::Test's runners are inherited from Test::Unit's console runner):
 
-- `default`: Display tests results as they happen, with different chars ('.' for pass, 'F' for fail, 'E' for error) and print failures/errors messages & backtraces when all the tests are finished. Obviously, this is the guard-test default.
+- `default`: Display tests results as they happen, with different chars (green `.` for pass, red `F` for fail, purple `E` for error) 
+             and print failures/errors messages & backtraces when all the tests are finished. Obviously, this is the guard-test default.
 - `fastfail`: Display tests results as they happen and print failures/errors messages & backtraces immediately.
 
 Available options:
-
 ```ruby
 :notify => false           # don't display Growl (or Libnotify) notification after the specs are done running, default: true
 :runner => 'fastfail'      # default: 'default'
@@ -80,8 +80,15 @@ Available options:
 :verbose => true           # default: false
 ```
 
-Set the desired options as follow method:
+### Note about the `:notify` option
 
+If you don't want to use Growl or Libnotify with any of your guards, you can set a `GUARD_NOTIFY` environment variable to `false`.
+You can do it by adding the following statement in you `.bashrc`/`.bash_profile`/`.zshrc`:
+```bash
+export GUARD_NOTIFY=false
+```
+
+Set the desired options as follow method:
 ```ruby
 guard 'test', :runner => 'fastfail', :bundler => false, :rvm => ['1.8.7', 'ree'] do
   ...
@@ -104,6 +111,10 @@ Guard::Test follows [Semantic Versioning](http://semver.org), both SemVer and Se
 ## Author
 
 [Rémy Coutable](https://github.com/rymai)
+
+## Contributors
+
+https://github.com/guard/guard-test/contributors
 
 ## Kudos
 

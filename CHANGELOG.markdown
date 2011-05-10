@@ -1,11 +1,11 @@
 ### New features:
 
-- New `:notify` option (true by default). Set it to false to disable notification (Growl/Inotify)
-- New `:verbose` option (false by default).
+- New `:notify` option (true by default). Set it to false to disable notification (Growl/Inotify). ([@rymai](https://github.com/rymai))
+- New `:verbose` option (false by default). ([@rymai](https://github.com/rymai))
 
 ### Changes:
 
-- Internal changes inspired by [guard-minitest](https://github.com/guard/guard-minitest)
+- Internal changes inspired by [guard-minitest](https://github.com/guard/guard-minitest) ([@rymai](https://github.com/rymai))
 
 ## 0.1.6 - January 24, 2011
 
