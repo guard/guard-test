@@ -13,30 +13,38 @@ module Guard
     autoload :Inspector, 'guard/test/inspector'
 
     def initialize(watchers=[], options={})
-      @runner = Runner.new(options)
       super
+      @all_after_pass = options.delete(:all_after_pass)
+      @all_on_start   = options.delete(:all_on_start)
+      @runner = Runner.new(options)
     end
 
     def start
-      ::Guard::UI.info "Guard::Test is running!"
-    end
-
-    def stop
-      true
-    end
-
-    def reload
-      true
+      ::Guard::UI.info("Guard::Test #{TestVersion::VERSION} is running!")
+      run_all unless @all_on_start == false
     end
 
     def run_all
       paths = Inspector.clean(['test'])
-      paths.empty? ? true : @runner.run(paths, :message => 'Running all tests')
+      @last_failed = !@runner.run(paths, :message => 'Running all tests')
+      !@last_failed
     end
 
     def run_on_change(paths)
-      paths = Inspector.clean(paths)
-      paths.empty? ? true : @runner.run(paths)
+      paths  = Inspector.clean(paths)
+      passed = @runner.run(paths)
+
+      if @all_after_pass == false
+        passed
+      else
+        # run all the specs if the changed specs failed, like autotest
+        if passed && @last_failed
+          run_all
+        else
+          # track whether the changed specs failed for the next change
+          @last_failed = !passed
+        end
+      end
     end
 
   end

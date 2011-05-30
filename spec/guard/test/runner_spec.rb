@@ -9,36 +9,21 @@ describe Guard::Test::Runner do
     end
   end
 
-  describe ".run" do
-    it "creates a new Runner instance" do
-      described_class.should_receive(:new).with({ :option1 => "foo", :option2 => "bar" }).and_return(mock('runner').as_null_object)
-
-      dev_null { described_class.run(["test/succeeding_test.rb"], { :option1 => "foo", :option2 => "bar" }) }
-    end
-
-    it "calls #run on the new Runner instance" do
-      described_class.should_receive(:new).with({ :option1 => "foo", :option2 => "bar" }).and_return(runner = mock('runner'))
-      runner.should_receive(:run).with(["test/succeeding_test.rb"], { :option1 => "foo", :option2 => "bar" })
-
-      dev_null { described_class.run(["test/succeeding_test.rb"], { :option1 => "foo", :option2 => "bar" }) }
-    end
-  end
-
   describe "#initialize" do
     describe "sets the @runner instance variable from options" do
       it "uses the default runner without :runner option given" do
         runner = described_class.new
-        runner.instance_variable_get(:@runner).should == 'default'
+        runner.instance_variable_get(:@runner_name).should == 'default'
       end
 
       it "uses the given :runner option if available" do
         runner = described_class.new(:runner => 'fastfail')
-        runner.instance_variable_get(:@runner).should == 'fastfail'
+        runner.instance_variable_get(:@runner_name).should == 'fastfail'
       end
 
       it "uses the default runner if the given :runner option is not an available runner" do
         runner = described_class.new(:runner => 'unknown')
-        runner.instance_variable_get(:@runner).should == 'default'
+        runner.instance_variable_get(:@runner_name).should == 'default'
       end
     end
   end

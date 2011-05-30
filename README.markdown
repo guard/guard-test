@@ -73,11 +73,12 @@ Guard::Test allows you to choose between two different runners (Guard::Test's ru
 
 Available options:
 ```ruby
-:notify => false           # don't display Growl (or Libnotify) notification after the specs are done running, default: true
-:runner => 'fastfail'      # default: 'default'
-:bundler => false          # don't use "bundle exec" to run the test command, default: true if a you have a Gemfile
-:rvm => ['1.8.7', '1.9.2'] # directly run your specs on multiple Rubies, default: nil
-:verbose => true           # default: false
+:notify   => false              # don't display Growl (or Libnotify) notification after the specs are done running, default: true
+:runner   => 'fastfail'         # default: 'default'
+:bundler  => false              # don't use "bundle exec" to run the test command, default: true if a you have a Gemfile
+:rvm      => ['1.8.7', '1.9.2'] # directly run your specs on multiple Rubies, default: nil
+:verbose  => true               # default: false
+:use_turn => true               # juse the turn gem's executable instead of ruby (no notification for the moment). default: false
 ```
 
 ### Note about the `:notify` option

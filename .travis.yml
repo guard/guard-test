@@ -5,3 +5,7 @@ rvm:
   - ree
 env:
   - CI=true
+# Specify the recipients for email notification
+notifications:
+  recipients:
+    - rymai@rymai.me

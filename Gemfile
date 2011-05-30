@@ -32,3 +32,5 @@ platforms :jruby do
     gem 'libnotify',  '~> 0.1.3' if ENV["GUARD_NOTIFY"] != 'false'
   end
 end
+
+gem 'turn'
