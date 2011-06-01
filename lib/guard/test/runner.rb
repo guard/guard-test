@@ -13,7 +13,6 @@ module Guard
           :notify   => true,
           :bundler  => File.exist?("#{Dir.pwd}/Gemfile"),
           :rvm      => nil,
-          :verbose  => false,
           :use_turn => false
         }.merge(options)
 
@@ -47,11 +46,12 @@ module Guard
         cmd_parts << "bundle exec" if @options[:bundler]
         cmd_parts << "#{@options[:use_turn] ? 'turn' : 'ruby'} -Itest -rubygems"
         cmd_parts << "-r bundler/setup" if @options[:bundler]
-        cmd_parts << "-r #{File.expand_path("../runners/#{@runner_name}_guard_test_runner", __FILE__)}" unless @options[:use_turn]
-        cmd_parts << "-e \"%w[#{paths.join(' ')}].each { |path| load path }; GUARD_TEST_NOTIFY=#{@options[:notify]}\"" unless @options[:use_turn]
+        unless @options[:use_turn]
+          cmd_parts << "-r #{File.expand_path("../runners/#{@runner_name}_guard_test_runner", __FILE__)}"
+          cmd_parts << "-e \"%w[#{paths.join(' ')}].each { |path| load path }; GUARD_TEST_NOTIFY=#{@options[:notify]}\""
+        end
         cmd_parts << paths.map { |path| "\"#{path}\"" }.join(' ')
         cmd_parts << "--runner=guard-#{@runner_name}" unless @options[:use_turn]
-        cmd_parts << "--verbose" if @options[:verbose]
 
         cmd_parts.join(' ')
       end

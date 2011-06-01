@@ -1,7 +1,10 @@
 ### New features:
 
-- New `:notify` option (true by default). Set it to false to disable notification (Growl/Inotify). ([@rymai](https://github.com/rymai))
-- New `:verbose` option (false by default). ([@rymai](https://github.com/rymai))
+- New `:all_on_start` option (true by default) to not run all the tests at startup. ([@rymai](https://github.com/rymai))
+- New `:all_after_pass` option (true by default) to run all tests after changed tests pass. ([@rymai](https://github.com/rymai))
+- New `:keep_failed` option (true by default) to keep failed tests until them pass. ([@rymai](https://github.com/rymai))
+- New `:notify` option (true by default) to disable notification (Growl/Inotify). ([@rymai](https://github.com/rymai))
+- New `:use_turn` option (false by default) to use `turn` (from the ([turn gem](http://rubygems.org/gems/turn))) instead of `ruby`. ([@rymai](https://github.com/rymai))
 
 ### Changes:
 

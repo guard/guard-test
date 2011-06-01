@@ -14,36 +14,47 @@ module Guard
 
     def initialize(watchers=[], options={})
       super
-      @all_after_pass = options.delete(:all_after_pass)
-      @all_on_start   = options.delete(:all_on_start)
+      @options = {
+        :all_on_start   => true,
+        :all_after_pass => true,
+        :keep_failed    => true
+      }.update(options)
+      @last_failed  = false
+      @failed_paths = []
+
       @runner = Runner.new(options)
     end
 
     def start
       ::Guard::UI.info("Guard::Test #{TestVersion::VERSION} is running!")
-      run_all unless @all_on_start == false
+      run_all if @options[:all_on_start]
     end
 
     def run_all
-      paths = Inspector.clean(['test'])
-      @last_failed = !@runner.run(paths, :message => 'Running all tests')
-      !@last_failed
+      passed = @runner.run(Inspector.clean(['test']), :message => 'Running all tests')
+
+      @failed_paths = [] if passed
+      @last_failed  = !passed
+    end
+
+    def reload
+      @failed_paths = []
     end
 
     def run_on_change(paths)
-      paths  = Inspector.clean(paths)
-      passed = @runner.run(paths)
+      paths += @failed_paths if @options[:keep_failed]
+      passed = @runner.run(Inspector.clean(paths))
 
-      if @all_after_pass == false
-        passed
+      if passed
+        # clean failed paths memory
+        @failed_paths -= paths if @options[:keep_failed]
+        # run all the tests if the changed tests failed, like autotest
+        run_all if @last_failed && @options[:all_after_pass]
       else
-        # run all the specs if the changed specs failed, like autotest
-        if passed && @last_failed
-          run_all
-        else
-          # track whether the changed specs failed for the next change
-          @last_failed = !passed
-        end
+        # remember failed paths for the next change
+        @failed_paths += paths if @options[:keep_failed]
+        # track whether the changed tests failed for the next change
+        @last_failed = true
       end
     end
 

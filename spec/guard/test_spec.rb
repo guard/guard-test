@@ -20,26 +20,27 @@ describe Guard::Test do
   end
 
   describe "#start" do
-    context ":all_on_start => true" do
-      subject { described_class.new([], :all_on_start => true) }
+    context ":all_on_start option not specified" do
+      subject { described_class.new([]) }
 
-      it "calls #run_all on start when the :all_on_start option is true (by default)" do
+      it "displays a start message" do
+        ::Guard::UI.should_receive(:info).with("Guard::Test #{Guard::TestVersion::VERSION} is running!")
+        subject.stub(:run_all)
+
+        subject.start
+      end
+
+      it "calls #run_all by default" do
         subject.should_receive(:run_all)
 
         subject.start
       end
     end
 
-    context ":all_on_start => false" do
+    context ":all_on_start option is false" do
       subject { described_class.new([], :all_on_start => false) }
 
-      it "displays a start message" do
-        Guard::UI.should_receive(:info).with("Guard::Test #{Guard::TestVersion::VERSION} is running!")
-
-        subject.start
-      end
-
-      it "doesn't call #run_all on start when the :all_on_start option is false" do
+      it "doesn't call #run_all" do
         subject.should_not_receive(:run_all)
 
         subject.start
@@ -58,37 +59,99 @@ describe Guard::Test do
 
       subject.run_all
     end
+
+    it "cleans failed memory if passed" do
+      subject.instance_variable_get(:@runner).should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(false)
+      subject.run_on_change(["test/unit"])
+
+      subject.instance_variable_get(:@runner).should_receive(:run).with(["test/succeeding_test.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests").and_return(true)
+      subject.run_all
+
+      subject.instance_variable_get(:@runner).should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(true)
+      subject.run_on_change(["test/unit"])
+    end
+  end
+
+  describe "#reload" do
+    it "should clear failed_path" do
+      subject.instance_variable_get(:@runner).should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(false)
+      subject.run_on_change(["test/unit"])
+
+      subject.reload
+
+      subject.instance_variable_get(:@runner).should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(true)
+      subject.instance_variable_get(:@runner).should_receive(:run).with(["test/succeeding_test.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests").and_return(true)
+      subject.run_on_change(["test/unit"])
+    end
   end
 
   describe "#run_on_change" do
-    subject { described_class.new }
+    context ":all_after_pass option not specified" do
+      subject { described_class.new([]) }
 
-    it "runs test with under given paths, recursively" do
-      subject.instance_variable_get(:@runner).should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"])
+      it "runs test with under given paths, recursively" do
+        subject.instance_variable_get(:@runner).should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"])
 
-      subject.run_on_change(["test/unit"])
-    end
-    
-    it "calls #run_all if the changed specs pass after failing" do
-      subject.instance_variable_get(:@runner).should_receive(:run).with(["test/succeeding_test.rb"]).and_return(false, true)
-      subject.instance_variable_get(:@runner).should_receive(:run).with(["test/succeeding_test.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests")
-      subject.run_on_change(["test/succeeding_test.rb"])
-      subject.run_on_change(["test/succeeding_test.rb"])
+        subject.run_on_change(["test/unit"])
+      end
+
+      it "calls #run_all by default if the changed specs pass after failing" do
+        subject.instance_variable_get(:@runner).should_receive(:run).with(["test/succeeding_test.rb"]).and_return(false, true)
+        subject.instance_variable_get(:@runner).should_receive(:run).with(["test/succeeding_test.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests")
+
+        subject.run_on_change(["test/succeeding_test.rb"])
+        subject.run_on_change(["test/succeeding_test.rb"])
+      end
+
+      it "doesn't call #run_all if the changed specs pass without failing" do
+        subject.instance_variable_get(:@runner).should_receive(:run).with(["test/succeeding_test.rb"]).and_return(true)
+        subject.instance_variable_get(:@runner).should_not_receive(:run).with(["test/succeeding_test.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests")
+        subject.run_on_change(["test/succeeding_test.rb"])
+      end
     end
 
-    it "doesn't call #run_all if the changed specs pass after failing but the :all_after_pass option is false" do
-      subject = described_class.new([], :all_after_pass => false)
-      subject.instance_variable_get(:@runner).should_receive(:run).with(["test/succeeding_test.rb"]).and_return(false, true)
-      subject.instance_variable_get(:@runner).should_not_receive(:run).with(["test/succeeding_test.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests")
-      subject.run_on_change(["test/succeeding_test.rb"])
-      subject.run_on_change(["test/succeeding_test.rb"])
+    context ":all_after_pass option is false" do
+      subject { described_class.new([], :all_after_pass => false) }
+
+      it "doesn't call #run_all if the changed specs pass after failing but the :all_after_pass option is false" do
+        subject.instance_variable_get(:@runner).should_receive(:run).with(["test/succeeding_test.rb"]).and_return(false, true)
+        subject.instance_variable_get(:@runner).should_not_receive(:run).with(["test/succeeding_test.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests")
+
+        subject.run_on_change(["test/succeeding_test.rb"])
+        subject.run_on_change(["test/succeeding_test.rb"])
+      end
     end
 
-    it "doesn't call #run_all if the changed specs pass without failing" do
-      subject.instance_variable_get(:@runner).should_receive(:run).with(["test/succeeding_test.rb"]).and_return(true)
-      subject.instance_variable_get(:@runner).should_not_receive(:run).with(["test/succeeding_test.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests")
-      subject.run_on_change(["test/succeeding_test.rb"])
+    context ":keep_failed option not specified" do
+      subject { described_class.new([], :all_after_pass => false) }
+
+      it "keeps failed specs and rerun later by default" do
+        subject.instance_variable_get(:@runner).should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(false)
+        subject.run_on_change(["test/unit"])
+
+        subject.instance_variable_get(:@runner).should_receive(:run).with(["test/succeeding_test.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(true)
+        subject.run_on_change(["test/succeeding_test.rb"])
+
+        subject.instance_variable_get(:@runner).should_receive(:run).with(["test/succeeding_test.rb"]).and_return(true)
+        subject.run_on_change(["test/succeeding_test.rb"])
+      end
     end
+
+    context ":keep_failed option is false" do
+      subject { described_class.new([], :all_after_pass => false, :keep_failed => false) }
+
+      it "keeps failed specs and rerun later by default" do
+        subject.instance_variable_get(:@runner).should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(false)
+        subject.run_on_change(["test/unit"])
+
+        subject.instance_variable_get(:@runner).should_receive(:run).with(["test/succeeding_test.rb"]).and_return(true)
+        subject.run_on_change(["test/succeeding_test.rb"])
+
+        subject.instance_variable_get(:@runner).should_receive(:run).with(["test/succeeding_test.rb"]).and_return(true)
+        subject.run_on_change(["test/succeeding_test.rb"])
+      end
+    end
+
   end
 
 end

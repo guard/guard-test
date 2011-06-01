@@ -5,12 +5,15 @@ gemspec
 
 require 'rbconfig'
 
-library_path = File.expand_path("../../../guard", __FILE__)
-if File.exist?(library_path)
-  gem 'guard', :path => library_path
-elsif ENV["USE_GIT_REPOS"]
+# library_path = File.expand_path("../../../guard", __FILE__)
+# if File.exist?(library_path)
+#   gem 'guard', :path => library_path
+# else
+if ENV["USE_GIT_REPOS"]
   gem 'guard', :git => "git://github.com/guard/guard.git"
 end
+
+gem 'turn'
 
 platforms :ruby do
   if Config::CONFIG['target_os'] =~ /darwin/i
@@ -33,4 +36,3 @@ platforms :jruby do
   end
 end
 
-gem 'turn'
