@@ -1,12 +1,9 @@
 require 'bundler'
 Bundler::GemHelper.install_tasks
 
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec)
 task :default => :spec
-
-desc "Run all specs"
-task :spec do
-  exec "bundle exec rspec spec"
-end
 
 namespace :spec do
 
