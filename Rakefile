@@ -29,7 +29,7 @@ namespace :spec do
         for ((c=1; c<$ruby_version_string_size; c++)); do echo -n "="; done
         echo;
         bundle install;
-        bundle exec rake spec;'
+        bundle exec rake --trace 2>&1;'
       BASH
     end
   end
