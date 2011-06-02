@@ -6,8 +6,8 @@ rvm:
   - ree
   - rbx
   - jruby
-env:
-  - USE_GIT_REPOS=true
+# env:
+#   - USE_GIT_REPOS=true
 # Specify the recipients for email notification
 notifications:
   recipients:

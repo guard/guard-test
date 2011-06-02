@@ -3,12 +3,8 @@ source "http://rubygems.org"
 # Specify your gem's dependencies in guard-test.gemspec
 gemspec
 
-if ENV["USE_GIT_REPOS"]
-  gem 'guard', :git => "git://github.com/guard/guard.git"
-  gem 'guard-rspec', :git => "git://github.com/guard/guard-rspec.git"
-else
-  gem 'guard-rspec'
-end
+gem 'guard',       :git => "git://github.com/guard/guard.git"
+gem 'guard-rspec', :git => "git://github.com/guard/guard-rspec.git"
 
 # rake 0.9 is not valid under ruby 1.8
 # turn with ruby < 1.9 seems to inherit from the old-school test-unit framework
