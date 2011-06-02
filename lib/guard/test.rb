@@ -1,9 +1,16 @@
 # encoding: utf-8
 require 'guard'
 require 'guard/guard'
+
 # Thanks Aaron and Eric! http://redmine.ruby-lang.org/issues/show/3561
 # Eric Hodel: "whenever you use a gem that replaces stdlib functionality you should use #gem before #require."
-gem 'test-unit'
+begin
+  require 'turn'
+  gem 'test-unit' if RUBY_VERSION >= '1.9'
+rescue LoadError
+  gem 'test-unit'
+end
+
 require 'test/unit'
 
 module Guard

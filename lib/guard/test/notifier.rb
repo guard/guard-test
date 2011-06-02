@@ -1,21 +1,17 @@
 # encoding: utf-8
-require "#{File.dirname(__FILE__)}/result_helpers"
 require 'guard/notifier'
+require 'guard/test/result_helpers'
 
 module Guard
-  class Test
-    class Notifier
+  module TestNotifier
 
-      class << self
-        def notify(result, elapsed_time)
-          ::Guard::Notifier.notify(
-            ResultHelpers.summary(result) + "\n\n" + ResultHelpers.duration(elapsed_time),
-            :title => "Test::Unit results",
-            :image => result.failure_count > 0 ? :failed : :success
-          )
-        end
-      end
-
+    def self.notify(result, elapsed_time)
+      ::Guard::Notifier.notify(
+        ::Guard::TestResultHelpers.summary(result) + "\n\n" + ::Guard::TestResultHelpers.duration(elapsed_time),
+        :title => "Test::Unit results",
+        :image => result.failure_count > 0 ? :failed : :success
+      )
     end
+
   end
 end

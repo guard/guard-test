@@ -1,8 +1,7 @@
 # encoding: utf-8
 require 'spec_helper'
-require "#{File.dirname(__FILE__)}/../../../lib/guard/test/ui"
 
-describe Guard::Test::UI do
+describe Guard::TestUI do
 
   describe "#print_results(test_count, assertion_count, failure_count, error_count, duration, options = {})" do
     context "no failure, no error" do
@@ -11,7 +10,7 @@ describe Guard::Test::UI do
         described_class.should_receive(:color_puts).ordered.with(an_instance_of(String))
         described_class.should_receive(:color_puts).ordered.with(an_instance_of(String), :color => :pass)
 
-        described_class.send(:results, result, 0)
+        described_class.results(result, 0)
       end
     end
 
@@ -21,7 +20,7 @@ describe Guard::Test::UI do
         described_class.should_receive(:color_puts).ordered.with(an_instance_of(String))
         described_class.should_receive(:color_puts).ordered.with(an_instance_of(String), :color => :failure)
 
-        described_class.send(:results, result, 0)
+        described_class.results(result, 0)
       end
     end
 
@@ -31,7 +30,7 @@ describe Guard::Test::UI do
         described_class.should_receive(:color_puts).ordered.with(an_instance_of(String))
         described_class.should_receive(:color_puts).ordered.with(an_instance_of(String), :color => :error)
 
-        described_class.send(:results, result, 0)
+        described_class.results(result, 0)
       end
     end
   end

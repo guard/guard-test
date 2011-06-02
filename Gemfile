@@ -3,8 +3,11 @@ source "http://rubygems.org"
 # Specify your gem's dependencies in guard-test.gemspec
 gemspec
 
+if ENV["USE_GIT_REPOS"]
+  gem 'guard', :git => "git://github.com/guard/guard.git"
+end
+
 gem 'rake'
-gem 'guard', :git => 'git://github.com/guard/guard.git'
 gem 'turn'
 
 require 'rbconfig'

@@ -1,7 +1,9 @@
 # encoding: utf-8
+$:.push File.expand_path('../../../../', __FILE__)
+
 require 'test/unit/ui/console/testrunner'
-require File.expand_path('../../ui', __FILE__)
-require File.expand_path('../../notifier', __FILE__)
+require 'guard/test/ui'
+require 'guard/test/notifier'
 
 # Thanks to Adam Sanderson for the really good starting point:
 # http://endofline.wordpress.com/2008/02/11/a-custom-testrunner-to-scratch-an-itch/
@@ -33,23 +35,23 @@ class DefaultGuardTestRunner < Test::Unit::UI::Console::TestRunner
 
   def add_fault(fault)
     @faults << fault
-    Guard::Test::UI.color_print(fault.single_character_display, :color => fault_color_name(fault))
+    Guard::TestUI.color_print(fault.single_character_display, :color => fault_color_name(fault))
     @was_faulty = true
   end
 
   def test_finished(name)
-    Guard::Test::UI.color_print(".", :color => :pass) unless @was_faulty
+    Guard::TestUI.color_print(".", :color => :pass) unless @was_faulty
     @was_faulty = false
   end
 
   def finished(elapsed_time)
-    Guard::Test::Notifier.notify(@result, elapsed_time) if GUARD_TEST_NOTIFY
+    Guard::TestNotifier.notify(@result, elapsed_time) if GUARD_TEST_NOTIFY
     nl;nl
     @faults.each_with_index do |fault, index|
-      Guard::Test::UI.color_puts("%3d) %s" % [index + 1, fault.long_display], :color => fault_color_name(fault))
+      Guard::TestUI.color_puts("%3d) %s" % [index + 1, fault.long_display], :color => fault_color_name(fault))
       nl
     end
-    Guard::Test::UI.results(@result, elapsed_time)
+    Guard::TestUI.results(@result, elapsed_time)
     nl
   end
 
