@@ -24,7 +24,7 @@ describe Guard::Test do
       subject { described_class.new([]) }
 
       it "displays a start message" do
-        ::Guard::UI.should_receive(:info).with("Guard::Test #{Guard::TestVersion::VERSION} is running!")
+        ::Guard::UI.should_receive(:info).with("Guard::Test #{Guard::TestVersion::VERSION} is running, with Test::Unit #{::Test::Unit::VERSION}!")
         subject.stub(:run_all)
 
         subject.start

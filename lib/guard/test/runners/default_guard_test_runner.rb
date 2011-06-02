@@ -1,5 +1,5 @@
 # encoding: utf-8
-$:.push File.expand_path('../../../../', __FILE__)
+$:.push File.expand_path('../../../', File.dirname(__FILE__))
 
 require 'test/unit/ui/console/testrunner'
 require 'guard/test/ui'

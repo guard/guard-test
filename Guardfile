@@ -1,23 +1,27 @@
-guard :rspec do
-  watch(%r{lib/(.+)\.rb})      { |m| "spec/#{m[1]}_spec.rb" }
-  watch(%r{spec/.+_spec\.rb})
-  watch('spec/spec_helper.rb') { "spec" }
+group 'specs' do
+  guard :rspec do
+    watch(%r{lib/(.+)\.rb})      { |m| "spec/#{m[1]}_spec.rb" }
+    watch(%r{spec/.+_spec\.rb})
+    watch('spec/spec_helper.rb') { "spec" }
+  end
 end
 
-# guard 'test', :runner => 'default' do
-#   watch(%r{lib/(.+)\.rb})      { |m| "test/#{m[1]}_test.rb" }
-#   watch(%r{test/.+_test\.rb})
-#   watch('test/test_helper.rb') { "test" }
-# end
-#
-# guard 'test', :runner => 'fastfail', :cli => '-v', :notification => false do
-#   watch(%r{lib/(.+)\.rb})      { |m| "test/#{m[1]}_test.rb" }
-#   watch(%r{test/.+_test\.rb})
-#   watch('test/test_helper.rb') { "test" }
-# end
-# 
-guard :test do
-  watch(%r{lib/(.+)\.rb})      { |m| "test/#{m[1]}_test.rb" }
-  watch(%r{test/.+_test\.rb})
-  watch('test/test_helper.rb') { "test" }
+group 'tests' do
+  # guard 'test', :runner => 'default' do
+  #   watch(%r{lib/(.+)\.rb})      { |m| "test/#{m[1]}_test.rb" }
+  #   watch(%r{test/.+_test\.rb})
+  #   watch('test/test_helper.rb') { "test" }
+  # end
+  #
+  # guard 'test', :runner => 'fastfail', :cli => '-v', :notification => false do
+  #   watch(%r{lib/(.+)\.rb})      { |m| "test/#{m[1]}_test.rb" }
+  #   watch(%r{test/.+_test\.rb})
+  #   watch('test/test_helper.rb') { "test" }
+  # end
+  # 
+  guard :test do
+    watch(%r{lib/(.+)\.rb})      { |m| "test/#{m[1]}_test.rb" }
+    watch(%r{test/.+_test\.rb})
+    watch('test/test_helper.rb') { "test" }
+  end
 end

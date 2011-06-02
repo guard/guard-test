@@ -43,9 +43,9 @@ describe Guard::Test::Runner do
 
         it "runs without bundler" do
           subject.should_receive(:system).with(
-            "ruby -Itest -rubygems -r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "ruby -Itest -r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
             "-e \"GUARD_TEST_NOTIFY=true\" " \
-            "-r ./test/succeeding_test.rb -- --runner=guard-default"
+            "\"./test/succeeding_test.rb\" --runner=guard-default"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -55,15 +55,16 @@ describe Guard::Test::Runner do
       context "when the :bundler option set to true on initialize" do
         subject do
           runner = described_class.new(:bundler => true)
-          runner.stub(:turn?) { true }
+          runner.stub(:turn?) { false }
           runner
         end
 
         it "runs with bundler" do
           subject.should_receive(:system).with(
             "bundle exec " \
-            "turn -Itest -rubygems -r bundler/setup " \
-            "-r ./test/succeeding_test.rb --"
+            "ruby -Itest -r bundler/setup -r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-e \"GUARD_TEST_NOTIFY=true\" " \
+            "\"./test/succeeding_test.rb\" --runner=guard-default"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -75,15 +76,17 @@ describe Guard::Test::Runner do
       context "when no :bundler option was given on initialize" do
         subject do
           runner = described_class.new
-          runner.stub(:turn?) { true }
+          runner.stub(:turn?) { false }
           runner
         end
 
         it "runs with bundler" do
           subject.should_receive(:system).with(
             "bundle exec " \
-            "turn -Itest -rubygems -r bundler/setup " \
-            "-r ./test/succeeding_test.rb --"
+            "ruby -Itest -r bundler/setup " \
+            "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-e \"GUARD_TEST_NOTIFY=true\" " \
+            "\"./test/succeeding_test.rb\" --runner=guard-default"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -93,14 +96,16 @@ describe Guard::Test::Runner do
       context "when the :bundler option set to false on initialize" do
         subject do
           runner = described_class.new(:bundler => false)
-          runner.stub(:turn?) { true }
+          runner.stub(:turn?) { false }
           runner
         end
 
         it "runs without bundler" do
           subject.should_receive(:system).with(
-            "turn -Itest -rubygems " \
-            "-r ./test/succeeding_test.rb --"
+            "ruby -Itest " \
+            "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-e \"GUARD_TEST_NOTIFY=true\" " \
+            "\"./test/succeeding_test.rb\" --runner=guard-default"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -125,10 +130,10 @@ describe Guard::Test::Runner do
         it "runs with the --runner options set to 'guard-default' and require default_guard_test_runner" do
           subject.should_receive(:system).with(
             "bundle exec " \
-            "ruby -Itest -rubygems -r bundler/setup " \
+            "ruby -Itest -r bundler/setup " \
             "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
             "-e \"GUARD_TEST_NOTIFY=true\" " \
-            "-r ./test/succeeding_test.rb -- --runner=guard-default"
+            "\"./test/succeeding_test.rb\" --runner=guard-default"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -154,10 +159,10 @@ describe Guard::Test::Runner do
           it "requires #{runner_name}_guard_test_runner and runs with the --runner=guard-#{runner_name} option in the command line" do
             subject.should_receive(:system).with(
               "bundle exec " \
-              "ruby -Itest -rubygems -r bundler/setup "\
+              "ruby -Itest -r bundler/setup "\
               "-r #{@lib_path.join("guard/test/runners/#{runner_name}_guard_test_runner")} " \
               "-e \"GUARD_TEST_NOTIFY=true\" " \
-              "-r ./test/succeeding_test.rb -- --runner=guard-#{runner_name}"
+              "\"./test/succeeding_test.rb\" --runner=guard-#{runner_name}"
             )
 
             subject.run(["test/succeeding_test.rb"])
@@ -175,10 +180,10 @@ describe Guard::Test::Runner do
         it "sets GUARD_TEST_NOTIFY to false in the command line run" do
           subject.should_receive(:system).with(
             "bundle exec " \
-            "ruby -Itest -rubygems -r bundler/setup " \
+            "ruby -Itest -r bundler/setup " \
             "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
             "-e \"GUARD_TEST_NOTIFY=false\" " \
-            "-r ./test/succeeding_test.rb -- --runner=guard-default"
+            "\"./test/succeeding_test.rb\" --runner=guard-default"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -194,10 +199,7 @@ describe Guard::Test::Runner do
 
         it "runs with rvm exec" do
           subject.should_receive(:system).with(
-            "rvm 1.8.7,1.9.2 exec " \
-            "bundle exec " \
-            "turn -Itest -rubygems -r bundler/setup " \
-            "-r ./test/succeeding_test.rb --"
+            "rvm 1.8.7,1.9.2 exec turn -Itest \"./test/succeeding_test.rb\""
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -206,17 +208,14 @@ describe Guard::Test::Runner do
 
       context "when the :cli option is given" do
         subject do
-          runner = described_class.new(:cli => '-v')
+          runner = described_class.new(:cli => '--pretty')
           runner.stub(:turn?) { true }
           runner
         end
 
         it "adds the cli option at the end of the command" do
           subject.should_receive(:system).with(
-            "bundle exec " \
-            "turn -Itest -rubygems -r bundler/setup " \
-            "-r ./test/succeeding_test.rb -- " \
-            "-v"
+            "turn -Itest \"./test/succeeding_test.rb\" --pretty"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -237,10 +236,10 @@ describe Guard::Test::Runner do
         runner.stub(:turn?) { false }
         runner.should_receive(:system).with(
           "bundle exec " \
-          "ruby -Itest -rubygems -r bundler/setup " \
+          "ruby -Itest -r bundler/setup " \
           "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
           "-e \"GUARD_TEST_NOTIFY=true\" " \
-          "-r ./test/error/error_test.rb -r ./test/unit/failing_test.rb -- --runner=guard-default"
+          "\"./test/error/error_test.rb\" \"./test/unit/failing_test.rb\" --runner=guard-default"
         )
 
         runner.run(["test/error/error_test.rb", "test/unit/failing_test.rb"])
@@ -255,9 +254,7 @@ describe Guard::Test::Runner do
 
         it "use the turn executable instead of ruby" do
           subject.should_receive(:system).with(
-            "bundle exec " \
-            "turn -Itest -rubygems -r bundler/setup " \
-            "-r ./test/succeeding_test.rb --"
+            "turn -Itest \"./test/succeeding_test.rb\""
           )
 
           subject.run(["test/succeeding_test.rb"])

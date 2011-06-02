@@ -1,3 +1,5 @@
+require 'test_helper'
+
 # encoding: utf-8
 class FailingTest < Test::Unit::TestCase
   def test_failing1

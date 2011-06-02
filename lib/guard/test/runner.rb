@@ -26,11 +26,21 @@ module Guard
       end
 
       def rvm?
-        @rvm ||= @options[:rvm] && @options[:rvm].respond_to?(:join)
+        if @rvm.nil?
+          @rvm = @options[:rvm] && @options[:rvm].respond_to?(:join)
+        end
+        @rvm
       end
 
       def turn?
-        @turn ||= Object.const_defined?('Turn')
+        if @turn.nil?
+          @turn = begin
+            require 'turn'
+          rescue LoadError => ex
+            false
+          end
+        end
+        @turn
       end
 
     private
@@ -38,21 +48,20 @@ module Guard
       def test_unit_command(paths)
         cmd_parts = []
         cmd_parts << "rvm #{@options[:rvm].join(',')} exec" if rvm?
-        cmd_parts << "bundle exec" if @options[:bundler]
-        cmd_parts << "#{turn? ? 'turn' : 'ruby'} -Itest -rubygems"
-        cmd_parts << "-r bundler/setup" if @options[:bundler]
+        cmd_parts << "bundle exec" if @options[:bundler] && !turn?
+        cmd_parts << "#{turn? ? 'turn' : 'ruby'} -Itest"
+        cmd_parts << "-r bundler/setup" if @options[:bundler] && !turn?
 
         unless turn?
           cmd_parts << "-r #{File.expand_path("../runners/#{@runner_name}_guard_test_runner", __FILE__)}"
           cmd_parts << "-e \"GUARD_TEST_NOTIFY=#{@options[:notification]}\""
         end
 
-        paths.each { |path| cmd_parts << "-r ./#{path}" }
-        cmd_parts << "--"
+        paths.each { |path| cmd_parts << "\"./#{path}\"" }
         cmd_parts << "--runner=guard-#{@runner_name}" unless turn?
-        cmd_parts << @options[:cli] if @options[:cli]
+        cmd_parts << @options[:cli]
 
-        cmd_parts.join(' ')
+        cmd_parts.compact.join(' ')
       end
 
     end

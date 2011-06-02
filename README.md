@@ -7,7 +7,6 @@ If you have any questions/issues about Guard or Guard::Test, please join us on o
 ## Features
 
 - Compatible with Test::Unit >= 2.2 and Minitest (Ruby 1.9).
-- Auto-detection of the `turn` gem (notification is still missing though).
 - Tested on Ruby 1.8.6, 1.8.7, 1.9.2, REE, Rubinius and JRuby.
 
 ## Install
@@ -86,7 +85,7 @@ Available options:
 :rvm            => ['1.8.7', '1.9.2'] # directly run your specs on multiple Rubies, default: nil
 :bundler        => false              # don't use "bundle exec" to run the test command, default: true if a you have a Gemfile
 :runner         => 'fastfail'         # default: 'default'
-:cli            => "-v"               # pass arbitrary CLI arguments to the Ruby/Turn command that runs the tests, default: nil
+:cli            => "-v"               # pass arbitrary CLI arguments to the Ruby command that runs the tests, default: nil
 :notification   => false              # don't display Growl (or Libnotify) notification after the specs are done running, default: true
 :all_on_start   => false              # don't run all the tests at startup, default: true
 :all_after_pass => false              # don't run all tests after changed tests pass, default: true

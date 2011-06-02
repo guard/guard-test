@@ -1,17 +1,7 @@
 # encoding: utf-8
 require 'guard'
 require 'guard/guard'
-
-# Thanks Aaron and Eric! http://redmine.ruby-lang.org/issues/show/3561
-# Eric Hodel: "whenever you use a gem that replaces stdlib functionality you should use #gem before #require."
-begin
-  require 'turn'
-  gem 'test-unit' if RUBY_VERSION >= '1.9'
-rescue LoadError
-  gem 'test-unit'
-end
-
-require 'test/unit'
+require 'test/unit/version'
 
 module Guard
   class Test < Guard
@@ -33,7 +23,7 @@ module Guard
     end
 
     def start
-      ::Guard::UI.info("Guard::Test #{TestVersion::VERSION} is running!")
+      ::Guard::UI.info("Guard::Test #{TestVersion::VERSION} is running, with Test::Unit #{::Test::Unit::VERSION}!")
       run_all if @options[:all_on_start]
     end
 

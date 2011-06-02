@@ -1,5 +1,5 @@
 # encoding: utf-8
-require File.expand_path('../default_guard_test_runner', __FILE__)
+require File.expand_path('default_guard_test_runner', File.dirname(__FILE__))
 
 # This class is directly inspired by a blog post by Adam Sanderson:
 # http://endofline.wordpress.com/2008/02/11/a-custom-testrunner-to-scratch-an-itch/

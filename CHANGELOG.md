@@ -1,8 +1,17 @@
-## 0.3.0.rc1 - June 2, 2011 - ([@rymai][])
+## 0.3.0.rc3 - June 3, 2011 - ([@rymai][])
+
+### Bugs fixes:
+
+- Actually make the tests run.
+
+### Regression:
+
+- Turn doesn't want to run, so remove sentences that say that it is supported for now. Note: The code is still here, only the command line doesn't seem to output anything...
+
+## 0.3.0.rc2 - June 2, 2011 - ([@rymai][])
 
 ### New features:
 
-- Auto-detection of the `turn` gem.
 - New `:cli` option (nil by default) to pass arbitrary CLI arguments to the Ruby/Turn command that runs the tests.
 - New `:notification` option (true by default) to disable notification (Growl/Inotify).
 - New `:all_on_start` option (true by default) to not run all the tests at startup.
