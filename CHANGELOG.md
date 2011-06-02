@@ -1,16 +1,18 @@
+## 0.3.0.rc1 - June 2, 2011 - ([@rymai][])
+
 ### New features:
 
 - Auto-detection of the `turn` gem.
-- New `:cli` option (nil by default) to pass arbitrary CLI arguments to the Ruby/Turn command that runs the tests. ([@rymai][])
-- New `:notification` option (true by default) to disable notification (Growl/Inotify). ([@rymai][])
-- New `:all_on_start` option (true by default) to not run all the tests at startup. ([@rymai][])
-- New `:all_after_pass` option (true by default) to run all tests after changed tests pass. ([@rymai][])
-- New `:keep_failed` option (true by default) to keep failed tests until them pass. ([@rymai][])
+- New `:cli` option (nil by default) to pass arbitrary CLI arguments to the Ruby/Turn command that runs the tests.
+- New `:notification` option (true by default) to disable notification (Growl/Inotify).
+- New `:all_on_start` option (true by default) to not run all the tests at startup.
+- New `:all_after_pass` option (true by default) to run all tests after changed tests pass.
+- New `:keep_failed` option (true by default) to keep failed tests until them pass.
 
 ### Improvement:
 
 - Added compatibility with 1.8.6, 1.8.7, 1.9.2, REE, Rubinius and JRuby.
-- Internal changes inspired by [guard-minitest](https://github.com/guard/guard-minitest) ([@rymai][])
+- Internal changes inspired by [guard-minitest](https://github.com/guard/guard-minitest).
 
 ## 0.1.6 - January 24, 2011
 
