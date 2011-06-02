@@ -10,20 +10,11 @@ module Guard
       def initialize(options={})
         @runner_name = self.class.runners.detect { |runner| runner == options[:runner] } || self.class.runners[0]
         @options     = {
-          :notify   => true,
-          :bundler  => File.exist?("#{Dir.pwd}/Gemfile"),
-          :rvm      => nil,
-          :use_turn => false
+          :notification => true,
+          :bundler      => File.exist?("#{Dir.pwd}/Gemfile"),
+          :rvm          => nil,
+          :cli          => nil
         }.merge(options)
-
-        if @options[:use_turn]
-          begin
-            require 'turn'
-          rescue LoadError
-            ::Guard::UI.error("turn could not be required, fallbacking to normal ruby.", :reset => true)
-            @options[:use_turn] = false
-          end
-        end
       end
 
       def run(paths, options={})
@@ -35,7 +26,11 @@ module Guard
       end
 
       def rvm?
-        @options[:rvm] && @options[:rvm].respond_to?(:join)
+        @rvm ||= @options[:rvm] && @options[:rvm].respond_to?(:join)
+      end
+
+      def turn?
+        @turn ||= Object.const_defined?('Turn')
       end
 
     private
@@ -44,14 +39,18 @@ module Guard
         cmd_parts = []
         cmd_parts << "rvm #{@options[:rvm].join(',')} exec" if rvm?
         cmd_parts << "bundle exec" if @options[:bundler]
-        cmd_parts << "#{@options[:use_turn] ? 'turn' : 'ruby'} -Itest -rubygems"
+        cmd_parts << "#{turn? ? 'turn' : 'ruby'} -Itest -rubygems"
         cmd_parts << "-r bundler/setup" if @options[:bundler]
-        unless @options[:use_turn]
+
+        unless turn?
           cmd_parts << "-r #{File.expand_path("../runners/#{@runner_name}_guard_test_runner", __FILE__)}"
-          cmd_parts << "-e \"%w[#{paths.join(' ')}].each { |path| load path }; GUARD_TEST_NOTIFY=#{@options[:notify]}\""
+          cmd_parts << "-e \"GUARD_TEST_NOTIFY=#{@options[:notification]}\""
         end
-        cmd_parts << paths.map { |path| "\"#{path}\"" }.join(' ')
-        cmd_parts << "--runner=guard-#{@runner_name}" unless @options[:use_turn]
+
+        paths.each { |path| cmd_parts << "-r ./#{path}" }
+        cmd_parts << "--"
+        cmd_parts << "--runner=guard-#{@runner_name}" unless turn?
+        cmd_parts << @options[:cli] if @options[:cli]
 
         cmd_parts.join(' ')
       end

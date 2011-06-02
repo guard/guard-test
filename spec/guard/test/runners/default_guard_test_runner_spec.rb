@@ -10,9 +10,9 @@ describe DefaultGuardTestRunner do
         Guard::Notifier.turn_on
         Guard::Notifier.should_receive(:notify)
 
-        system "ruby -Itest -rubygems -r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+        system "bundle exec ruby -Itest -rubygems -r bundler/setup -r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
         "-e \"GUARD_TEST_NOTIFY=true\" " \
-        "\"#{@lib_path.join('../test/succeeding_test.rb')}\" --runner=guard-default 1>/dev/null"
+        "-r ./test/succeeding_test.rb -- --runner=guard-default 1>/dev/null"
       end
     end
 
@@ -21,9 +21,9 @@ describe DefaultGuardTestRunner do
         Guard::Notifier.turn_on
         Guard::Notifier.should_not_receive(:notify)
 
-        system "ruby -Itest -rubygems -r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+        system "bundle exec ruby -Itest -rubygems -r bundler/setup -r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
         "-e \"GUARD_TEST_NOTIFY=false\" " \
-        "\"#{@lib_path.join('../test/succeeding_test.rb')}\" --runner=guard-default 1>/dev/null"
+        "-r ./test/succeeding_test.rb -- --runner=guard-default 1>/dev/null"
       end
     end
   end
