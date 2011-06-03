@@ -1,3 +1,9 @@
+## 0.3.0.rc4 - June 3, 2011 - ([@rymai][])
+
+### Bugs fixes:
+
+- Add a require that was making the guard be fired by Guard! :'(
+
 ## 0.3.0.rc3 - June 3, 2011 - ([@rymai][])
 
 ### Bugs fixes:
