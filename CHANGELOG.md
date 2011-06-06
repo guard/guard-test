@@ -1,3 +1,9 @@
+### Bugs fixes:
+
+- Fixed bug that was preventing tests from running.
+- Fixed the `fastfail` runner that was displaying a green dot even for a failing test.
+- Removed the `:notification` option. Use the new Guard method instead.
+
 ## 0.3.0.rc4 - June 3, 2011 - ([@rymai][])
 
 ### Bugs fixes:

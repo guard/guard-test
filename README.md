@@ -86,19 +86,9 @@ Available options:
 :bundler        => false              # don't use "bundle exec" to run the test command, default: true if a you have a Gemfile
 :runner         => 'fastfail'         # default: 'default'
 :cli            => "-v"               # pass arbitrary CLI arguments to the Ruby command that runs the tests, default: nil
-:notification   => false              # don't display Growl (or Libnotify) notification after the specs are done running, default: true
 :all_on_start   => false              # don't run all the tests at startup, default: true
 :all_after_pass => false              # don't run all tests after changed tests pass, default: true
 :keep_failed    => false              # keep failed tests until them pass, default: true
-```
-
-### Note about the `:notification` option
-
-If you don't want to use Growl or Libnotify with any of your guards, you can set a `GUARD_NOTIFY` environment variable to `false`.
-You can do it by adding the following statement in you `.bashrc`/`.bash_profile`/`.zshrc`:
-
-```bash
-export GUARD_NOTIFY=false
 ```
 
 ## Development

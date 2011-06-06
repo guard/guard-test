@@ -14,10 +14,11 @@ class FastfailGuardTestRunner < DefaultGuardTestRunner
     nl
     Guard::TestUI.color_print("%3d) %s" % [@faults.size, fault.long_display], :color => fault_color_name(fault))
     nl
+    @was_faulty = true
   end
 
   def finished(elapsed_time)
-    Guard::TestNotifier.notify(@result, elapsed_time) if GUARD_TEST_NOTIFY
+    Guard::TestNotifier.notify(@result, elapsed_time)
     nl;nl
     Guard::TestUI.results(@result, elapsed_time)
     nl

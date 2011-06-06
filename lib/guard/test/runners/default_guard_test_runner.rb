@@ -45,7 +45,7 @@ class DefaultGuardTestRunner < Test::Unit::UI::Console::TestRunner
   end
 
   def finished(elapsed_time)
-    Guard::TestNotifier.notify(@result, elapsed_time) if GUARD_TEST_NOTIFY
+    Guard::TestNotifier.notify(@result, elapsed_time)
     nl;nl
     @faults.each_with_index do |fault, index|
       Guard::TestUI.color_puts("%3d) %s" % [index + 1, fault.long_display], :color => fault_color_name(fault))

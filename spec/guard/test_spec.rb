@@ -12,9 +12,9 @@ describe Guard::Test do
 
     context "with options given" do
       it "passes fiven options to Guard::Test::Runner#new" do
-        Guard::Test::Runner.should_receive(:new).with(:runner => 'fastfail', :notification => false, :rvm => ['1.8.7', '1.9.2'], :bundler => false).and_return(mock('runner', :bundler? => true))
+        Guard::Test::Runner.should_receive(:new).with(:runner => 'fastfail', :rvm => ['1.8.7', '1.9.2'], :bundler => false).and_return(mock('runner', :bundler? => true))
 
-        described_class.new([], :runner => 'fastfail', :notification => false, :rvm => ['1.8.7', '1.9.2'], :bundler => false)
+        described_class.new([], :runner => 'fastfail', :rvm => ['1.8.7', '1.9.2'], :bundler => false)
       end
     end
   end
@@ -24,7 +24,7 @@ describe Guard::Test do
       subject { described_class.new([]) }
 
       it "displays a start message" do
-        ::Guard::UI.should_receive(:info).with("Guard::Test #{Guard::TestVersion::VERSION} is running, with Test::Unit #{::Test::Unit::VERSION}!")
+        ::Guard::UI.should_receive(:info).with("Guard::Test #{Guard::TestVersion::VERSION} is running, with Test::Unit #{::Test::Unit::VERSION}!", :reset => true)
         subject.stub(:run_all)
 
         subject.start

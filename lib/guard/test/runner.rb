@@ -10,7 +10,6 @@ module Guard
       def initialize(options={})
         @runner_name = self.class.runners.detect { |runner| runner == options[:runner] } || self.class.runners[0]
         @options     = {
-          :notification => true,
           :bundler      => File.exist?("#{Dir.pwd}/Gemfile"),
           :rvm          => nil,
           :cli          => nil
@@ -51,12 +50,7 @@ module Guard
         cmd_parts << "bundle exec" if @options[:bundler] && !turn?
         cmd_parts << "#{turn? ? 'turn' : 'ruby'} -Itest"
         cmd_parts << "-r bundler/setup" if @options[:bundler] && !turn?
-
-        unless turn?
-          cmd_parts << "-r #{File.expand_path("../runners/#{@runner_name}_guard_test_runner", __FILE__)}"
-          cmd_parts << "-e \"GUARD_TEST_NOTIFY=#{@options[:notification]}\""
-        end
-
+        cmd_parts << "-r #{File.expand_path("../runners/#{@runner_name}_guard_test_runner", __FILE__)}" unless turn?
         paths.each { |path| cmd_parts << "\"./#{path}\"" }
         cmd_parts << "--runner=guard-#{@runner_name}" unless turn?
         cmd_parts << @options[:cli]

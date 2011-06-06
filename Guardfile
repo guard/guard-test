@@ -7,19 +7,7 @@ group 'specs' do
 end
 
 group 'tests' do
-  # guard 'test', :runner => 'default' do
-  #   watch(%r{lib/(.+)\.rb})      { |m| "test/#{m[1]}_test.rb" }
-  #   watch(%r{test/.+_test\.rb})
-  #   watch('test/test_helper.rb') { "test" }
-  # end
-  #
-  # guard 'test', :runner => 'fastfail', :cli => '-v', :notification => false do
-  #   watch(%r{lib/(.+)\.rb})      { |m| "test/#{m[1]}_test.rb" }
-  #   watch(%r{test/.+_test\.rb})
-  #   watch('test/test_helper.rb') { "test" }
-  # end
-  # 
-  guard :test do
+  guard :test, :runner => 'default' do
     watch(%r{lib/(.+)\.rb})      { |m| "test/#{m[1]}_test.rb" }
     watch(%r{test/.+_test\.rb})
     watch('test/test_helper.rb') { "test" }
