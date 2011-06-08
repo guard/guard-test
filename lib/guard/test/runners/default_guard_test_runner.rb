@@ -5,6 +5,17 @@ require 'test/unit/ui/console/testrunner'
 require 'guard/test/ui'
 require 'guard/test/notifier'
 
+# copy this snippet from rake_test_loader.rb
+ARGV.each do |f|
+  next if f =~ /^-/
+
+  if f =~ /\*/
+    FileList[f].to_a.each { |fn| require File.expand_path(fn) }
+  else
+    require File.expand_path(f)
+  end
+end
+
 # Thanks to Adam Sanderson for the really good starting point:
 # http://endofline.wordpress.com/2008/02/11/a-custom-testrunner-to-scratch-an-itch/
 #
