@@ -13,6 +13,7 @@ module Guard
             if File.directory?(path)
               paths.delete(path)
               paths += Dir.glob("#{path}/**/*_test.rb")
+              paths += Dir.glob("#{path}/**/test_*.rb")
             end
           end
 
