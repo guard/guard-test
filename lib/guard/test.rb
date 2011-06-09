@@ -41,16 +41,19 @@ module Guard
 
     def run_on_change(paths)
       paths += @failed_paths if @options[:keep_failed]
-      passed = @runner.run(Inspector.clean(paths))
+      paths  = Inspector.clean(paths)
+      passed = @runner.run(paths)
 
       if passed
         # clean failed paths memory
         @failed_paths -= paths if @options[:keep_failed]
+
         # run all the tests if the changed tests failed, like autotest
         run_all if @last_failed && @options[:all_after_pass]
       else
         # remember failed paths for the next change
         @failed_paths += paths if @options[:keep_failed]
+
         # track whether the changed tests failed for the next change
         @last_failed = true
       end

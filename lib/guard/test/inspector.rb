@@ -7,22 +7,23 @@ module Guard
         def clean(paths)
           paths.uniq!
           paths.compact!
-          paths = paths.select { |p| test_file?(p) || test_folder?(p) }
 
           paths.dup.each do |path|
-            if File.directory?(path)
+            if test_folder?(path)
               paths.delete(path)
-              paths += Dir.glob("#{path}/**/*_test.rb")
+              paths += Dir.glob("#{path}/**/test_*.rb") + Dir.glob("#{path}/**/*_test.rb")
+            else
+              paths.delete(path) unless test_file?(path)
             end
           end
 
           paths.uniq!
           paths.compact!
           clear_test_files_list
-          paths.sort
+          paths.sort - ['test/test_helper.rb']
         end
 
-        private
+      private
 
         def test_folder?(path)
           path.match(/^\/?test/) && !path.match(/\..+$/) && File.directory?(path)
