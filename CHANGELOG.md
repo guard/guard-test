@@ -1,8 +1,18 @@
+## 0.3.0.rc5 - June 9, 2011 - ([@rymai][])
+
 ### Bugs fixes:
 
-- Fixed bug that was preventing tests from running.
-- Fixed the `fastfail` runner that was displaying a green dot even for a failing test.
-- Removed the `:notification` option. Use the new Guard method instead.
+- Fixed bug that was preventing tests from running. ([@rymai][])
+- Fixed the `fastfail` runner that was displaying a green dot even for a failing test. ([@rymai][])
+- Removed the `:notification` option. Use the new Guard method instead. ([@rymai][])
+
+### New features:
+
+- Turn seems to work fine now... ([@rymai][])
+
+### Improvement:
+
+- Consider 'test_*.rb' as test files as well. ([@uk-ar][])
 
 ## 0.3.0.rc4 - June 3, 2011 - ([@rymai][])
 
@@ -56,3 +66,4 @@
 [@gregorymostizky]: https://github.com/gregorymostizky
 [@jgrau]: https://github.com/jgrau
 [@rymai]: https://github.com/rymai
+[@uk-ar]: https://github.com/uk-ar
