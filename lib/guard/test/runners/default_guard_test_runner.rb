@@ -61,4 +61,4 @@ class DefaultGuardTestRunner < Test::Unit::UI::Console::TestRunner
 
 end
 
-Test::Unit::AutoRunner::RUNNERS["guard-default"] = Proc.new { |r| DefaultGuardTestRunner }
+Test::Unit::AutoRunner.register_runner(:"guard-default") { |r| DefaultGuardTestRunner }

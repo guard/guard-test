@@ -44,6 +44,7 @@ describe Guard::Test::Runner do
         it "runs without bundler" do
           subject.should_receive(:system).with(
             "ruby -Itest -r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
             "\"./test/succeeding_test.rb\" --runner=guard-default"
           )
 
@@ -62,6 +63,7 @@ describe Guard::Test::Runner do
           subject.should_receive(:system).with(
             "bundle exec " \
             "ruby -Itest -r bundler/setup -r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
             "\"./test/succeeding_test.rb\" --runner=guard-default"
           )
 
@@ -83,6 +85,7 @@ describe Guard::Test::Runner do
             "bundle exec " \
             "ruby -Itest -r bundler/setup " \
             "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
             "\"./test/succeeding_test.rb\" --runner=guard-default"
           )
 
@@ -101,6 +104,7 @@ describe Guard::Test::Runner do
           subject.should_receive(:system).with(
             "ruby -Itest " \
             "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
             "\"./test/succeeding_test.rb\" --runner=guard-default"
           )
 
@@ -128,6 +132,7 @@ describe Guard::Test::Runner do
             "bundle exec " \
             "ruby -Itest -r bundler/setup " \
             "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
             "\"./test/succeeding_test.rb\" --runner=guard-default"
           )
 
@@ -156,6 +161,7 @@ describe Guard::Test::Runner do
               "bundle exec " \
               "ruby -Itest -r bundler/setup "\
               "-r #{@lib_path.join("guard/test/runners/#{runner_name}_guard_test_runner")} " \
+              "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
               "\"./test/succeeding_test.rb\" --runner=guard-#{runner_name}"
             )
 
@@ -212,6 +218,7 @@ describe Guard::Test::Runner do
           "bundle exec " \
           "ruby -Itest -r bundler/setup " \
           "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+          "-e \"%w[test/error/error_test.rb test/unit/failing_test.rb].each { |p| load p }\" " \
           "\"./test/error/error_test.rb\" \"./test/unit/failing_test.rb\" --runner=guard-default"
         )
 

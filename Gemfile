@@ -10,7 +10,7 @@ gem 'guard-rspec', :git => "git://github.com/guard/guard-rspec.git"
 # turn with ruby < 1.9 seems to inherit from the old-school test-unit framework
 if RUBY_VERSION >= '1.9'
   gem 'rake'
-  gem 'turn'
+  # gem 'turn'
 else
   gem 'rake', '0.8.7'
 end

@@ -50,7 +50,12 @@ module Guard
         cmd_parts << "bundle exec" if @options[:bundler] && !turn?
         cmd_parts << "#{turn? ? 'turn' : 'ruby'} -Itest"
         cmd_parts << "-r bundler/setup" if @options[:bundler] && !turn?
-        cmd_parts << "-r #{File.expand_path("../runners/#{@runner_name}_guard_test_runner", __FILE__)}" unless turn?
+        
+        unless turn?
+          cmd_parts << "-r #{File.expand_path("../runners/#{@runner_name}_guard_test_runner", __FILE__)}"
+          cmd_parts << "-e \"%w[#{paths.join(' ')}].each { |p| load p }\""
+        end
+
         paths.each { |path| cmd_parts << "\"./#{path}\"" }
         cmd_parts << "--runner=guard-#{@runner_name}" unless turn?
         cmd_parts << @options[:cli]

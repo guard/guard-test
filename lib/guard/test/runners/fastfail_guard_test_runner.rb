@@ -26,4 +26,4 @@ class FastfailGuardTestRunner < DefaultGuardTestRunner
 
 end
 
-Test::Unit::AutoRunner::RUNNERS["guard-fastfail"] = Proc.new { |r| FastfailGuardTestRunner }
+Test::Unit::AutoRunner.register_runner(:"guard-fastfail") { |r| FastfailGuardTestRunner }
