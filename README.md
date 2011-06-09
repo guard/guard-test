@@ -49,9 +49,9 @@ Guard::Test can be adapted to any kind of projects.
 
 ```ruby
 guard 'test' do
-  watch(%r{lib/(.+)\.rb})      { |m| "test/#{m[1]}_test.rb" }
-  watch(%r{test/.+_test\.rb})
-  watch('test/test_helper.rb') { "test" }
+  watch(%r{^lib/(.+)\.rb$})     { |m| "test/#{m[1]}_test.rb" }
+  watch(%r{^test/.+_test\.rb$})
+  watch('test/test_helper.rb')  { "test" }
 end
 ```
 
@@ -59,11 +59,11 @@ end
 
 ```ruby
 guard 'test' do
-  watch(%r{app/models/(.+)\.rb})                     { |m| "test/unit/#{m[1]}_test.rb" }
-  watch(%r{app/controllers/(.+)\.rb})                { |m| "test/functional/#{m[1]}_test.rb" }
-  watch(%r{app/views/.+\.rb})                        { "test/integration" }
-  watch(%r{lib/(.+)\.rb})                            { |m| "test/#{m[1]}_test.rb" }
-  watch(%r{test/.+_test.rb})
+  watch(%r{^app/models/(.+)\.rb$})                   { |m| "test/unit/#{m[1]}_test.rb" }
+  watch(%r{^app/controllers/(.+)\.rb$})              { |m| "test/functional/#{m[1]}_test.rb" }
+  watch(%r{^app/views/.+\.rb$})                      { "test/integration" }
+  watch(%r{^lib/(.+)\.rb$})                          { |m| "test/#{m[1]}_test.rb" }
+  watch(%r{^test/.+_test.rb$})
   watch('app/controllers/application_controller.rb') { ["test/functional", "test/integration"] }
   watch('test/test_helper.rb')                       { "test" }
 end
@@ -114,4 +114,4 @@ https://github.com/guard/guard-test/contributors
 
 ## Kudos
 
-Many thanks to [Thibaud Guillaume-Gentil](https://github.com/thibaudgg) for creating the excellent Guard gem.
+Many thanks to [Thibaud Guillaume-Gentil](https://github.com/thibaudgg) for creating the excellent [Guard](https://github.com/guard/guard) gem.
