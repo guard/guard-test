@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ['Rémy Coutable']
   s.email       = ['rymai@rymai.me']
-  s.homepage    = 'http://rubygems.org/gems/guard-test'
+  s.homepage    = 'https://github.com/guard/guard-test'
   s.summary     = 'Guard gem for Test::Unit'
   s.description = 'Guard::Test automatically run your tests on file modification.'
 
