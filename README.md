@@ -2,7 +2,7 @@
 
 Test::Unit guard allows to automatically & intelligently launch tests when files are modified or created.
 
-If you have any questions/issues about Guard or Guard::Test, please join us on our [Google group](http://groups.google.com/group/guard-dev) or on `#guard` (irc.freenode.net).
+If you have any questions about Guard or Guard::Test, please join us on our [Google group](http://groups.google.com/group/guard-dev) or on `#guard` (irc.freenode.net).
 
 ## Features
 
@@ -94,15 +94,11 @@ Available options:
 ## Development
 
 - Source hosted on GitHub: https://github.com/guard/guard-test
-- Report issues/Questions/Feature requests on GitHub Issues: https://github.com/guard/guard-test/issues
+- Report issues and feature requests to GitHub Issues: https://github.com/guard/guard-test/issues
 
-Pull requests are very welcome!
-Make sure your patches are well tested.
-Please create a topic branch for every separate change you make.
+Pull requests are very welcome! Make sure your patches are well tested. Please create a topic branch for every separate change you make. Please do not change the version in your pull-request.
 
-## Versioning
-
-Guard::Test follows [Semantic Versioning](http://semver.org), both SemVer and SemVerTag.
+For questions please join us on our [Google group](http://groups.google.com/group/guard-dev) or on `#guard` (irc.freenode.net).
 
 ## Author
 
