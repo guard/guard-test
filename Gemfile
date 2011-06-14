@@ -19,8 +19,8 @@ require 'rbconfig'
 
 platforms :ruby do
   if Config::CONFIG['target_os'] =~ /darwin/i
-    gem 'rb-fsevent', '>= 0.3.9'
-    gem 'growl',      '~> 1.0.3'
+    gem 'rb-fsevent'
+    gem 'growl'
   end
   if Config::CONFIG['target_os'] =~ /linux/i
     gem 'rb-inotify', '>= 0.5.1'
@@ -30,7 +30,7 @@ end
 
 platforms :jruby do
   if Config::CONFIG['target_os'] =~ /darwin/i
-    gem 'growl',      '~> 1.0.3'
+    gem 'growl'
   end
   if Config::CONFIG['target_os'] =~ /linux/i
     gem 'rb-inotify', '>= 0.5.1'
