@@ -13,7 +13,7 @@ If you have any questions about Guard or Guard::Test, please join us on our [Goo
 
 Please be sure to have [Guard](https://github.com/guard/guard) installed before continue.
 
-If you're using Bundler, add it to your `Gemfile` (inside the `test` group):
+If you're using Bundler, add it to your `Gemfile` (inside the `development` group):
 
 ```ruby
 gem 'guard-test'
