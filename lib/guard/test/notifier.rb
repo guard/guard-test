@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'guard'
 require 'guard/notifier'
 require 'guard/test/result_helpers'
 
