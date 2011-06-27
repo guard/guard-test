@@ -12,6 +12,7 @@ module Guard
         @options     = {
           :bundler      => File.exist?("#{Dir.pwd}/Gemfile"),
           :rvm          => nil,
+          :drb          => false,
           :cli          => nil
         }.merge(options)
       end
@@ -35,7 +36,7 @@ module Guard
         if @turn.nil?
           @turn = begin
             require 'turn'
-          rescue LoadError => ex
+          rescue LoadError
             false
           end
         end
@@ -48,16 +49,24 @@ module Guard
         cmd_parts = []
         cmd_parts << "rvm #{@options[:rvm].join(',')} exec" if rvm?
         cmd_parts << "bundle exec" if @options[:bundler] && !turn?
-        cmd_parts << "#{turn? ? 'turn' : 'ruby'} -Itest"
-        cmd_parts << "-r bundler/setup" if @options[:bundler] && !turn?
+        cmd_parts << case true
+                     when @options[:drb]
+                       "testdrb"
+                     when turn?
+                       "turn"
+                     else
+                       "ruby"
+                     end
+        cmd_parts << "-Itest"
+        cmd_parts << "-r bundler/setup" if @options[:bundler] && !@options[:drb] && !turn?
         
-        unless turn?
+        if turn? && !@options[:drb]
           cmd_parts << "-r #{File.expand_path("../runners/#{@runner_name}_guard_test_runner", __FILE__)}"
           cmd_parts << "-e \"%w[#{paths.join(' ')}].each { |p| load p }\""
         end
 
         paths.each { |path| cmd_parts << "\"./#{path}\"" }
-        cmd_parts << "--runner=guard-#{@runner_name}" unless turn?
+        cmd_parts << "--runner=guard-#{@runner_name}" if turn? && !@options[:drb]
         cmd_parts << @options[:cli]
 
         cmd_parts.compact.join(' ')

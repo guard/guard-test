@@ -4,7 +4,9 @@ source "http://rubygems.org"
 gemspec
 
 gem 'guard',       :git => "git://github.com/guard/guard.git"
+gem 'guard-spork', :git => "git://github.com/guard/guard-spork.git"
 gem 'guard-rspec', :git => "git://github.com/guard/guard-rspec.git"
+gem 'spork-testunit'
 
 # rake 0.9 is not valid under ruby 1.8
 # turn with ruby < 1.9 seems to inherit from the old-school test-unit framework
