@@ -1,4 +1,10 @@
-## 0.3.0.rc5 - June 9, 2011 - ([@rymai][])
+## 0.3.0 - June 14, 2011
+
+### Improvements:
+
+- Internal cleaning. ([@rymai][])
+
+## 0.3.0.rc5 - June 9, 2011
 
 ### Bugs fixes:
 
