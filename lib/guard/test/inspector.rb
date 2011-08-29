@@ -26,7 +26,7 @@ module Guard
       private
 
         def test_folder?(path)
-          path.match(/^\/?test/) && !path.match(/\..+$/) && File.directory?(path)
+          path.match(/\/?test/) && !path.match(/\..+$/) && File.directory?(path)
         end
 
         def test_file?(path)

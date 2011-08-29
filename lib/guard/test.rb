@@ -15,7 +15,8 @@ module Guard
       @options = {
         :all_on_start   => true,
         :all_after_pass => true,
-        :keep_failed    => true
+        :keep_failed    => true,
+        :test_paths     => ['test']
       }.update(options)
       @last_failed  = false
       @failed_paths = []
@@ -29,7 +30,7 @@ module Guard
     end
 
     def run_all
-      passed = @runner.run(Inspector.clean(['test']), :message => 'Running all tests')
+      passed = @runner.run(Inspector.clean(@options[:test_paths]), :message => 'Running all tests')
 
       @failed_paths = [] if passed
       @last_failed  = !passed

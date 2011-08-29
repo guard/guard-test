@@ -2,6 +2,7 @@
 require 'spec_helper'
 
 describe Guard::Test do
+  subject { described_class.new }
   let(:runner) { subject.instance_variable_get(:@runner) }
 
   describe "#initialize" do
@@ -22,8 +23,6 @@ describe Guard::Test do
 
   describe "#start" do
     context ":all_on_start option not specified" do
-      subject { described_class.new([]) }
-
       it "displays a start message" do
         ::Guard::UI.should_receive(:info).with("Guard::Test #{Guard::TestVersion::VERSION} is running, with Test::Unit #{::Test::Unit::VERSION}!", :reset => true)
         subject.stub(:run_all)
@@ -51,10 +50,19 @@ describe Guard::Test do
   end
 
   describe "#run_all" do
-    it "runs all test with a message" do
+    it "runs all tests specified by the default :test_paths with a message" do
       runner.should_receive(:run).with(["test/succeeding_test.rb", "test/test_old.rb", "test/unit/error/error_test.rb",  "test/unit/failing_test.rb"],:message => "Running all tests"
       )
       subject.run_all
+    end
+
+    context "when :test_paths option specified" do
+      subject { described_class.new([], :test_paths => ["test/unit/error"]) }
+
+      it "runs all tests in specific directory" do
+        runner.should_receive(:run).with(["test/unit/error/error_test.rb"], anything)
+        subject.run_all
+      end
     end
 
     it "cleans failed memory if passed" do
