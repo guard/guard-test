@@ -4,6 +4,14 @@ module Guard
     module Inspector
 
       class << self
+        def test_paths
+          @test_paths || []
+        end
+
+        def test_paths=(path_array)
+          @test_paths = Array(path_array)
+        end
+
         def clean(paths)
           paths.uniq!
           paths.compact!
@@ -26,7 +34,8 @@ module Guard
       private
 
         def test_folder?(path)
-          path.match(/\/?test/) && !path.match(/\..+$/) && File.directory?(path)
+          paths = test_paths.join("|")
+          path.match(%r{^\/?(#{paths})}) && !path.match(/\..+$/) && File.directory?(path)
         end
 
         def test_file?(path)
@@ -34,7 +43,7 @@ module Guard
         end
 
         def test_files
-          @test_files ||= Dir.glob('test/**/test_*.rb') + Dir.glob('test/**/*_test.rb')
+          @test_files ||= test_paths.collect { |path| Dir[File.join(path, "**", "test_*.rb")] + Dir[File.join(path, "**", "*_test.rb")] }.flatten
         end
 
         def clear_test_files_list

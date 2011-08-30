@@ -8,8 +8,12 @@ describe Guard::Test do
   describe "#initialize" do
     it "instantiates a new Runner" do
       Guard::Test::Runner.should_receive(:new).and_return(mock('runner', :bundler? => true))
-
       described_class.new
+    end
+
+    it "init test_paths for Inspector" do
+      Guard::Test::Inspector.should_receive(:test_paths=).with(["any/path/test"])
+      described_class.new([], :test_paths => ["any/path/test"])
     end
 
     context "with options given" do
@@ -91,6 +95,12 @@ describe Guard::Test do
   end
 
   describe "#run_on_change" do
+    it "runs test after run_all" do
+      subject.run_all
+      runner.should_receive(:run).with(["test/unit/error/error_test.rb"])
+      subject.run_on_change(["test/unit/error/error_test.rb"])
+    end
+
     context ":all_after_pass option not specified" do
       it "runs test with under given paths, recursively" do
         runner.should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"])
