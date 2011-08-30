@@ -11,11 +11,6 @@ describe Guard::Test do
       described_class.new
     end
 
-    it "init test_paths for Inspector" do
-      Guard::Test::Inspector.should_receive(:test_paths=).with(["any/path/test"])
-      described_class.new([], :test_paths => ["any/path/test"])
-    end
-
     context "with options given" do
       it "passes fiven options to Guard::Test::Runner#new" do
         Guard::Test::Runner.should_receive(:new).with(:runner => 'fastfail', :rvm => ['1.8.7', '1.9.2'], :bundler => false).and_return(mock('runner', :bundler? => true))
@@ -79,6 +74,11 @@ describe Guard::Test do
       runner.should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(true)
       subject.run_on_change(["test/unit"])
     end
+
+    it "init test_paths for Inspector" do
+      Guard::Test::Inspector.should_receive(:test_paths=).with(["test"])
+      subject.run_all
+    end
   end
 
   describe "#reload" do
@@ -99,6 +99,11 @@ describe Guard::Test do
       subject.run_all
       runner.should_receive(:run).with(["test/unit/error/error_test.rb"])
       subject.run_on_change(["test/unit/error/error_test.rb"])
+    end
+
+    it "init test_paths for Inspector" do
+      Guard::Test::Inspector.should_receive(:test_paths=).with(["test"])
+      subject.run_on_change([])
     end
 
     context ":all_after_pass option not specified" do
