@@ -6,7 +6,7 @@ If you have any questions about Guard or Guard::Test, please join us on our [Goo
 
 ## Features
 
-- Compatible with Test::Unit >= 2.2 and Minitest (Ruby 1.9).
+- Compatible with Test::Unit >= 2.2.
 - Tested on Ruby 1.8.7, 1.9.2, REE, Rubinius and JRuby.
 
 ## Install
