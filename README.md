@@ -80,6 +80,7 @@ Guard::Test allows you to choose between two different runners (Guard::Test's ru
 - `fastfail`: Display tests results as they happen and print failures/errors messages & backtraces immediately.
 
 By default, guard-test will only look for test files within test/ in your project root. You can add any paths using :test_paths option:
+
 ```ruby
 guard 'test', :test_paths => ['test/', 'vendor/plugins/recaptcha/test/', 'any/path/test/'] do
   # ...
