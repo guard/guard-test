@@ -1,3 +1,9 @@
+## Master
+
+### New features:
+
+- Pull request [#13]((https://github.com/guard/guard-test/pull/13)): New `test_paths` option to look for test files under other paths than `test/`. ([@Ask11][])
+
 ## 0.3.0 - June 14, 2011
 
 ### Improvements:
@@ -69,6 +75,7 @@
 
 - Pull request [#1](https://github.com/guard/guard-test/pull/1): Include errors count to determine the "flag" to display in notification. ([@gregorymostizky][])
 
+[@Ask11]: https://github.com/Ask11
 [@gregorymostizky]: https://github.com/gregorymostizky
 [@jgrau]: https://github.com/jgrau
 [@rymai]: https://github.com/rymai
