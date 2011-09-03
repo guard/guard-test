@@ -19,7 +19,7 @@ module Guard
           paths.dup.each do |path|
             if test_folder?(path)
               paths.delete(path)
-              paths += Dir.glob("#{path}/**/test_*.rb") + Dir.glob("#{path}/**/*_test.rb")
+              paths += check_test_files(path)
             else
               paths.delete(path) unless test_file?(path)
             end
@@ -43,11 +43,15 @@ module Guard
         end
 
         def test_files
-          @test_files ||= test_paths.collect { |path| Dir[File.join(path, "**", "test_*.rb")] + Dir[File.join(path, "**", "*_test.rb")] }.flatten
+          @test_files ||= test_paths.collect { |path| check_test_files(path) }.flatten
         end
 
         def clear_test_files_list
           @test_files = nil
+        end
+
+        def check_test_files(path)
+          Dir[File.join(path, '**', 'test_*.rb')] + Dir[File.join(path, '**', '*_test.rb')]
         end
       end
 

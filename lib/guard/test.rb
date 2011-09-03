@@ -16,7 +16,7 @@ module Guard
         :all_on_start   => true,
         :all_after_pass => true,
         :keep_failed    => true,
-        :test_paths     => ['test']
+        :test_paths     => ['test/']
       }.update(options)
       @last_failed  = false
       @failed_paths = []
