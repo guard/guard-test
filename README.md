@@ -79,6 +79,13 @@ Guard::Test allows you to choose between two different runners (Guard::Test's ru
              and print failures/errors messages & backtraces when all the tests are finished. Obviously, this is the guard-test default.
 - `fastfail`: Display tests results as they happen and print failures/errors messages & backtraces immediately.
 
+By default, guard-test will only look for test files within test/ in your project root. You can add any paths using :test_paths option:
+```ruby
+guard 'test', :test_paths => ['test/', 'vendor/plugins/recaptcha/test/', 'any/path/test/'] do
+  # ...
+end
+```
+
 Available options:
 
 ```ruby
@@ -89,6 +96,7 @@ Available options:
 :all_on_start   => false              # don't run all the tests at startup, default: true
 :all_after_pass => false              # don't run all tests after changed tests pass, default: true
 :keep_failed    => false              # keep failed tests until them pass, default: true
+:test_paths     => ['test/']          # specify an array of paths that contain test files
 ```
 
 ## Development
