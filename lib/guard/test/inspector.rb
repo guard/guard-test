@@ -4,6 +4,14 @@ module Guard
     module Inspector
 
       class << self
+        def test_paths
+          @test_paths || []
+        end
+
+        def test_paths=(path_array)
+          @test_paths = Array(path_array)
+        end
+
         def clean(paths)
           paths.uniq!
           paths.compact!
@@ -11,7 +19,7 @@ module Guard
           paths.dup.each do |path|
             if test_folder?(path)
               paths.delete(path)
-              paths += Dir.glob("#{path}/**/test_*.rb") + Dir.glob("#{path}/**/*_test.rb")
+              paths += check_test_files(path)
             else
               paths.delete(path) unless test_file?(path)
             end
@@ -26,7 +34,8 @@ module Guard
       private
 
         def test_folder?(path)
-          path.match(/^\/?test/) && !path.match(/\..+$/) && File.directory?(path)
+          paths = test_paths.join("|")
+          path.match(%r{^\/?(#{paths})}) && !path.match(/\..+$/) && File.directory?(path)
         end
 
         def test_file?(path)
@@ -34,11 +43,15 @@ module Guard
         end
 
         def test_files
-          @test_files ||= Dir.glob('test/**/test_*.rb') + Dir.glob('test/**/*_test.rb')
+          @test_files ||= test_paths.collect { |path| check_test_files(path) }.flatten
         end
 
         def clear_test_files_list
           @test_files = nil
+        end
+
+        def check_test_files(path)
+          Dir[File.join(path, '**', 'test_*.rb')] + Dir[File.join(path, '**', '*_test.rb')]
         end
       end
 
