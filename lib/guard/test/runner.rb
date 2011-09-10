@@ -25,21 +25,15 @@ module Guard
       end
 
       def rvm?
-        if @rvm.nil?
-          @rvm = @options[:rvm] && @options[:rvm].respond_to?(:join)
-        end
-        @rvm
+        @rvm ||= @options[:rvm] && @options[:rvm].respond_to?(:join)
       end
 
       def turn?
-        if @turn.nil?
-          @turn = begin
-            require 'turn'
-          rescue LoadError => ex
-            false
-          end
+        @turn ||= begin
+          require 'turn'
+        rescue LoadError
+          false
         end
-        @turn
       end
 
     private
