@@ -20,16 +20,16 @@ namespace :spec do
     travis_options['rvm'].each do |version|
       system <<-BASH
         bash -c 'source ~/.rvm/scripts/rvm;
-        rvm #{version};
-        ruby_version_string_size=`ruby -v | wc -m`
-        echo;
-        for ((c=1; c<$ruby_version_string_size; c++)); do echo -n "="; done
-        echo;
-        echo "`ruby -v`";
-        for ((c=1; c<$ruby_version_string_size; c++)); do echo -n "="; done
-        echo;
-        bundle install;
-        bundle exec rake --trace 2>&1;'
+                 rvm #{version};
+                 ruby_version_string_size=`ruby -v | wc -m`
+                 echo;
+                 for ((c=1; c<$ruby_version_string_size; c++)); do echo -n "="; done
+                 echo;
+                 echo "`ruby -v`";
+                 for ((c=1; c<$ruby_version_string_size; c++)); do echo -n "="; done
+                 echo;
+                 bundle install;
+                 bundle exec rake spec -f doc--trace 2>&1;'
       BASH
     end
   end
