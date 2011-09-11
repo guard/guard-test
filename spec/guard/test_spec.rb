@@ -76,7 +76,7 @@ describe Guard::Test do
     end
 
     it "init test_paths for Inspector" do
-      Guard::Test::Inspector.should_receive(:test_paths=).with(["test/"])
+      Guard::Test::Inspector.should_receive(:test_paths=).with(["test"])
       subject.run_all
     end
   end
@@ -102,7 +102,7 @@ describe Guard::Test do
     end
 
     it "init test_paths for Inspector" do
-      Guard::Test::Inspector.should_receive(:test_paths=).with(["test/"])
+      Guard::Test::Inspector.should_receive(:test_paths=).with(["test"])
       subject.run_on_change([])
     end
 
