@@ -14,11 +14,11 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = '>= 1.3.6'
   s.rubyforge_project         = 'guard-test'
 
-  s.add_dependency 'guard',     '>= 0.2.2'
+  s.add_dependency 'guard',     '>= 0.4.0'
   s.add_dependency 'test-unit', '~> 2.2'
 
   s.add_development_dependency 'bundler', '~> 1.0'
-  s.add_development_dependency 'rspec',   '~> 2.5'
+  s.add_development_dependency 'rspec',   '~> 2.6'
 
   s.files        = Dir.glob('{lib}/**/*') + %w[CHANGELOG.md LICENSE README.md]
   s.require_path = 'lib'
