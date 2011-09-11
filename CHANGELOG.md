@@ -1,4 +1,4 @@
-## Master
+## 0.3.1 - September 11, 2011
 
 ### New features:
 
