@@ -26,21 +26,15 @@ module Guard
       end
 
       def rvm?
-        if @rvm.nil?
-          @rvm = @options[:rvm] && @options[:rvm].respond_to?(:join)
-        end
-        @rvm
+        @rvm ||= @options[:rvm] && @options[:rvm].respond_to?(:join)
       end
 
       def turn?
-        if @turn.nil?
-          @turn = begin
-            require 'turn'
-          rescue LoadError
-            false
-          end
+        @turn ||= begin
+          require 'turn'
+        rescue LoadError
+          false
         end
-        @turn
       end
 
     private
@@ -60,7 +54,7 @@ module Guard
         cmd_parts << "-Itest"
         cmd_parts << "-r bundler/setup" if @options[:bundler] && !@options[:drb] && !turn?
         
-        if turn? && !@options[:drb]
+        if !turn? && !@options[:drb]
           cmd_parts << "-r #{File.expand_path("../runners/#{@runner_name}_guard_test_runner", __FILE__)}"
           cmd_parts << "-e \"%w[#{paths.join(' ')}].each { |p| load p }\""
         end

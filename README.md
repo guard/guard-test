@@ -6,7 +6,7 @@ If you have any questions about Guard or Guard::Test, please join us on our [Goo
 
 ## Features
 
-- Compatible with Test::Unit >= 2.2 and Minitest (Ruby 1.9).
+- Compatible with Test::Unit >= 2.2.
 - Tested on Ruby 1.8.7, 1.9.2, REE, Rubinius and JRuby.
 
 ## Install
@@ -79,6 +79,14 @@ Guard::Test allows you to choose between two different runners (Guard::Test's ru
              and print failures/errors messages & backtraces when all the tests are finished. Obviously, this is the guard-test default.
 - `fastfail`: Display tests results as they happen and print failures/errors messages & backtraces immediately.
 
+By default, guard-test will only look for test files within `test/` in your project root. You can add any paths using the `:test_paths` option:
+
+```ruby
+guard 'test', :test_paths => ['test', 'vendor/plugins/recaptcha/test', 'any/path/test'] do
+  # ...
+end
+```
+
 Available options:
 
 ```ruby
@@ -89,6 +97,7 @@ Available options:
 :all_on_start   => false              # don't run all the tests at startup, default: true
 :all_after_pass => false              # don't run all tests after changed tests pass, default: true
 :keep_failed    => false              # keep failed tests until them pass, default: true
+:test_paths     => ['spec']           # specify an array of paths that contain test files
 ```
 
 ## Development
@@ -96,7 +105,13 @@ Available options:
 - Source hosted on GitHub: https://github.com/guard/guard-test
 - Report issues and feature requests to GitHub Issues: https://github.com/guard/guard-test/issues
 
-Pull requests are very welcome! Make sure your patches are well tested. Please create a topic branch for every separate change you make. Please do not change the version in your pull-request.
+Pull requests are very welcome! Please try to follow these simple "rules", though:
+
+- Please create a topic branch for every separate change you make;
+- Make sure your patches are well tested;
+- Update the README (if applicable);
+- Update the CHANGELOG (maybe not for a typo but don't hesitate!);
+- Please do not change the version number.
 
 For questions please join us on our [Google group](http://groups.google.com/group/guard-dev) or on `#guard` (irc.freenode.net).
 
