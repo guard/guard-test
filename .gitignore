@@ -3,4 +3,5 @@ pkg/*
 .bundle
 .DS_Store
 .rvmrc
+.rbx/*
 Gemfile.lock
