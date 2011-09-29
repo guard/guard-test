@@ -3,27 +3,34 @@ require 'spec_helper'
 
 describe Guard::Test::Runner do
 
-  describe ".runners" do
-    it "returns [default fastfail] base on files present in the runners folder" do
-      described_class.runners.should == %w[default fastfail]
-    end
-  end
-
   describe "#initialize" do
     describe "sets the @runner instance variable from options" do
-      it "uses the default runner without :runner option given" do
+      it "sets default options" do
         runner = described_class.new
-        runner.instance_variable_get(:@runner_name).should == 'default'
+        runner.instance_variable_get(:@options)[:bundler].should be_true
+        runner.instance_variable_get(:@options)[:rvm].should be_empty
+        runner.instance_variable_get(:@options)[:drb].should be_false
+        runner.instance_variable_get(:@options)[:cli].should eql ""
       end
 
-      it "uses the given :runner option if available" do
-        runner = described_class.new(:runner => 'fastfail')
-        runner.instance_variable_get(:@runner_name).should == 'fastfail'
+      it "sets option :bundler" do
+        runner = described_class.new(:bundler => true)
+        runner.instance_variable_get(:@options)[:bundler].should be_true
       end
 
-      it "uses the default runner if the given :runner option is not an available runner" do
-        runner = described_class.new(:runner => 'unknown')
-        runner.instance_variable_get(:@runner_name).should == 'default'
+      it "sets option :rvm" do
+        runner = described_class.new(:rvm => '1.9.2')
+        runner.instance_variable_get(:@options)[:rvm].should eql '1.9.2'
+      end
+
+      it "sets option :drb" do
+        runner = described_class.new(:drb => true)
+        runner.instance_variable_get(:@options)[:drb].should be_true
+      end
+
+      it "sets option :cli" do
+        runner = described_class.new(:cli => '--show-detail-immediately')
+        runner.instance_variable_get(:@options)[:cli].should eql '--show-detail-immediately'
       end
     end
   end
@@ -37,15 +44,14 @@ describe Guard::Test::Runner do
       context "when no :bundler option was given on initialize" do
         subject do
           runner = described_class.new
-          runner.stub(:turn?) { false }
           runner
         end
 
         it "runs without bundler" do
           subject.should_receive(:system).with(
-            "ruby -Itest -r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "ruby -Itest -r #{@lib_path.join('guard/test/guard_test_runner')} " \
             "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
-            "\"./test/succeeding_test.rb\" --runner=guard-default"
+            "\"./test/succeeding_test.rb\" --use-color --runner=guard"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -55,16 +61,15 @@ describe Guard::Test::Runner do
       context "when the :bundler option set to true on initialize" do
         subject do
           runner = described_class.new(:bundler => true)
-          runner.stub(:turn?) { false }
           runner
         end
 
         it "runs with bundler" do
           subject.should_receive(:system).with(
             "bundle exec " \
-            "ruby -Itest -r bundler/setup -r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "ruby -Itest -r bundler/setup -r #{@lib_path.join('guard/test/guard_test_runner')} " \
             "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
-            "\"./test/succeeding_test.rb\" --runner=guard-default"
+            "\"./test/succeeding_test.rb\" --use-color --runner=guard"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -76,7 +81,6 @@ describe Guard::Test::Runner do
       context "when no :bundler option was given on initialize" do
         subject do
           runner = described_class.new
-          runner.stub(:turn?) { false }
           runner
         end
 
@@ -84,9 +88,9 @@ describe Guard::Test::Runner do
           subject.should_receive(:system).with(
             "bundle exec " \
             "ruby -Itest -r bundler/setup " \
-            "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-r #{@lib_path.join('guard/test/guard_test_runner')} " \
             "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
-            "\"./test/succeeding_test.rb\" --runner=guard-default"
+            "\"./test/succeeding_test.rb\" --use-color --runner=guard"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -96,16 +100,15 @@ describe Guard::Test::Runner do
       context "when the :bundler option set to false on initialize" do
         subject do
           runner = described_class.new(:bundler => false)
-          runner.stub(:turn?) { false }
           runner
         end
 
         it "runs without bundler" do
           subject.should_receive(:system).with(
             "ruby -Itest " \
-            "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-r #{@lib_path.join('guard/test/guard_test_runner')} " \
             "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
-            "\"./test/succeeding_test.rb\" --runner=guard-default"
+            "\"./test/succeeding_test.rb\" --use-color --runner=guard"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -115,13 +118,12 @@ describe Guard::Test::Runner do
       context "when no :runner option was given on initialize" do
         subject do
           runner = described_class.new
-          runner.stub(:turn?) { false }
           runner
         end
 
         it "displays message with the tests that will be fired" do
           Guard::UI.should_receive(:info).with(
-            "Running (default runner): test/unit/error/error_test.rb test/unit/failing_test.rb", :reset => true
+            "Running: test/unit/error/error_test.rb test/unit/failing_test.rb", :reset => true
           )
 
           dev_null { subject.run(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]) }
@@ -131,55 +133,29 @@ describe Guard::Test::Runner do
           subject.should_receive(:system).with(
             "bundle exec " \
             "ruby -Itest -r bundler/setup " \
-            "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+            "-r #{@lib_path.join('guard/test/guard_test_runner')} " \
             "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
-            "\"./test/succeeding_test.rb\" --runner=guard-default"
+            "\"./test/succeeding_test.rb\" --use-color --runner=guard"
           )
 
           subject.run(["test/succeeding_test.rb"])
         end
       end
 
-      %w[default fastfail].each do |runner_name|
-        context "when the :runner is '#{runner_name}'" do
-          subject do
-            runner = described_class.new(:runner => runner_name)
-            runner.stub(:turn?) { false }
-            runner
-          end
-
-          it "displays a message mentionning the runner and the test files that will be run" do
-            Guard::UI.should_receive(:info).with(
-              "Running (#{runner_name} runner): test/unit/error/error_test.rb test/unit/failing_test.rb", :reset => true
-            )
-
-            dev_null { subject.run(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]) }
-          end
-
-          it "requires #{runner_name}_guard_test_runner and runs with the --runner=guard-#{runner_name} option in the command line" do
-            subject.should_receive(:system).with(
-              "bundle exec " \
-              "ruby -Itest -r bundler/setup "\
-              "-r #{@lib_path.join("guard/test/runners/#{runner_name}_guard_test_runner")} " \
-              "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
-              "\"./test/succeeding_test.rb\" --runner=guard-#{runner_name}"
-            )
-
-            subject.run(["test/succeeding_test.rb"])
-          end
-        end
-      end
-
       context "when the :rvm option is given" do
         subject do
           runner = described_class.new(:rvm => ['1.8.7', '1.9.2'])
-          runner.stub(:turn?) { true }
           runner
         end
 
         it "runs with rvm exec" do
           subject.should_receive(:system).with(
-            "rvm 1.8.7,1.9.2 exec turn -Itest \"./test/succeeding_test.rb\""
+            "rvm 1.8.7,1.9.2 exec " \
+            "bundle exec " \
+            "ruby -Itest -r bundler/setup " \
+            "-r #{@lib_path.join('guard/test/guard_test_runner')} " \
+            "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
+            "\"./test/succeeding_test.rb\" --use-color --runner=guard"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -189,13 +165,16 @@ describe Guard::Test::Runner do
       context "when the :cli option is given" do
         subject do
           runner = described_class.new(:cli => '--pretty')
-          runner.stub(:turn?) { true }
           runner
         end
 
         it "adds the cli option at the end of the command" do
           subject.should_receive(:system).with(
-            "turn -Itest \"./test/succeeding_test.rb\" --pretty"
+          "bundle exec " \
+          "ruby -Itest -r bundler/setup " \
+          "-r #{@lib_path.join('guard/test/guard_test_runner')} " \
+          "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
+          "\"./test/succeeding_test.rb\" --use-color --runner=guard --pretty"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -213,32 +192,15 @@ describe Guard::Test::Runner do
 
       it "loads and executes all the tests files" do
         runner = described_class.new
-        runner.stub(:turn?) { false }
         runner.should_receive(:system).with(
           "bundle exec " \
           "ruby -Itest -r bundler/setup " \
-          "-r #{@lib_path.join('guard/test/runners/default_guard_test_runner')} " \
+          "-r #{@lib_path.join('guard/test/guard_test_runner')} " \
           "-e \"%w[test/error/error_test.rb test/unit/failing_test.rb].each { |p| load p }\" " \
-          "\"./test/error/error_test.rb\" \"./test/unit/failing_test.rb\" --runner=guard-default"
+          "\"./test/error/error_test.rb\" \"./test/unit/failing_test.rb\" --use-color --runner=guard"
         )
 
         runner.run(["test/error/error_test.rb", "test/unit/failing_test.rb"])
-      end
-
-      context "with turn present" do
-        subject do
-          runner = described_class.new
-          runner.stub(:turn?) { true }
-          runner
-        end
-
-        it "use the turn executable instead of ruby" do
-          subject.should_receive(:system).with(
-            "turn -Itest \"./test/succeeding_test.rb\""
-          )
-
-          subject.run(["test/succeeding_test.rb"])
-        end
       end
 
     end
