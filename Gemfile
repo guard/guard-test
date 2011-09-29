@@ -3,15 +3,9 @@ source "http://rubygems.org"
 # Specify your gem's dependencies in guard-test.gemspec
 gemspec
 
+gem 'rake'
 gem 'guard',       :git => "git://github.com/guard/guard.git"
 gem 'guard-rspec', :git => "git://github.com/guard/guard-rspec.git"
-
-# rake 0.9 is not valid under ruby 1.8
-if RUBY_VERSION >= '1.9'
-  gem 'rake'
-else
-  gem 'rake', '0.8.7'
-end
 
 require 'rbconfig'
 
