@@ -16,7 +16,7 @@ namespace :spec do
       puts "Travis config file '#{travis_config_file}' could not be found: #{ex.message}"
       return
     end
-    
+
     travis_options['rvm'].each do |version|
       system <<-BASH
         bash -c 'source ~/.rvm/scripts/rvm;
