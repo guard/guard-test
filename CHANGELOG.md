@@ -1,16 +1,26 @@
+## 0.4.0 - September 29, 2011 - ([@rymai][])
+
+### Regression:
+
+- Removed support of [turn](https://github.com/guard/guard-spork) gem since "Turn is no longer compatible with TestUnit 2.0+. TestUnit and MiniTest are deverging and after some consideration it was decided that Turn's goal is to support Ruby's native test framework, whatever it may be." quoted from Turn's [release.txt](https://github.com/TwP/turn/blob/master/Release.txt).
+
+### New feature:
+
+- New `:drb` option enabling the use of [`spork-testunit`](https://github.com/timcharper/spork-testunit) gem (be sure to use [guard-spork](https://github.com/guard/guard-spork) as well).
+
 ## 0.3.1 - September 11, 2011
 
-### New features:
+### New feature:
 
 - Pull request [#13](https://github.com/guard/guard-test/pull/13): New `test_paths` option to look for test files under other paths than `test`. ([@Ask11][])
 
-### Improvements:
+### Improvement:
 
 - Pull request [#15](https://github.com/guard/guard-test/pull/15): Simplify some checks. ([@dasch][])
 
 ## 0.3.0 - June 14, 2011
 
-### Improvements:
+### Improvement:
 
 - Internal cleaning. ([@rymai][])
 
@@ -22,7 +32,7 @@
 - Fixed the `fastfail` runner that was displaying a green dot even for a failing test. ([@rymai][])
 - Removed the `:notification` option. Use the new Guard method instead. ([@rymai][])
 
-### New features:
+### New feature:
 
 - Turn seems to work fine now... ([@rymai][])
 
@@ -32,13 +42,13 @@
 
 ## 0.3.0.rc4 - June 3, 2011 - ([@rymai][])
 
-### Bugs fixes:
+### Bugs fix:
 
 - Add a require that was making the guard be fired by Guard! :'(
 
 ## 0.3.0.rc3 - June 3, 2011 - ([@rymai][])
 
-### Bugs fixes:
+### Bugs fix:
 
 - Actually make the tests run.
 
@@ -56,26 +66,24 @@
 - New `:all_after_pass` option (true by default) to run all tests after changed tests pass.
 - New `:keep_failed` option (true by default) to keep failed tests until them pass.
 
-### Improvement:
+### Improvements:
 
 - Added compatibility with 1.8.6, 1.8.7, 1.9.2, REE, Rubinius and JRuby.
 - Internal changes inspired by [guard-minitest](https://github.com/guard/guard-minitest).
 
 ## 0.1.6 - January 24, 2011
 
-### Bugs fixes:
+### Bugs fix:
 
 - Issue [#2](https://github.com/guard/guard-test/issues/2): Fixed a bug introduced in 0.1.5 where test/ was not added to the $LOAD_PATH. (reported by [@jgrau][], fixed by [@rymai][])
 
-## 0.1.5 - January 21, 2011
-
-### Changes:
+## 0.1.5 - January 21, 2011 - ([@rymai][])
 
 - Updated gem dependencies
 
 ## 0.1.4 - December 15, 2010
 
-### Bugs fixes:
+### Bugs fix:
 
 - Pull request [#1](https://github.com/guard/guard-test/pull/1): Include errors count to determine the "flag" to display in notification. ([@gregorymostizky][])
 

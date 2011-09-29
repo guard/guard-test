@@ -1,4 +1,4 @@
-# Guard::Test [![Build Status](http://travis-ci.org/guard/guard-test.png)](http://travis-ci.org/guard/guard-test)
+# Guard::Test [![Build Status](https://secure.travis-ci.org/guard/guard-test.png)](http://travis-ci.org/guard/guard-test)
 
 Test::Unit guard allows to automatically & intelligently launch tests when files are modified or created.
 
@@ -39,65 +39,43 @@ $ guard init test
 
 ## Usage
 
-Please read [Guard usage doc](https://github.com/guard/guard#readme).
+Please read the [Guard usage doc](https://github.com/guard/guard#readme).
 
 ## Guardfile
 
 Guard::Test can be adapted to any kind of projects.
 
-### Standard Ruby project
-
-```ruby
-guard 'test' do
-  watch(%r{^lib/(.+)\.rb$})     { |m| "test/#{m[1]}_test.rb" }
-  watch(%r{^test/.+_test\.rb$})
-  watch('test/test_helper.rb')  { "test" }
-end
-```
-
-### Ruby On Rails project
-
-```ruby
-guard 'test' do
-  watch(%r{^app/models/(.+)\.rb$})                   { |m| "test/unit/#{m[1]}_test.rb" }
-  watch(%r{^app/controllers/(.+)\.rb$})              { |m| "test/functional/#{m[1]}_test.rb" }
-  watch(%r{^app/views/.+\.rb$})                      { "test/integration" }
-  watch(%r{^lib/(.+)\.rb$})                          { |m| "test/#{m[1]}_test.rb" }
-  watch(%r{^test/.+_test.rb$})
-  watch('app/controllers/application_controller.rb') { ["test/functional", "test/integration"] }
-  watch('test/test_helper.rb')                       { "test" }
-end
-```
+See the [template Guardfile](https://github.com/guard/guard-test/blob/master/lib/guard/test/templates/Guardfile) for some examples.
 
 Please read the [Guard documentation](https://github.com/guard/guard#readme) for more info about the Guardfile DSL.
 
 ## Options
 
-Guard::Test allows you to choose between two different runners (Guard::Test's runners are inherited from Test::Unit's console runner):
+**Deprecation notice:** The `:runner` option is deprecated. If you had set it to "fastfail", it is now the default in test-unit 2, but if you want the opposite, you can pass the `:cli => '--no-show-detail-immediately'` option instead.
 
-- `default`: Display tests results as they happen, with different chars (green `.` for pass, red `F` for fail, purple `E` for error) 
-             and print failures/errors messages & backtraces when all the tests are finished. Obviously, this is the guard-test default.
-- `fastfail`: Display tests results as they happen and print failures/errors messages & backtraces immediately.
+### Available options
+
+* `bundler` (`Boolean`)          - Whether or not to use `bundle exec` to run tests. Default to `true` if a you have a Gemfile in the current directory.
+* `rvm` (`Array<String>`)        - Directly run your specs against multiple Rubies. Default to `nil`.
+* `drb` (`Boolean`)              - Run your tests with [`spork-testunit`](https://github.com/timcharper/spork-testunit). Default to `false`.
+* `cli` (`String`)               - Pass arbitrary CLI arguments to the command that runs the tests. Default to `nil`.
+* `all_on_start` (`Boolean`)     - Run all tests on Guard startup. Default to `true`.
+* `all_after_pass` (`Boolean`)   - Run all tests after the current run tests pass. Default to `true`.
+* `keep_failed` (`Boolean`)      - Re-run failing tests until they pass. Default to `true`.
+* `test_paths` (`Array<String>`) - Array of paths that where are located the test files. Default to `['test']`.
+
+#### `drb` option
+
+When true, notifications are disabled. This might be fixed in future releases.
+
+#### `test_paths` option
 
 By default, guard-test will only look for test files within `test/` in your project root. You can add any paths using the `:test_paths` option:
 
 ```ruby
-guard 'test', :test_paths => ['test', 'vendor/plugins/recaptcha/test', 'any/path/test'] do
+guard :test, :test_paths => ['test', 'vendor/plugins/recaptcha/test', 'any/path/test'] do
   # ...
 end
-```
-
-Available options:
-
-```ruby
-:rvm            => ['1.8.7', '1.9.2'] # directly run your specs on multiple Rubies, default: nil
-:bundler        => false              # don't use "bundle exec" to run the test command, default: true if a you have a Gemfile
-:runner         => 'fastfail'         # default: 'default'
-:cli            => "-v"               # pass arbitrary CLI arguments to the Ruby command that runs the tests, default: nil
-:all_on_start   => false              # don't run all the tests at startup, default: true
-:all_after_pass => false              # don't run all tests after changed tests pass, default: true
-:keep_failed    => false              # keep failed tests until them pass, default: true
-:test_paths     => ['spec']           # specify an array of paths that contain test files
 ```
 
 ## Development
@@ -109,8 +87,8 @@ Pull requests are very welcome! Please try to follow these simple "rules", thoug
 
 - Please create a topic branch for every separate change you make;
 - Make sure your patches are well tested;
-- Update the README (if applicable);
-- Update the CHANGELOG (maybe not for a typo but don't hesitate!);
+- Update the [README](https://github.com/guard/guard-test/blob/master/README.md) (if applicable);
+- Update the [CHANGELOG](https://github.com/guard/guard-test/blob/master/CHANGELOG.md) and add yourself to the list of contributors (see at the bottom of the CHANGELOG for examples);
 - Please do not change the version number.
 
 For questions please join us on our [Google group](http://groups.google.com/group/guard-dev) or on `#guard` (irc.freenode.net).
