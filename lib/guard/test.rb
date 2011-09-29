@@ -10,7 +10,7 @@ module Guard
     autoload :Runner,    'guard/test/runner'
     autoload :Inspector, 'guard/test/inspector'
 
-    def initialize(watchers=[], options={})
+    def initialize(watchers = [], options = {})
       super
       @options = {
         :all_on_start   => true,

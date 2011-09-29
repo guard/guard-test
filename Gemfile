@@ -4,15 +4,11 @@ source "http://rubygems.org"
 gemspec
 
 gem 'guard',       :git => "git://github.com/guard/guard.git"
-gem 'guard-spork', :git => "git://github.com/guard/guard-spork.git"
 gem 'guard-rspec', :git => "git://github.com/guard/guard-rspec.git"
-gem 'spork-testunit'
 
 # rake 0.9 is not valid under ruby 1.8
-# turn with ruby < 1.9 seems to inherit from the old-school test-unit framework
 if RUBY_VERSION >= '1.9'
   gem 'rake'
-  # gem 'turn'
 else
   gem 'rake', '0.8.7'
 end
@@ -23,8 +19,7 @@ platforms :ruby do
   if Config::CONFIG['target_os'] =~ /darwin/i
     gem 'rb-fsevent'
     gem 'growl'
-  end
-  if Config::CONFIG['target_os'] =~ /linux/i
+  elsif Config::CONFIG['target_os'] =~ /linux/i
     gem 'rb-inotify', '>= 0.5.1'
     gem 'libnotify',  '~> 0.1.3'
   end
@@ -33,10 +28,8 @@ end
 platforms :jruby do
   if Config::CONFIG['target_os'] =~ /darwin/i
     gem 'growl'
-  end
-  if Config::CONFIG['target_os'] =~ /linux/i
+  elsif Config::CONFIG['target_os'] =~ /linux/i
     gem 'rb-inotify', '>= 0.5.1'
     gem 'libnotify',  '~> 0.1.3'
   end
 end
-

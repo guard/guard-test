@@ -7,15 +7,15 @@ describe Guard::Test do
 
   describe "#initialize" do
     it "instantiates a new Runner" do
-      Guard::Test::Runner.should_receive(:new).and_return(mock('runner', :bundler? => true))
+      Guard::Test::Runner.should_receive(:new)
       described_class.new
     end
 
     context "with options given" do
       it "passes fiven options to Guard::Test::Runner#new" do
-        Guard::Test::Runner.should_receive(:new).with(:runner => 'fastfail', :rvm => ['1.8.7', '1.9.2'], :bundler => false).and_return(mock('runner', :bundler? => true))
+        Guard::Test::Runner.should_receive(:new).with(:rvm => ['1.8.7', '1.9.2'], :bundler => false).and_return(mock('runner', :bundler? => true))
 
-        described_class.new([], :runner => 'fastfail', :rvm => ['1.8.7', '1.9.2'], :bundler => false)
+        described_class.new([], :rvm => ['1.8.7', '1.9.2'], :bundler => false)
       end
     end
   end
@@ -76,6 +76,7 @@ describe Guard::Test do
     end
 
     it "init test_paths for Inspector" do
+      runner.should_receive(:run)
       Guard::Test::Inspector.should_receive(:test_paths=).with(["test"])
       subject.run_all
     end
@@ -96,6 +97,7 @@ describe Guard::Test do
 
   describe "#run_on_change" do
     it "runs test after run_all" do
+      runner.should_receive(:run)
       subject.run_all
       runner.should_receive(:run).with(["test/unit/error/error_test.rb"])
       subject.run_on_change(["test/unit/error/error_test.rb"])
