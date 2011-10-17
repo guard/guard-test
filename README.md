@@ -1,4 +1,4 @@
-# Guard::Test [![Build Status](https://secure.travis-ci.org/guard/guard-test.png)](http://travis-ci.org/guard/guard-test)
+# Guard::Test [![Build Status](https://secure.travis-ci.org/guard/guard-test.png?branch=master)](http://travis-ci.org/guard/guard-test)
 
 Test::Unit guard allows to automatically & intelligently launch tests when files are modified or created.
 
