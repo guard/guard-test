@@ -33,7 +33,7 @@ module Guard
 
       def finished(elapsed_time)
         super
-        Guard::TestNotifier.notify(@result, elapsed_time)
+        ::Guard::TestNotifier.notify(@result, elapsed_time)
         nl
       end
 
