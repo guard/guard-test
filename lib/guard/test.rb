@@ -1,5 +1,4 @@
 # encoding: utf-8
-require 'guard'
 require 'guard/guard'
 require 'guard/test/version'
 require 'test/unit/version'
