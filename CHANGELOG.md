@@ -1,3 +1,10 @@
+## 0.4.1 - November 3, 2011 - ([@rymai][])
+
+### Bugs fixes:
+
+- [#18](https://github.com/guard/guard-test/issues/18): Fixed a conflict with test_benchmark that was preventing guard-test from running.
+- [#11](https://github.com/guard/guard-test/issues/11): Fixed a "No such file to load -- guard/notifier" when running guard without bundler.
+
 ## 0.4.0 - September 29, 2011 - ([@rymai][])
 
 ### Regression:
@@ -12,11 +19,11 @@
 
 ### New feature:
 
-- Pull request [#13](https://github.com/guard/guard-test/pull/13): New `test_paths` option to look for test files under other paths than `test`. ([@Ask11][])
+- [#13](https://github.com/guard/guard-test/issues/13): New `test_paths` option to look for test files under other paths than `test`. ([@Ask11][])
 
 ### Improvement:
 
-- Pull request [#15](https://github.com/guard/guard-test/pull/15): Simplify some checks. ([@dasch][])
+- [#15](https://github.com/guard/guard-test/issues/15): Simplify some checks. ([@dasch][])
 
 ## 0.3.0 - June 14, 2011
 
@@ -75,7 +82,7 @@
 
 ### Bugs fix:
 
-- Issue [#2](https://github.com/guard/guard-test/issues/2): Fixed a bug introduced in 0.1.5 where test/ was not added to the $LOAD_PATH. (reported by [@jgrau][], fixed by [@rymai][])
+- [#2](https://github.com/guard/guard-test/issues/2): Fixed a bug introduced in 0.1.5 where test/ was not added to the $LOAD_PATH. (reported by [@jgrau][], fixed by [@rymai][])
 
 ## 0.1.5 - January 21, 2011 - ([@rymai][])
 
@@ -85,7 +92,7 @@
 
 ### Bugs fix:
 
-- Pull request [#1](https://github.com/guard/guard-test/pull/1): Include errors count to determine the "flag" to display in notification. ([@gregorymostizky][])
+- [#1](https://github.com/guard/guard-test/pull/1): Include errors count to determine the "flag" to display in notification. ([@gregorymostizky][])
 
 [@Ask11]: https://github.com/Ask11
 [@dasch]: https://github.com/dasch
