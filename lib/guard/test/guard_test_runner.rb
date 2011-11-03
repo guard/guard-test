@@ -1,8 +1,8 @@
 # encoding: utf-8
-$:.push File.expand_path('../../../', File.dirname(__FILE__))
+$:.push File.expand_path('../', __FILE__)
 
 require 'test/unit/ui/console/testrunner'
-require 'guard/test/notifier'
+require 'notifier'
 
 # Thanks to Adam Sanderson for the really good starting point:
 # http://endofline.wordpress.com/2008/02/11/a-custom-testrunner-to-scratch-an-itch/
