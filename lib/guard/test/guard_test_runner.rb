@@ -26,11 +26,6 @@ module Guard
         @mediator = ::Test::Unit::UI::TestRunnerMediator.new(@suite)
       end
 
-      def started(result)
-        @result = result
-        nl
-      end
-
       def finished(elapsed_time)
         super
         ::Guard::TestNotifier.notify(@result, elapsed_time)
