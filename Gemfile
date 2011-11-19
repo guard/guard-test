@@ -10,20 +10,20 @@ gem 'guard-rspec', :git => "git://github.com/guard/guard-rspec.git"
 require 'rbconfig'
 
 platforms :ruby do
-  if Config::CONFIG['target_os'] =~ /darwin/i
+  if RbConfig::CONFIG['target_os'] =~ /darwin/i
     gem 'rb-fsevent'
-    gem 'growl'
-  elsif Config::CONFIG['target_os'] =~ /linux/i
-    gem 'rb-inotify', '>= 0.5.1'
-    gem 'libnotify',  '~> 0.1.3'
+    gem 'ruby_gntp'
+  elsif RbConfig::CONFIG['target_os'] =~ /linux/i
+    gem 'rb-inotify'
+    gem 'libnotify'
   end
 end
 
 platforms :jruby do
-  if Config::CONFIG['target_os'] =~ /darwin/i
-    gem 'growl'
-  elsif Config::CONFIG['target_os'] =~ /linux/i
-    gem 'rb-inotify', '>= 0.5.1'
-    gem 'libnotify',  '~> 0.1.3'
+  if RbConfig::CONFIG['target_os'] =~ /darwin/i
+    gem 'ruby_gntp'
+  elsif RbConfig::CONFIG['target_os'] =~ /linux/i
+    gem 'rb-inotify'
+    gem 'libnotify'
   end
 end
