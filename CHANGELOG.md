@@ -1,3 +1,9 @@
+## 0.4.2 - November 19, 2011 - ([@rymai][])
+
+### Bug fix:
+
+- [#19](https://github.com/guard/guard-test/issues/19): Fixed "superclass mismatch for class Test (TypeError)" thanks to [@gertas][].
+
 ## 0.4.1 - November 3, 2011 - ([@rymai][])
 
 ### Bugs fixes:
@@ -96,6 +102,7 @@
 
 [@Ask11]: https://github.com/Ask11
 [@dasch]: https://github.com/dasch
+[@gertas]: https://github.com/gertas
 [@gregorymostizky]: https://github.com/gregorymostizky
 [@jgrau]: https://github.com/jgrau
 [@rymai]: https://github.com/rymai
