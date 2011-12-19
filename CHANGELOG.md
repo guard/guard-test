@@ -1,3 +1,9 @@
+## 0.4.3 - December 19, 2011 - ([@rymai][])
+
+### Bug fix:
+
+- [#21](https://github.com/guard/guard-test/issues/21): Guard::Test::Notifier.notify - did not use :failed image if test results included errors but NO failures. ([@carlost][])
+
 ## 0.4.2 - November 19, 2011 - ([@rymai][])
 
 ### Bug fix:
@@ -101,6 +107,7 @@
 - [#1](https://github.com/guard/guard-test/pull/1): Include errors count to determine the "flag" to display in notification. ([@gregorymostizky][])
 
 [@Ask11]: https://github.com/Ask11
+[@carlost]: https://github.com/carlost
 [@dasch]: https://github.com/dasch
 [@gertas]: https://github.com/gertas
 [@gregorymostizky]: https://github.com/gregorymostizky
