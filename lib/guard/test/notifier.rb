@@ -13,7 +13,7 @@ module Guard
           ::Guard::Notifier.notify(
             summary(result) + "\n\n" + duration(elapsed_time),
             :title => "Test::Unit results",
-            :image => result.failure_count > 0 ? :failed : :success
+            :image => result.passed? ? :success : :failed
           )
         end
 
