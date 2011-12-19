@@ -8,7 +8,6 @@ rvm:
 branches:
   only:
     - master
-    - dev
 notifications:
   recipients:
     - rymai@rymai.me
