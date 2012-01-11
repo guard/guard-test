@@ -6,10 +6,11 @@ module Guard
 
       def initialize(options = {})
         @options = {
-          :bundler => File.exist?("#{Dir.pwd}/Gemfile"),
-          :rvm     => [],
-          :drb     => false,
-          :cli     => ""
+          :bundler  => File.exist?("#{Dir.pwd}/Gemfile"),
+          :rubygems => false,
+          :rvm      => [],
+          :drb      => false,
+          :cli      => ""
         }.merge(options)
       end
 
@@ -26,6 +27,10 @@ module Guard
           @bundler = @options[:bundler] && !drb?
         end
         @bundler
+      end
+
+      def rubygems?
+        !bundler? && @options[:rubygems]
       end
 
       def drb?
@@ -54,6 +59,7 @@ module Guard
                      end
         cmd_parts << "-Itest"
         cmd_parts << "-r bundler/setup" if bundler?
+        cmd_parts << "-rubygems" if rubygems?
 
         unless drb?
           cmd_parts << "-r #{File.expand_path("../guard_test_runner", __FILE__)}"

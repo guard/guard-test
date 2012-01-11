@@ -1,3 +1,9 @@
+## Master
+
+### New feature:
+
+- [#20](https://github.com/guard/guard-test/issues/20): Add the `:rubygems` options for project that doesn't use Bundler. ([@rymai][])
+
 ## 0.4.3 - December 19, 2011 - ([@rymai][])
 
 ### Bug fix:

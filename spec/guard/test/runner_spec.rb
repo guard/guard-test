@@ -8,29 +8,67 @@ describe Guard::Test::Runner do
       it "sets default options" do
         runner = described_class.new
         runner.instance_variable_get(:@options)[:bundler].should be_true
+        runner.instance_variable_get(:@options)[:rubygems].should be_false
         runner.instance_variable_get(:@options)[:rvm].should be_empty
         runner.instance_variable_get(:@options)[:drb].should be_false
         runner.instance_variable_get(:@options)[:cli].should eql ""
       end
 
-      it "sets option :bundler" do
-        runner = described_class.new(:bundler => true)
-        runner.instance_variable_get(:@options)[:bundler].should be_true
+      describe ":bundler option" do
+        context "with the :drb option set to true" do
+          it "uses drb but not bundler" do
+            runner = described_class.new(:drb => true, :bundler => true)
+            runner.should be_drb
+            runner.should_not be_bundler
+          end
+        end
+
+        context "with the :drb option set to false" do
+          it "uses bundler but not drb" do
+            runner = described_class.new(:drb => false, :bundler => true)
+            runner.should_not be_drb
+            runner.should be_bundler
+          end
+        end
       end
 
-      it "sets option :rvm" do
-        runner = described_class.new(:rvm => '1.9.2')
-        runner.instance_variable_get(:@options)[:rvm].should eql '1.9.2'
+      describe ":rubygems option" do
+        context "with the :bundler option set to true" do
+          it "uses bundler but not rubygems" do
+            runner = described_class.new(:bundler => true, :rubygems => true)
+            runner.should be_bundler
+            runner.should_not be_rubygems
+          end
+        end
+
+        context "with the :bundler option set to false" do
+          it "uses rubygems but not bundler" do
+            runner = described_class.new(:bundler => false, :rubygems => true)
+            runner.should_not be_bundler
+            runner.should be_rubygems
+          end
+        end
       end
 
-      it "sets option :drb" do
-        runner = described_class.new(:drb => true)
-        runner.instance_variable_get(:@options)[:drb].should be_true
+      describe ":rvm option" do
+        it "sets the option in the instance @options hash" do
+          runner = described_class.new(:rvm => '1.9.2')
+          runner.instance_variable_get(:@options)[:rvm].should eq '1.9.2'
+        end
       end
 
-      it "sets option :cli" do
-        runner = described_class.new(:cli => '--show-detail-immediately')
-        runner.instance_variable_get(:@options)[:cli].should eql '--show-detail-immediately'
+      describe ":drb option" do
+        it "uses drb" do
+          runner = described_class.new(:drb => true)
+          runner.should be_drb
+        end
+      end
+
+      describe ":cli option" do
+        it "sets the option in the instance @options hash" do
+          runner = described_class.new(:cli => '--show-detail-immediately')
+          runner.instance_variable_get(:@options)[:cli].should eq '--show-detail-immediately'
+        end
       end
     end
   end
@@ -114,6 +152,23 @@ describe Guard::Test::Runner do
           subject.run(["test/succeeding_test.rb"])
         end
       end
+      
+      context "when the :rubygems option set to true (and :bundler to false) on initialize" do
+        subject do
+          runner = described_class.new(:bundler => false, :rubygems => true)
+          runner
+        end
+
+        it "runs without bundler and require rubygems" do
+          subject.should_receive(:system).with(
+            "ruby -Itest -rubygems -r #{@lib_path.join('guard/test/guard_test_runner')} " \
+            "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
+            "\"./test/succeeding_test.rb\" --use-color --runner=guard"
+          )
+
+          subject.run(["test/succeeding_test.rb"])
+        end
+      end
 
       context "when no :runner option was given on initialize" do
         subject do
@@ -129,7 +184,7 @@ describe Guard::Test::Runner do
           dev_null { subject.run(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]) }
         end
 
-        it "runs with the --runner options set to 'guard-default' and require default_guard_test_runner" do
+        it "runs with the --runner options set to 'guard' and require default_guard_test_runner" do
           subject.should_receive(:system).with(
             "bundle exec " \
             "ruby -Itest -r bundler/setup " \

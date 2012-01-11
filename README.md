@@ -56,6 +56,7 @@ Please read the [Guard documentation](https://github.com/guard/guard#readme) for
 ### Available options
 
 * `bundler` (`Boolean`)          - Whether or not to use `bundle exec` to run tests. Default to `true` if a you have a Gemfile in the current directory.
+* `rubygems` (`Boolean`)         - Whether or not to require rubygems (if bundler isn't used) when running the tests. Default to `false`.
 * `rvm` (`Array<String>`)        - Directly run your specs against multiple Rubies. Default to `nil`.
 * `drb` (`Boolean`)              - Run your tests with [`spork-testunit`](https://github.com/timcharper/spork-testunit). Default to `false`.
 * `cli` (`String`)               - Pass arbitrary CLI arguments to the command that runs the tests. Default to `nil`.

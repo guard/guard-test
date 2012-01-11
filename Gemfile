@@ -10,6 +10,8 @@ gem 'guard-rspec', :git => "git://github.com/guard/guard-rspec.git"
 require 'rbconfig'
 
 platforms :ruby do
+  gem 'rb-readline'
+
   if RbConfig::CONFIG['target_os'] =~ /darwin/i
     gem 'rb-fsevent'
     gem 'ruby_gntp'
