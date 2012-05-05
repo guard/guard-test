@@ -13,11 +13,15 @@ If you have any questions about Guard or Guard::Test, please join us on our [Goo
 
 Please be sure to have [Guard](https://github.com/guard/guard) installed before continue.
 
-If you're using Bundler, add it to your `Gemfile` (inside the `development` group):
+If you're using Bundler, add it to your `Gemfile`:
 
 ```ruby
-gem 'guard-test'
+group :tools do
+  gem 'guard-test'
+end
 ```
+
+Note for Rails users: you should add it inside a `:tools` group (or at least not the `:development` nor `:test` group) to avoid the loading of the gem on Rails boot.
 
 and run:
 
