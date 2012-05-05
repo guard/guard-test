@@ -4,6 +4,9 @@
 
 - [#20](https://github.com/guard/guard-test/issues/20): Add the `:rubygems` options for projects that don't use Bundler. ([@rymai][])
 
+### Bug fix:
+- [#24](https://github.com/guard/guard-test/issues/24): Add note for Rails projects using profile/benchmark tests in README. ([@coderjoe][])
+
 ## 0.4.3 - December 19, 2011 - ([@rymai][])
 
 ### Bug fix:

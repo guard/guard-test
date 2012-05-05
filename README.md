@@ -37,6 +37,30 @@ Add Guard definition to your `Guardfile` by running this command:
 $ guard init test
 ```
 
+## Ruby on Rails
+
+Ruby on Rails lazy loads gems as needed in its test suite.
+As a result Guard::Test may not be able to run all tests until the gem dependencies are resolved.
+
+To solve the issue either add the missing dependencies or remove the tests.
+
+Example:
+
+```
+Specify ruby-prof as application's dependency in Gemfile to run benchmarks.
+```
+
+Rails automatically generates a performance test stub in the `test/performance` directory which can trigger this error.
+Either add `ruby-prof` to your `Gemfile` (inside the `test` group):
+
+```ruby
+group :test do
+   gem 'ruby-prof'
+end
+```
+
+Or remove the test if it isn't necessary.
+
 ## Usage
 
 Please read the [Guard usage doc](https://github.com/guard/guard#readme).
