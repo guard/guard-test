@@ -4,6 +4,10 @@
 
 - [#24](https://github.com/guard/guard-test/issues/24): Add note for Rails projects using profile/benchmark tests in README. ([@coderjoe][])
 
+### Changes:
+
+- Updated for Guard 1.1
+
 ### New feature:
 
 - [#20](https://github.com/guard/guard-test/issues/20): Add the `:rubygems` options for projects that don't use Bundler. ([@rymai][])
