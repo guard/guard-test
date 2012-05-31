@@ -42,7 +42,7 @@ module Guard
       @failed_paths = []
     end
 
-    def run_on_change(paths)
+    def run_on_changes(paths)
       Inspector.test_paths = @options[:test_paths]
       paths += @failed_paths if @options[:keep_failed]
       paths  = Inspector.clean(paths)

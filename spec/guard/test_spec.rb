@@ -66,13 +66,13 @@ describe Guard::Test do
 
     it "cleans failed memory if passed" do
       runner.should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(false)
-      subject.run_on_change(["test/unit"])
+      subject.run_on_changes(["test/unit"])
 
       runner.should_receive(:run).with(["test/succeeding_test.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests").and_return(true)
       subject.run_all
 
       runner.should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(true)
-      subject.run_on_change(["test/unit"])
+      subject.run_on_changes(["test/unit"])
     end
 
     it "init test_paths for Inspector" do
@@ -85,47 +85,47 @@ describe Guard::Test do
   describe "#reload" do
     it "should clear failed_path" do
       runner.should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(false)
-      subject.run_on_change(["test/unit"])
+      subject.run_on_changes(["test/unit"])
 
       subject.reload
 
       runner.should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(true)
       runner.should_receive(:run).with(["test/succeeding_test.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests").and_return(true)
-      subject.run_on_change(["test/unit"])
+      subject.run_on_changes(["test/unit"])
     end
   end
 
-  describe "#run_on_change" do
+  describe "#run_on_changes" do
     it "runs test after run_all" do
       runner.should_receive(:run)
       subject.run_all
       runner.should_receive(:run).with(["test/unit/error/error_test.rb"])
-      subject.run_on_change(["test/unit/error/error_test.rb"])
+      subject.run_on_changes(["test/unit/error/error_test.rb"])
     end
 
     it "init test_paths for Inspector" do
       Guard::Test::Inspector.should_receive(:test_paths=).with(["test"])
-      subject.run_on_change([])
+      subject.run_on_changes([])
     end
 
     context ":all_after_pass option not specified" do
       it "runs test with under given paths, recursively" do
         runner.should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"])
-        subject.run_on_change(["test/unit"])
+        subject.run_on_changes(["test/unit"])
       end
 
       it "calls #run_all by default if the changed specs pass after failing" do
         runner.should_receive(:run).with(["test/succeeding_test.rb"]).and_return(false, true)
         runner.should_receive(:run).with(["test/succeeding_test.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests")
 
-        subject.run_on_change(["test/succeeding_test.rb"])
-        subject.run_on_change(["test/succeeding_test.rb"])
+        subject.run_on_changes(["test/succeeding_test.rb"])
+        subject.run_on_changes(["test/succeeding_test.rb"])
       end
 
       it "doesn't call #run_all if the changed specs pass without failing" do
         runner.should_receive(:run).with(["test/succeeding_test.rb"]).and_return(true)
         runner.should_not_receive(:run).with(["test/succeeding_test.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests")
-        subject.run_on_change(["test/succeeding_test.rb"])
+        subject.run_on_changes(["test/succeeding_test.rb"])
       end
     end
 
@@ -136,8 +136,8 @@ describe Guard::Test do
         runner.should_receive(:run).with(["test/succeeding_test.rb"]).and_return(false, true)
         runner.should_not_receive(:run).with(["test/succeeding_test.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests")
 
-        subject.run_on_change(["test/succeeding_test.rb"])
-        subject.run_on_change(["test/succeeding_test.rb"])
+        subject.run_on_changes(["test/succeeding_test.rb"])
+        subject.run_on_changes(["test/succeeding_test.rb"])
       end
     end
 
@@ -146,13 +146,13 @@ describe Guard::Test do
 
       it "keeps failed specs and rerun later by default" do
         runner.should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(false)
-        subject.run_on_change(["test/unit"])
+        subject.run_on_changes(["test/unit"])
 
         runner.should_receive(:run).with(["test/succeeding_test.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(true)
-        subject.run_on_change(["test/succeeding_test.rb"])
+        subject.run_on_changes(["test/succeeding_test.rb"])
 
         runner.should_receive(:run).with(["test/succeeding_test.rb"]).and_return(true)
-        subject.run_on_change(["test/succeeding_test.rb"])
+        subject.run_on_changes(["test/succeeding_test.rb"])
       end
     end
 
@@ -161,13 +161,13 @@ describe Guard::Test do
 
       it "doesn't keep failed specs" do
         runner.should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(false)
-        subject.run_on_change(["test/unit"])
+        subject.run_on_changes(["test/unit"])
 
         runner.should_receive(:run).with(["test/succeeding_test.rb"]).and_return(true)
-        subject.run_on_change(["test/succeeding_test.rb"])
+        subject.run_on_changes(["test/succeeding_test.rb"])
 
         runner.should_receive(:run).with(["test/succeeding_test.rb"]).and_return(true)
-        subject.run_on_change(["test/succeeding_test.rb"])
+        subject.run_on_changes(["test/succeeding_test.rb"])
       end
     end
 

@@ -1,6 +1,6 @@
 # encoding: utf-8
 module Guard
   module TestVersion
-    VERSION = "0.4.3" unless defined? TestVersion::VERSION
+    VERSION = '0.5.0'
   end
 end

@@ -4,8 +4,7 @@ source "http://rubygems.org"
 gemspec
 
 gem 'rake'
-gem 'guard',       :git => "git://github.com/guard/guard.git"
-gem 'guard-rspec', :git => "git://github.com/guard/guard-rspec.git"
+gem 'guard-rspec', :github => "guard/guard-rspec", :branch => "guard_1_1"
 
 require 'rbconfig'
 
