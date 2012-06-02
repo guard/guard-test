@@ -1,4 +1,4 @@
-## Master
+## 0.5.0 - June 2, 2012
 
 ### Bug fix:
 
