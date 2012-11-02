@@ -51,7 +51,9 @@ module Guard
         end
 
         def check_test_files(path)
-          Dir[File.join(path, '**', 'test_*.rb')] + Dir[File.join(path, '**', '*_test.rb')]
+          Dir[File.join(path, '**', 'test_*.rb')] + 
+          Dir[File.join(path, '**', '*_test.rb')] +
+          Dir[File.join(path, '**', '*_tests.rb')]
         end
       end
 
