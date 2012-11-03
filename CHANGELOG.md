@@ -2,7 +2,7 @@
 
 ### New feature:
 
-- [#34][]: Support for *_tests.rb. ([@pastorius][])
+- [#34][]: Support for `*_tests.rb`. ([@pastorius][])
 
 ## 0.5.0 - June 2, 2012
 
