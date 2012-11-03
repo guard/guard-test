@@ -8,7 +8,7 @@ describe Guard::Test::Inspector do
 
     it "should add all test files under the given dir" do
       subject.clean(["test"]).should \
-      == ["test/succeeding_test.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"]
+      == ["test/succeeding_test.rb", "test/succeeding_tests.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"]
     end
 
     it "should remove non-test files" do
@@ -30,17 +30,17 @@ describe Guard::Test::Inspector do
 
     it "should remove duplication" do
       subject.clean(["test", "test"]).should \
-      == ["test/succeeding_test.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"]
+      == ["test/succeeding_test.rb", "test/succeeding_tests.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"]
     end
 
     it "should remove test folder includes in other test folder" do
       subject.clean(["test/unit", "test"]).should \
-      == ["test/succeeding_test.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"]
+      == ["test/succeeding_test.rb", "test/succeeding_tests.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"]
     end
 
     it "should remove test files includes in test folder" do
       subject.clean(["test/unit/failing_test.rb", "test"]).should \
-      == ["test/succeeding_test.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"]
+      == ["test/succeeding_test.rb", "test/succeeding_tests.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"]
     end
 
     it "should remove test files includes in test folder (2)" do
