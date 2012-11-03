@@ -5,7 +5,10 @@ gemspec
 
 gem 'rake'
 gem 'ruby_gntp'
-gem 'guard-rspec', :github => "guard/guard-rspec", :branch => "guard_1_1"
-platforms :ruby do
-  gem 'rb-readline'
+gem 'guard-rspec'
+
+group :tools do
+  gem 'rb-inotify', :require => false
+  gem 'rb-fsevent', :require => false
+  gem 'rb-fchange', :require => false
 end
