@@ -1,3 +1,7 @@
+### New feature
+
+- Support `include:` option to extend the load path of the test runner. ([@amiel][])
+
 ## 0.6.0 - November 3, 2012
 
 ### New feature:
@@ -148,3 +152,4 @@
 [@pastorius]: https://github.com/pastorius
 [@rymai]: https://github.com/rymai
 [@uk-ar]: https://github.com/uk-ar
+[@amiel]: https://github.com/amiel
