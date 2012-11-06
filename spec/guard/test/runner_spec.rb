@@ -152,7 +152,7 @@ describe Guard::Test::Runner do
           subject.run(["test/succeeding_test.rb"])
         end
       end
-      
+
       context "when the :rubygems option set to true (and :bundler to false) on initialize" do
         subject do
           runner = described_class.new(:bundler => false, :rubygems => true)
@@ -211,6 +211,25 @@ describe Guard::Test::Runner do
             "-r #{@lib_path.join('guard/test/guard_test_runner')} " \
             "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
             "\"./test/succeeding_test.rb\" --use-color --runner=guard"
+          )
+
+          subject.run(["test/succeeding_test.rb"])
+        end
+      end
+
+      context "when the :include option is given" do
+        subject do
+          runner = described_class.new(:include => ['test', 'lib'])
+          runner
+        end
+
+        it "adds the appropriate -I options" do
+          subject.should_receive(:system).with(
+          "bundle exec " \
+          "ruby -Itest -Ilib -r bundler/setup " \
+          "-r #{@lib_path.join('guard/test/guard_test_runner')} " \
+          "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
+          "\"./test/succeeding_test.rb\" --use-color --runner=guard"
           )
 
           subject.run(["test/succeeding_test.rb"])
