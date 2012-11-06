@@ -1,6 +1,8 @@
-### New feature
+## Master
 
-- Support `include:` option to extend the load path of the test runner. ([@amiel][])
+### New feature:
+
+- [#35][]: Support `include:` option to extend the load path of the test runner. ([@amiel][])
 
 ## 0.6.0 - November 3, 2012
 
@@ -142,7 +144,9 @@
 [#21]: https://github.com/guard/guard/issues/21
 [#24]: https://github.com/guard/guard/issues/24
 [#34]: https://github.com/guard/guard/issues/34
+[#35]: https://github.com/guard/guard/issues/35
 [@Ask11]: https://github.com/Ask11
+[@amiel]: https://github.com/amiel
 [@carlost]: https://github.com/carlost
 [@coderjoe]: https://github.com/coderjoe
 [@dasch]: https://github.com/dasch
@@ -152,4 +156,3 @@
 [@pastorius]: https://github.com/pastorius
 [@rymai]: https://github.com/rymai
 [@uk-ar]: https://github.com/uk-ar
-[@amiel]: https://github.com/amiel

@@ -11,7 +11,7 @@ module Guard
           :rvm      => [],
           :include  => ['test'],
           :drb      => false,
-          :cli      => "",
+          :cli      => ''
         }.merge(options)
       end
 
@@ -41,7 +41,7 @@ module Guard
             require 'spork-testunit'
           rescue LoadError
           end
-          ::Guard::UI.info("Using testdrb to run the tests") if @drb
+          ::Guard::UI.info('Using testdrb to run the tests') if @drb
         end
         @drb
       end
@@ -51,16 +51,16 @@ module Guard
       def test_unit_command(paths)
         cmd_parts = []
         cmd_parts << "rvm #{@options[:rvm].join(',')} exec" unless @options[:rvm].empty?
-        cmd_parts << "bundle exec" if bundler?
+        cmd_parts << 'bundle exec' if bundler?
         cmd_parts << case true
                      when drb?
-                       "testdrb"
+                       'testdrb'
                      else
-                       "ruby"
+                       'ruby'
                      end
         cmd_parts << Array(@options[:include]).map { |path| "-I#{path}" }
-        cmd_parts << "-r bundler/setup" if bundler?
-        cmd_parts << "-rubygems" if rubygems?
+        cmd_parts << '-r bundler/setup' if bundler?
+        cmd_parts << '-rubygems' if rubygems?
 
         unless drb?
           cmd_parts << "-r #{File.expand_path("../guard_test_runner", __FILE__)}"
@@ -70,8 +70,8 @@ module Guard
         paths.each { |path| cmd_parts << "\"./#{path}\"" }
 
         unless drb?
-          cmd_parts << "--use-color"
-          cmd_parts << "--runner=guard"
+          cmd_parts << '--use-color'
+          cmd_parts << '--runner=guard'
         end
 
         cmd_parts << @options[:cli]
