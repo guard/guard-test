@@ -9,8 +9,9 @@ module Guard
           :bundler  => File.exist?("#{Dir.pwd}/Gemfile"),
           :rubygems => false,
           :rvm      => [],
+          :include  => ['test'],
           :drb      => false,
-          :cli      => ""
+          :cli      => "",
         }.merge(options)
       end
 
@@ -57,7 +58,7 @@ module Guard
                      else
                        "ruby"
                      end
-        cmd_parts << "-Itest"
+        cmd_parts << Array(@options[:include]).map { |path| "-I#{path}" }
         cmd_parts << "-r bundler/setup" if bundler?
         cmd_parts << "-rubygems" if rubygems?
 
