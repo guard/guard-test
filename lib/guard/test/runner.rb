@@ -11,6 +11,7 @@ module Guard
           :rvm      => [],
           :include  => ['test'],
           :drb      => false,
+          :minitest => false,
           :cli      => ''
         }.merge(options)
       end
@@ -21,6 +22,13 @@ module Guard
         ::Guard::UI.info(options[:message] || "Running: #{paths.join(' ')}", :reset => true)
 
         system(test_unit_command(paths))
+      end
+
+      def minitest?
+        if @minitest.nil?
+          @minitest = @options[:minitest] && !drb?
+        end
+        @minitest
       end
 
       def bundler?
@@ -69,9 +77,12 @@ module Guard
 
         paths.each { |path| cmd_parts << "\"./#{path}\"" }
 
-        unless drb?
-          cmd_parts << '--use-color'
-          cmd_parts << '--runner=guard'
+
+
+
+        if !drb? and !minitest?
+           cmd_parts << '--use-color'
+           cmd_parts << '--runner=guard'
         end
 
         cmd_parts << @options[:cli]

@@ -87,6 +87,7 @@ Please read the [Guard documentation](https://github.com/guard/guard#readme) for
 * `rubygems` (`Boolean`)         - Whether or not to require rubygems (if bundler isn't used) when running the tests. Default to `false`.
 * `rvm` (`Array<String>`)        - Directly run your specs against multiple Rubies. Default to `nil`.
 * `drb` (`Boolean`)              - Run your tests with [`spork-testunit`](https://github.com/timcharper/spork-testunit). Default to `false`.
+* `minitest` (`Boolean`)         - Run your tests with [`minitest`]. Default to `false`.
 * `include` (`Array<String>`)    - Pass arbitrary include paths to the command that runs the tests. Default to `['test']`.
 * `cli` (`String`)               - Pass arbitrary CLI arguments to the command that runs the tests. Default to `nil`.
 * `all_on_start` (`Boolean`)     - Run all tests on Guard startup. Default to `true`.
