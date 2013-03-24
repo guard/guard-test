@@ -4,7 +4,7 @@ gemspec
 
 gem 'rake'
 
-group :development do
+group :guard do
   require 'rbconfig'
 
   if RbConfig::CONFIG['target_os'] =~ /darwin/i
@@ -25,8 +25,6 @@ group :development do
     gem 'rb-notifu', '>= 0.0.4', :require => false
     gem 'wdm', :require => false
   end
-end
 
-group :test do
   gem 'guard-rspec'
 end
