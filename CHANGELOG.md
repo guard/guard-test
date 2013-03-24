@@ -1,3 +1,9 @@
+## 0.8.0 - March 24, 2013
+
+### New feature:
+
+- [#38][]: Add support for running tests via `zeus`. ([@djmaze][])
+
 ## 0.7.0 - November 6, 2012
 
 ### New feature:
@@ -145,11 +151,13 @@
 [#24]: https://github.com/guard/guard/issues/24
 [#34]: https://github.com/guard/guard/issues/34
 [#35]: https://github.com/guard/guard/issues/35
+[#38]: https://github.com/guard/guard/issues/38
 [@Ask11]: https://github.com/Ask11
 [@amiel]: https://github.com/amiel
 [@carlost]: https://github.com/carlost
 [@coderjoe]: https://github.com/coderjoe
 [@dasch]: https://github.com/dasch
+[@djmaze]: https://github.com/djmaze
 [@gertas]: https://github.com/gertas
 [@gregorymostizky]: https://github.com/gregorymostizky
 [@jgrau]: https://github.com/jgrau
