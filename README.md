@@ -87,6 +87,7 @@ Please read the [Guard documentation](https://github.com/guard/guard#readme) for
 * `rubygems` (`Boolean`)         - Whether or not to require rubygems (if bundler isn't used) when running the tests. Default to `false`.
 * `rvm` (`Array<String>`)        - Directly run your specs against multiple Rubies. Default to `nil`.
 * `drb` (`Boolean`)              - Run your tests with [`spork-testunit`](https://github.com/timcharper/spork-testunit). Default to `false`.
+* `zeus` (`Boolean`)             - Run your tests with [`zeus`](https://github.com/burke/zeus). Default to `false`.
 * `include` (`Array<String>`)    - Pass arbitrary include paths to the command that runs the tests. Default to `['test']`.
 * `cli` (`String`)               - Pass arbitrary CLI arguments to the command that runs the tests. Default to `nil`.
 * `all_on_start` (`Boolean`)     - Run all tests on Guard startup. Default to `true`.
@@ -97,6 +98,12 @@ Please read the [Guard documentation](https://github.com/guard/guard#readme) for
 #### `drb` option
 
 When true, notifications are disabled. This might be fixed in future releases.
+
+#### `zeus` option
+
+When true, the `include` option is disregarded, as it does not work with `zeus`' test runner. 
+
+The zeus server process (`zeus start`) must already be running in another terminal.
 
 #### `test_paths` option
 

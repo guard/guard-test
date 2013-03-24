@@ -11,6 +11,7 @@ module Guard
           :rvm      => [],
           :include  => ['test'],
           :drb      => false,
+          :zeus     => false,
           :cli      => ''
         }.merge(options)
       end
@@ -25,13 +26,13 @@ module Guard
 
       def bundler?
         if @bundler.nil?
-          @bundler = @options[:bundler] && !drb?
+          @bundler = @options[:bundler] && !drb? && !zeus?
         end
         @bundler
       end
 
       def rubygems?
-        !bundler? && @options[:rubygems]
+        !bundler? && !zeus? && @options[:rubygems]
       end
 
       def drb?
@@ -46,6 +47,14 @@ module Guard
         @drb
       end
 
+      def zeus?
+        if @zeus.nil?
+          @zeus = @options[:zeus]
+          ::Guard::UI.info('Using zeus to run the tests') if @zeus
+        end
+        @zeus
+      end
+      
     private
 
       def test_unit_command(paths)
@@ -55,21 +64,23 @@ module Guard
         cmd_parts << case true
                      when drb?
                        'testdrb'
+                     when zeus?
+                       'zeus test'
                      else
                        'ruby'
                      end
-        cmd_parts << Array(@options[:include]).map { |path| "-I#{path}" }
+        cmd_parts << Array(@options[:include]).map { |path| "-I#{path}" } unless zeus?
         cmd_parts << '-r bundler/setup' if bundler?
         cmd_parts << '-rubygems' if rubygems?
 
-        unless drb?
+        unless drb? || zeus?
           cmd_parts << "-r #{File.expand_path("../guard_test_runner", __FILE__)}"
           cmd_parts << "-e \"%w[#{paths.join(' ')}].each { |p| load p }\""
         end
 
         paths.each { |path| cmd_parts << "\"./#{path}\"" }
 
-        unless drb?
+        unless drb? || zeus?
           cmd_parts << '--use-color'
           cmd_parts << '--runner=guard'
         end
