@@ -17,8 +17,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'guard',     '>= 1.1'
   s.add_dependency 'test-unit', '~> 2.2'
 
-  s.add_development_dependency 'bundler', '~> 1.0'
-  s.add_development_dependency 'rspec',   '~> 2.11'
+  s.add_development_dependency 'bundler'
+  s.add_development_dependency 'rspec',   '~> 2.13'
 
   s.files        = Dir.glob('{lib}/**/*') + %w[CHANGELOG.md LICENSE README.md]
   s.require_path = 'lib'
