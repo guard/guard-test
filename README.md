@@ -66,8 +66,8 @@ Please read the [Guard documentation](https://github.com/guard/guard#readme) for
 ### Available options
 
 ``` ruby
-:bundler => Boolean        # Whether or not to use `bundle exec` to run tests, default: true (if a you have a Gemfile in the current directory)
-:rubygems => Boolean       # Whether or not to require rubygems (if bundler isn't used) when running the tests, default: false
+:bundler => false          # Whether or not to use `bundle exec` to run tests, default: true (if a you have a Gemfile in the current directory)
+:rubygems => true          # Whether or not to require rubygems (if bundler isn't used) when running the tests, default: false
 :rvm => ['1.9.3', 'jruby'] # Directly run your specs against multiple Rubies, default: nil
 :drb => true               # Run your tests with [`spork-testunit`](https://github.com/timcharper/spork-testunit), default: false
 :zeus => true              # Run your tests with [`zeus`](https://github.com/burke/zeus), default: false
