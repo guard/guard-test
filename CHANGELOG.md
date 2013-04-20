@@ -1,3 +1,9 @@
+## git master
+
+### Improvements
+
+* Get rid of `autoload`. ([@rymai][])
+
 ## 0.8.0 - March 24, 2013
 
 ### New feature:
