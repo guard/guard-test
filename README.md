@@ -1,43 +1,25 @@
-# Guard::Test [![Build Status](https://secure.travis-ci.org/guard/guard-test.png?branch=master)](http://travis-ci.org/guard/guard-test)
+# Guard::Test [![Gem Version](https://badge.fury.io/rb/guard-test.png)](http://badge.fury.io/rb/guard-test) [![Build Status](https://travis-ci.org/guard/guard-test.png?branch=master)](https://travis-ci.org/guard/guard-test) [![Dependency Status](https://gemnasium.com/guard/guard-test.png)](https://gemnasium.com/guard/guard-test) [![Code Climate](https://codeclimate.com/github/guard/guard-test.png)](https://codeclimate.com/github/guard/guard-test) [![Coverage Status](https://coveralls.io/repos/guard/guard-test/badge.png?branch=master)](https://coveralls.io/r/guard/guard-test)
 
 Test::Unit guard allows to automatically & intelligently launch tests when files are modified or created.
 
-If you have any questions about Guard or Guard::Test, please join us on our [Google group](http://groups.google.com/group/guard-dev) or on `#guard` (irc.freenode.net).
-
-## Features
-
-- Compatible with test-unit 2.
-- Tested on Ruby 1.8.7, 1.9.2, REE, Rubinius and JRuby.
+* Compatible with Test::Unit 2.
+* Tested against Ruby 1.8.7, 1.9.3, REE, Rubinius & JRuby.
 
 ## Install
 
-Please be sure to have [Guard](https://github.com/guard/guard) installed before continue.
+Please be sure to have [Guard](https://github.com/guard/guard) installed before continuing.
 
-If you're using Bundler, add it to your `Gemfile`:
+Add the gem to your Gemfile (inside the `:development` or `:tool` group):
 
-```ruby
-group :tools do
+``` ruby
+group :development do
   gem 'guard-test'
 end
 ```
 
-Note for Rails users: you should add it inside a `:tools` group (or at least not the `:development` nor `:test` group) to avoid the loading of the gem on Rails boot.
+Add guard definition to your Guardfile by running this command:
 
-and run:
-
-```bash
-$ bundle install
-```
-
-or manually install the gem:
-
-```bash
-$ gem install guard-test
-```
-
-Add Guard definition to your `Guardfile` by running this command:
-
-```bash
+``` bash
 $ guard init test
 ```
 
@@ -57,7 +39,7 @@ Specify ruby-prof as application's dependency in Gemfile to run benchmarks.
 Rails automatically generates a performance test stub in the `test/performance` directory which can trigger this error.
 Either add `ruby-prof` to your `Gemfile` (inside the `test` group):
 
-```ruby
+``` ruby
 group :test do
    gem 'ruby-prof'
 end
@@ -69,9 +51,9 @@ Or remove the test if it isn't necessary.
 
 Please read the [Guard usage doc](https://github.com/guard/guard#readme).
 
-## Guardfile
+By default, Guard::Test watch for files matching `test_*.rb` or `*_test{s,}.rb` in the `test` directory (this directory can be changed with the `test_paths` option, see below).
 
-Guard::Test can be adapted to any kind of projects.
+## Guardfile
 
 See the [template Guardfile](https://github.com/guard/guard-test/blob/master/lib/guard/test/templates/Guardfile) for some examples.
 
@@ -83,17 +65,19 @@ Please read the [Guard documentation](https://github.com/guard/guard#readme) for
 
 ### Available options
 
-* `bundler` (`Boolean`)          - Whether or not to use `bundle exec` to run tests. Default to `true` if a you have a Gemfile in the current directory.
-* `rubygems` (`Boolean`)         - Whether or not to require rubygems (if bundler isn't used) when running the tests. Default to `false`.
-* `rvm` (`Array<String>`)        - Directly run your specs against multiple Rubies. Default to `nil`.
-* `drb` (`Boolean`)              - Run your tests with [`spork-testunit`](https://github.com/timcharper/spork-testunit). Default to `false`.
-* `zeus` (`Boolean`)             - Run your tests with [`zeus`](https://github.com/burke/zeus). Default to `false`.
-* `include` (`Array<String>`)    - Pass arbitrary include paths to the command that runs the tests. Default to `['test']`.
-* `cli` (`String`)               - Pass arbitrary CLI arguments to the command that runs the tests. Default to `nil`.
-* `all_on_start` (`Boolean`)     - Run all tests on Guard startup. Default to `true`.
-* `all_after_pass` (`Boolean`)   - Run all tests after the current run tests pass. Default to `true`.
-* `keep_failed` (`Boolean`)      - Re-run failing tests until they pass. Default to `true`.
-* `test_paths` (`Array<String>`) - Array of paths that where are located the test files. Default to `['test']`.
+``` ruby
+:bundler => Boolean        # Whether or not to use `bundle exec` to run tests, default: true (if a you have a Gemfile in the current directory)
+:rubygems => Boolean       # Whether or not to require rubygems (if bundler isn't used) when running the tests, default: false
+:rvm => ['1.9.3', 'jruby'] # Directly run your specs against multiple Rubies, default: nil
+:drb => true               # Run your tests with [`spork-testunit`](https://github.com/timcharper/spork-testunit), default: false
+:zeus => true              # Run your tests with [`zeus`](https://github.com/burke/zeus), default: false
+:include => ['foo', 'bar'] # Pass arbitrary include paths to the command that runs the tests, default: ['test']
+:cli => 'color'            # Pass arbitrary CLI arguments to the command that runs the tests, default: nil
+:all_on_start => false     # Run all tests on Guard startup, default: true.
+:all_after_pass => false   # Run all tests after the current run tests pass, default: true
+:keep_failed => false      # Re-run failing tests until they pass, default: true
+:test_paths => ['spec']    # Array of paths that where are located the test files, default: ['test']
+```
 
 #### `drb` option
 
@@ -101,43 +85,31 @@ When true, notifications are disabled. This might be fixed in future releases.
 
 #### `zeus` option
 
-When true, the `include` option is disregarded, as it does not work with `zeus`' test runner. 
+When true, the `include` option is disregarded, as it does not work with `zeus`' test runner.
 
-The zeus server process (`zeus start`) must already be running in another terminal.
-
-#### `test_paths` option
-
-By default, guard-test will only look for test files within `test/` in your project root. You can add any paths using the `:test_paths` option:
-
-```ruby
-guard :test, :test_paths => ['test', 'vendor/plugins/recaptcha/test', 'any/path/test'] do
-  # ...
-end
-```
+The zeus server process (`zeus start`) must already be running in another terminal (you can use [guard-zeus](http://rubygems.org/gems/guard-zeus) for that).
 
 ## Development
 
-- Source hosted on GitHub: https://github.com/guard/guard-test
-- Report issues and feature requests to GitHub Issues: https://github.com/guard/guard-test/issues
+* Documentation hosted at [RubyDoc](http://rubydoc.info/gems/guard-test/frames).
+* Source hosted at [GitHub](https://github.com/guard/guard-test).
 
-Pull requests are very welcome! Please try to follow these simple "rules", though:
+Pull requests are very welcome! Please try to follow these simple rules if applicable:
 
-- Please create a topic branch for every separate change you make;
-- Make sure your patches are well tested;
-- Update the [README](https://github.com/guard/guard-test/blob/master/README.md) (if applicable);
-- Update the [CHANGELOG](https://github.com/guard/guard-test/blob/master/CHANGELOG.md) and add yourself to the list of contributors (see at the bottom of the CHANGELOG for examples);
-- Please do not change the version number.
+* Please create a topic branch for every separate change you make.
+* Make sure your patches are well tested. All specs must pass on [Travis CI](https://travis-ci.org/guard/guard-test).
+* Update the [Yard](http://yardoc.org/) documentation.
+* Update the [README](https://github.com/guard/guard-test/blob/master/README.md).
+* Update the [CHANGELOG](https://github.com/guard/guard-test/blob/master/CHANGELOG.md) for noteworthy changes (don't forget to run `bundle exec pimpmychangelog` and watch the magic happen)!
+* Please **do not change** the version number.
 
-For questions please join us on our [Google group](http://groups.google.com/group/guard-dev) or on `#guard` (irc.freenode.net).
+For questions please join us in our [Google group](http://groups.google.com/group/guard-dev) or on
+`#guard` (irc.freenode.net).
 
 ## Author
 
-[Rémy Coutable](https://github.com/rymai)
+[Rémy Coutable](https://github.com/rymai) ([@rymai](http://twitter.com/rymai), [rymai.me](http://rymai.me))
 
 ## Contributors
 
 https://github.com/guard/guard-test/contributors
-
-## Kudos
-
-Many thanks to [Thibaud Guillaume-Gentil](https://github.com/thibaudgg) for creating the excellent [Guard](https://github.com/guard/guard) gem.

@@ -14,12 +14,14 @@ RSpec.configure do |config|
   config.before(:all) do
     @lib_path = Pathname.new(File.expand_path('../../lib/', __FILE__))
   end
-  config.after(:all) do
-    Guard::Notifier.turn_on
-  end
 
   config.before(:each) do
-    Guard::Notifier.turn_off
+    # Stub all UI methods, so no visible output appears for the UI class
+    ::Guard::UI.stub(:info)
+    ::Guard::UI.stub(:warning)
+    ::Guard::UI.stub(:error)
+    ::Guard::UI.stub(:debug)
+    ::Guard::UI.stub(:deprecation)
   end
 end
 
