@@ -1,4 +1,5 @@
-# Guard::Test [![Gem Version](https://badge.fury.io/rb/guard-test.png)](http://badge.fury.io/rb/guard-test) [![Build Status](https://travis-ci.org/guard/guard-test.png?branch=master)](https://travis-ci.org/guard/guard-test) [![Dependency Status](https://gemnasium.com/guard/guard-test.png)](https://gemnasium.com/guard/guard-test) [![Code Climate](https://codeclimate.com/github/guard/guard-test.png)](https://codeclimate.com/github/guard/guard-test) [![Coverage Status](https://coveralls.io/repos/guard/guard-test/badge.png?branch=master)](https://coveralls.io/r/guard/guard-test)
+# Guard::Test
+[![Gem Version](https://badge.fury.io/rb/guard-test.png)](http://badge.fury.io/rb/guard-test) [![Build Status](https://travis-ci.org/guard/guard-test.png?branch=master)](https://travis-ci.org/guard/guard-test) [![Dependency Status](https://gemnasium.com/guard/guard-test.png)](https://gemnasium.com/guard/guard-test) [![Code Climate](https://codeclimate.com/github/guard/guard-test.png)](https://codeclimate.com/github/guard/guard-test) [![Coverage Status](https://coveralls.io/repos/guard/guard-test/badge.png?branch=master)](https://coveralls.io/r/guard/guard-test)
 
 Test::Unit guard allows to automatically & intelligently launch tests when files are modified or created.
 
