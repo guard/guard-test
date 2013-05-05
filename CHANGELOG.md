@@ -1,5 +1,9 @@
 ## git master
 
+### New feature
+
+- [#40][]: Add support for running tests via `spring`. ([@pgaertig][])
+
 ### Improvements
 
 * Get rid of `autoload`. ([@rymai][])

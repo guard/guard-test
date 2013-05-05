@@ -72,6 +72,7 @@ Please read the [Guard documentation](https://github.com/guard/guard#readme) for
 :rvm => ['1.9.3', 'jruby'] # Directly run your specs against multiple Rubies, default: nil
 :drb => true               # Run your tests with [`spork-testunit`](https://github.com/timcharper/spork-testunit), default: false
 :zeus => true              # Run your tests with [`zeus`](https://github.com/burke/zeus), default: false
+:spring => true             # Run your tests with [`spring`](https://github.com/jonleighton/spring), default: false
 :include => ['foo', 'bar'] # Pass arbitrary include paths to the command that runs the tests, default: ['test']
 :cli => 'color'            # Pass arbitrary CLI arguments to the command that runs the tests, default: nil
 :all_on_start => false     # Run all tests on Guard startup, default: true.
