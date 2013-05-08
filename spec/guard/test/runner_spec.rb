@@ -12,6 +12,7 @@ describe Guard::Test::Runner do
         runner.instance_variable_get(:@options)[:rvm].should be_empty
         runner.instance_variable_get(:@options)[:drb].should be_false
         runner.instance_variable_get(:@options)[:zeus].should be_false
+        runner.instance_variable_get(:@options)[:spring].should be_false
         runner.instance_variable_get(:@options)[:cli].should eql ""
       end
 
@@ -44,6 +45,22 @@ describe Guard::Test::Runner do
           it "uses bundler but not zeus" do
             runner = described_class.new(:zeus => false, :bundler => true)
             runner.should_not be_zeus
+            runner.should be_bundler
+          end
+        end
+
+        context "with the :spring option set to true" do
+          it "uses spring but not bundler" do
+            runner = described_class.new(:spring => true, :bundler => true)
+            runner.should be_spring
+            runner.should_not be_bundler
+          end
+        end
+
+        context "with the :spring option set to false" do
+          it "uses bundler but not spring" do
+            runner = described_class.new(:spring => false, :bundler => true)
+            runner.should_not be_spring
             runner.should be_bundler
           end
         end
@@ -85,6 +102,13 @@ describe Guard::Test::Runner do
         it "uses zeus" do
           runner = described_class.new(:zeus => true)
           runner.should be_zeus
+        end
+      end
+
+      describe ":spring option" do
+        it "uses spring" do
+          runner = described_class.new(:spring => true)
+          runner.should be_spring
         end
       end
 
@@ -271,6 +295,20 @@ describe Guard::Test::Runner do
             subject.run(["test/succeeding_test.rb"])
           end 
         end
+
+        context "when the :spring option is given" do
+          subject do
+            runner = described_class.new(:spring => true)
+            runner
+          end
+
+          it "does not add a -I option" do
+            subject.should_not_receive(:system).with(/\-I/)
+
+            subject.run(["test/succeeding_test.rb"])
+          end
+        end
+
       end
 
       context "when the :cli option is given" do

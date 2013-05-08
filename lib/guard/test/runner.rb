@@ -13,6 +13,7 @@ module Guard
           :include  => ['test'],
           :drb      => false,
           :zeus     => false,
+          :spring   => false,
           :cli      => ''
         }.merge(opts)
       end
@@ -27,13 +28,13 @@ module Guard
 
       def bundler?
         if @bundler.nil?
-          @bundler = options[:bundler] && !drb? && !zeus?
+          @bundler = options[:bundler] && !drb? && !zeus? && !spring?
         end
         @bundler
       end
 
       def rubygems?
-        !bundler? && !zeus? && options[:rubygems]
+        !bundler? && !zeus? && !spring? && options[:rubygems]
       end
 
       def drb?
@@ -56,6 +57,14 @@ module Guard
         @zeus
       end
 
+      def spring?
+        if @spring.nil?
+          @spring = options[:spring]
+          ::Guard::UI.info('Using spring to run the tests') if @spring
+        end
+        @spring
+      end
+
     private
 
       def test_unit_command(paths)
@@ -75,15 +84,16 @@ module Guard
         parts << case true
                  when drb? then 'testdrb'
                  when zeus? then 'zeus test'
+                 when spring? then 'spring testunit'
                  else 'ruby'; end
       end
 
       def includes_and_requires(paths)
         parts = []
-        parts << Array(options[:include]).map { |path| "-I#{path}" } unless zeus?
+        parts << Array(options[:include]).map { |path| "-I#{path}" } unless zeus? || spring?
         parts << '-r bundler/setup' if bundler?
         parts << '-rubygems' if rubygems?
-        unless drb? || zeus?
+        unless drb? || zeus? || spring?
           parts << "-r #{File.expand_path("../guard_test_runner", __FILE__)}"
           parts << "-e \"%w[#{paths.join(' ')}].each { |p| load p }\""
         end
@@ -96,7 +106,7 @@ module Guard
       end
 
       def command_options
-        if drb? || zeus?
+        if drb? || zeus? || spring?
           []
         else
           ['--use-color', '--runner=guard']
