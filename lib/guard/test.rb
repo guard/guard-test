@@ -25,8 +25,8 @@ module Guard
     end
 
     def start
-      ::Guard::UI.info("Guard::Test #{TestVersion::VERSION} is running, with Test::Unit #{::Test::Unit::VERSION}!",
-                       :reset => true)
+      ::Guard::UI.info("Guard::Test #{TestVersion::VERSION} is running, " +
+                       "with Test::Unit #{::Test::Unit::VERSION}!", :reset => true)
       run_all if @options[:all_on_start]
     end
 

@@ -5,7 +5,7 @@ describe Guard::TestVersion do
 
   describe "run" do
     it "should be in early development stage" do
-      subject::VERSION.split('.')[0].to_i.should < 1
+      subject::VERSION.split('.')[0].to_i.should eq 1
     end
   end
 

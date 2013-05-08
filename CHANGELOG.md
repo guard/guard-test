@@ -1,8 +1,12 @@
 ## git master
 
+Nothing here.
+
+## 1.0.0 - May 8, 2013
+
 ### New feature
 
-- [#40][]: Add support for running tests via `spring`. ([@pgaertig][])
+- [#40][] & [#41][]: Add support for running tests via `spring`. ([@pgaertig][])
 
 ### Improvements
 
@@ -162,6 +166,8 @@
 [#34]: https://github.com/guard/guard/issues/34
 [#35]: https://github.com/guard/guard/issues/35
 [#38]: https://github.com/guard/guard/issues/38
+[#40]: https://github.com/guard/guard/issues/40
+[#41]: https://github.com/guard/guard/issues/41
 [@Ask11]: https://github.com/Ask11
 [@amiel]: https://github.com/amiel
 [@carlost]: https://github.com/carlost
@@ -172,5 +178,6 @@
 [@gregorymostizky]: https://github.com/gregorymostizky
 [@jgrau]: https://github.com/jgrau
 [@pastorius]: https://github.com/pastorius
+[@pgaertig]: https://github.com/pgaertig
 [@rymai]: https://github.com/rymai
 [@uk-ar]: https://github.com/uk-ar
