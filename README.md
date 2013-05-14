@@ -70,9 +70,9 @@ Please read the [Guard documentation](https://github.com/guard/guard#readme) for
 :bundler => false          # Whether or not to use `bundle exec` to run tests, default: true (if a you have a Gemfile in the current directory)
 :rubygems => true          # Whether or not to require rubygems (if bundler isn't used) when running the tests, default: false
 :rvm => ['1.9.3', 'jruby'] # Directly run your specs against multiple Rubies, default: nil
-:drb => true               # Run your tests with [`spork-testunit`](https://github.com/timcharper/spork-testunit), default: false
-:zeus => true              # Run your tests with [`zeus`](https://github.com/burke/zeus), default: false
 :spring => true            # Run your tests with [`spring`](https://github.com/jonleighton/spring), default: false
+:zeus => true              # Run your tests with [`zeus`](https://github.com/burke/zeus), default: false
+:drb => true               # Run your tests with [`spork-testunit`](https://github.com/timcharper/spork-testunit), default: false
 :include => ['foo', 'bar'] # Pass arbitrary include paths to the command that runs the tests, default: ['test']
 :cli => 'color'            # Pass arbitrary CLI arguments to the command that runs the tests, default: nil
 :all_on_start => false     # Run all tests on Guard startup, default: true.
@@ -81,15 +81,23 @@ Please read the [Guard documentation](https://github.com/guard/guard#readme) for
 :test_paths => ['spec']    # Array of paths that where are located the test files, default: ['test']
 ```
 
-#### `drb` option
+#### `spring` option
 
-When true, notifications are disabled. This might be fixed in future releases.
+**Important:** The `spring testunit` command of official version 0.0.8 of spring is running only file specified as first argument, other are ignored. Fortunately this issue has been fixed recently in spring master and all test files given in arguments are invoked, see [#102](https://github.com/jonleighton/spring/pull/102). However that has not been packaged yet, therefore while waiting for spring 0.0.9 release we recommend to use (in your Gemfile):
+
+```ruby
+gem 'spring', :github => 'jonleighton/spring'
+```
 
 #### `zeus` option
 
 When true, the `include` option is disregarded, as it does not work with `zeus`' test runner.
 
 The zeus server process (`zeus start`) must already be running in another terminal (you can use [guard-zeus](http://rubygems.org/gems/guard-zeus) for that).
+
+#### `drb` option
+
+When true, notifications are disabled. This might be fixed in future releases.
 
 ## Development
 
