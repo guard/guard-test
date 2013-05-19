@@ -4,7 +4,7 @@
 Test::Unit guard allows to automatically & intelligently launch tests when files are modified or created.
 
 * Compatible with Test::Unit 2.
-* Tested against Ruby 1.8.7, 1.9.2, 1.9.3, 2.0.0, REE, JRuby (1.8 & 1.9 mode) & Rubinius (1.8 & 1.9 mode).
+* Tested against Ruby 1.8.7, 1.9.2, 1.9.3, 2.0.0, Ruby head, REE, JRuby (1.8 mode, 1.9 mode & head) & Rubinius (1.8 mode, 1.9 mode & head).
 
 ## Install
 
