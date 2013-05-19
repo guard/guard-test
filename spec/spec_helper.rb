@@ -1,7 +1,8 @@
-# encoding: utf-8
+require 'coveralls'
+Coveralls.wear!
+
 require 'rspec'
 require 'guard/test'
-require 'guard/test/guard_test_runner'
 
 ENV["GUARD_ENV"] = 'test'
 
