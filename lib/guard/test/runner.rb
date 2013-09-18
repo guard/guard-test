@@ -10,7 +10,7 @@ module Guard
           :bundler  => File.exist?("#{Dir.pwd}/Gemfile"),
           :rubygems => false,
           :rvm      => [],
-          :include  => ['test'],
+          :include  => %w[lib:test],
           :drb      => false,
           :zeus     => false,
           :spring   => false,
@@ -90,13 +90,11 @@ module Guard
 
       def includes_and_requires(paths)
         parts = []
-        parts << Array(options[:include]).map { |path| "-I#{path}" } unless zeus? || spring?
+        parts << Array(options[:include]).map { |path| "-I\"#{path}\"" } unless zeus? || spring?
+        parts << "-I\"#{File.expand_path('..', __FILE__)}\""
         parts << '-r bundler/setup' if bundler?
-        parts << '-rubygems' if rubygems?
-        unless drb? || zeus? || spring?
-          parts << "-r #{File.expand_path("../guard_test_runner", __FILE__)}"
-          parts << "-e \"%w[#{paths.join(' ')}].each { |p| load p }\""
-        end
+        parts << '-r rubygems' if rubygems?
+        parts << '-r guard_test_runner' unless drb? || zeus? || spring?
 
         parts
       end
@@ -109,7 +107,7 @@ module Guard
         if drb? || zeus? || spring?
           []
         else
-          ['--use-color', '--runner=guard']
+          ['--use-color', '--runner=guard_test']
         end
       end
 

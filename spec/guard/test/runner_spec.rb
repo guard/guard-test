@@ -135,9 +135,9 @@ describe Guard::Test::Runner do
 
         it "runs without bundler" do
           subject.should_receive(:system).with(
-            "ruby -Itest -r #{@lib_path.join('guard/test/guard_test_runner')} " \
-            "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
-            "\"./test/succeeding_test.rb\" --use-color --runner=guard"
+            "ruby -I\"lib:test\" -I\"/Users/remy/Code/github/guard-test/lib/guard/test\" " \
+            "-r guard_test_runner " \
+            "\"./test/succeeding_test.rb\" --use-color --runner=guard_test"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -153,9 +153,9 @@ describe Guard::Test::Runner do
         it "runs with bundler" do
           subject.should_receive(:system).with(
             "bundle exec " \
-            "ruby -Itest -r bundler/setup -r #{@lib_path.join('guard/test/guard_test_runner')} " \
-            "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
-            "\"./test/succeeding_test.rb\" --use-color --runner=guard"
+            "ruby -I\"lib:test\" -I\"/Users/remy/Code/github/guard-test/lib/guard/test\" " \
+            "-r bundler/setup -r guard_test_runner " \
+            "\"./test/succeeding_test.rb\" --use-color --runner=guard_test"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -173,10 +173,9 @@ describe Guard::Test::Runner do
         it "runs with bundler" do
           subject.should_receive(:system).with(
             "bundle exec " \
-            "ruby -Itest -r bundler/setup " \
-            "-r #{@lib_path.join('guard/test/guard_test_runner')} " \
-            "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
-            "\"./test/succeeding_test.rb\" --use-color --runner=guard"
+            "ruby -I\"lib:test\" -I\"/Users/remy/Code/github/guard-test/lib/guard/test\" " \
+            "-r bundler/setup -r guard_test_runner " \
+            "\"./test/succeeding_test.rb\" --use-color --runner=guard_test"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -191,10 +190,9 @@ describe Guard::Test::Runner do
 
         it "runs without bundler" do
           subject.should_receive(:system).with(
-            "ruby -Itest " \
-            "-r #{@lib_path.join('guard/test/guard_test_runner')} " \
-            "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
-            "\"./test/succeeding_test.rb\" --use-color --runner=guard"
+            "ruby -I\"lib:test\" -I\"/Users/remy/Code/github/guard-test/lib/guard/test\" " \
+            "-r guard_test_runner " \
+            "\"./test/succeeding_test.rb\" --use-color --runner=guard_test"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -209,9 +207,9 @@ describe Guard::Test::Runner do
 
         it "runs without bundler and require rubygems" do
           subject.should_receive(:system).with(
-            "ruby -Itest -rubygems -r #{@lib_path.join('guard/test/guard_test_runner')} " \
-            "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
-            "\"./test/succeeding_test.rb\" --use-color --runner=guard"
+            "ruby -I\"lib:test\" -I\"/Users/remy/Code/github/guard-test/lib/guard/test\" " \
+            "-r rubygems -r guard_test_runner " \
+            "\"./test/succeeding_test.rb\" --use-color --runner=guard_test"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -235,10 +233,9 @@ describe Guard::Test::Runner do
         it "runs with the --runner options set to 'guard' and require default_guard_test_runner" do
           subject.should_receive(:system).with(
             "bundle exec " \
-            "ruby -Itest -r bundler/setup " \
-            "-r #{@lib_path.join('guard/test/guard_test_runner')} " \
-            "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
-            "\"./test/succeeding_test.rb\" --use-color --runner=guard"
+            "ruby -I\"lib:test\" -I\"/Users/remy/Code/github/guard-test/lib/guard/test\" " \
+            "-r bundler/setup -r guard_test_runner " \
+            "\"./test/succeeding_test.rb\" --use-color --runner=guard_test"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -255,10 +252,9 @@ describe Guard::Test::Runner do
           subject.should_receive(:system).with(
             "rvm 1.8.7,1.9.2 exec " \
             "bundle exec " \
-            "ruby -Itest -r bundler/setup " \
-            "-r #{@lib_path.join('guard/test/guard_test_runner')} " \
-            "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
-            "\"./test/succeeding_test.rb\" --use-color --runner=guard"
+            "ruby -I\"lib:test\" -I\"/Users/remy/Code/github/guard-test/lib/guard/test\" " \
+            "-r bundler/setup -r guard_test_runner " \
+            "\"./test/succeeding_test.rb\" --use-color --runner=guard_test"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -267,17 +263,16 @@ describe Guard::Test::Runner do
 
       context "when the :include option is given" do
         subject do
-          runner = described_class.new(:include => ['test', 'lib'])
+          runner = described_class.new(:include => %w[foo bar])
           runner
         end
 
         it "adds the appropriate -I options" do
           subject.should_receive(:system).with(
           "bundle exec " \
-          "ruby -Itest -Ilib -r bundler/setup " \
-          "-r #{@lib_path.join('guard/test/guard_test_runner')} " \
-          "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
-          "\"./test/succeeding_test.rb\" --use-color --runner=guard"
+          "ruby -I\"foo\" -I\"bar\" -I\"/Users/remy/Code/github/guard-test/lib/guard/test\" " \
+          "-r bundler/setup -r guard_test_runner " \
+          "\"./test/succeeding_test.rb\" --use-color --runner=guard_test"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -290,10 +285,10 @@ describe Guard::Test::Runner do
           end
 
           it "does not add a -I option" do
-            subject.should_not_receive(:system).with(/\-I/)
+            subject.should_not_receive(:system).with(/\-I\"foo\" \-I\"bar\"/)
 
             subject.run(["test/succeeding_test.rb"])
-          end 
+          end
         end
 
         context "when the :spring option is given" do
@@ -303,7 +298,7 @@ describe Guard::Test::Runner do
           end
 
           it "does not add a -I option" do
-            subject.should_not_receive(:system).with(/\-I/)
+            subject.should_not_receive(:system).with(/\-I\"foo\" \-I\"bar\"/)
 
             subject.run(["test/succeeding_test.rb"])
           end
@@ -320,10 +315,10 @@ describe Guard::Test::Runner do
         it "adds the cli option at the end of the command" do
           subject.should_receive(:system).with(
           "bundle exec " \
-          "ruby -Itest -r bundler/setup " \
-          "-r #{@lib_path.join('guard/test/guard_test_runner')} " \
-          "-e \"%w[test/succeeding_test.rb].each { |p| load p }\" " \
-          "\"./test/succeeding_test.rb\" --use-color --runner=guard --pretty"
+          "ruby -I\"lib:test\" -I\"/Users/remy/Code/github/guard-test/lib/guard/test\" " \
+          "-r bundler/setup " \
+          "-r guard_test_runner " \
+          "\"./test/succeeding_test.rb\" --use-color --runner=guard_test --pretty"
           )
 
           subject.run(["test/succeeding_test.rb"])
@@ -343,10 +338,10 @@ describe Guard::Test::Runner do
         runner = described_class.new
         runner.should_receive(:system).with(
           "bundle exec " \
-          "ruby -Itest -r bundler/setup " \
-          "-r #{@lib_path.join('guard/test/guard_test_runner')} " \
-          "-e \"%w[test/error/error_test.rb test/unit/failing_test.rb].each { |p| load p }\" " \
-          "\"./test/error/error_test.rb\" \"./test/unit/failing_test.rb\" --use-color --runner=guard"
+          "ruby -I\"lib:test\" -I\"/Users/remy/Code/github/guard-test/lib/guard/test\" " \
+          "-r bundler/setup " \
+          "-r guard_test_runner " \
+          "\"./test/error/error_test.rb\" \"./test/unit/failing_test.rb\" --use-color --runner=guard_test"
         )
 
         runner.run(["test/error/error_test.rb", "test/unit/failing_test.rb"])

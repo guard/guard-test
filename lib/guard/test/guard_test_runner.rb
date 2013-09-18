@@ -1,8 +1,6 @@
 # encoding: utf-8
-$:.push File.expand_path('../', __FILE__)
-
 require 'test/unit/ui/console/testrunner'
-require 'notifier'
+require 'guard/test/notifier'
 
 # Thanks to Adam Sanderson for the really good starting point:
 # http://endofline.wordpress.com/2008/02/11/a-custom-testrunner-to-scratch-an-itch/
@@ -36,4 +34,4 @@ class GuardTestRunner < ::Test::Unit::UI::Console::TestRunner
 
 end
 
-Test::Unit::AutoRunner.register_runner(:guard) { |r| GuardTestRunner }
+Test::Unit::AutoRunner.register_runner(:guard_test) { |r| GuardTestRunner }

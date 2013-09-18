@@ -2,7 +2,9 @@
 
 [Full Changelog](https://github.com/guard/guard-minitest/compare/v1.0.0...master)
 
-Nothing here.
+### Improvement
+
+* #44 Require the `lib` directory by default (also prevent an issue with simplecov). ([@rymai][])
 
 ## 1.0.0 - May 8, 2013
 
