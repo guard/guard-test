@@ -1,7 +1,8 @@
 # Guard::Test
+
 [![Gem Version](https://badge.fury.io/rb/guard-test.png)](http://badge.fury.io/rb/guard-test) [![Build Status](https://travis-ci.org/guard/guard-test.png?branch=master)](https://travis-ci.org/guard/guard-test) [![Dependency Status](https://gemnasium.com/guard/guard-test.png)](https://gemnasium.com/guard/guard-test) [![Code Climate](https://codeclimate.com/github/guard/guard-test.png)](https://codeclimate.com/github/guard/guard-test) [![Coverage Status](https://coveralls.io/repos/guard/guard-test/badge.png?branch=master)](https://coveralls.io/r/guard/guard-test)
 
-Test::Unit Guard plugin allows to automatically & intelligently launch tests when files are modified or created.
+Guard::Test allows to automatically & intelligently launch tests when files are modified or created.
 
 * Compatible with Test::Unit 2.
 * Tested against Ruby 1.9.3, 2.0.0, Rubinius & JRuby (1.9 mode only).
