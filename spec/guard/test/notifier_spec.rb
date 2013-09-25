@@ -38,6 +38,6 @@ def create_mock_result(options={})
   options = default.merge(options)
   # passed? if no failures or errors
   options[:passed?] = (0 == options[:failure_count] && 0 == options[:error_count])
-  mock('result', options)
+  double('result', options)
 end
 

@@ -1,11 +1,11 @@
 # encoding: utf-8
 require 'rubygems'
 require 'guard'
-require 'guard/guard'
+require 'guard/plugin'
 require 'guard/notifier'
 
 module Guard
-  class Test < Guard
+  class Test < Plugin
     module Notifier
 
       class << self
