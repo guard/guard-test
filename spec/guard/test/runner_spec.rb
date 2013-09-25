@@ -19,7 +19,7 @@ describe Guard::Test::Runner do
       describe ":bundler option" do
         context "with the :drb option set to true" do
           it "uses drb but not bundler" do
-            runner = described_class.new(:drb => true, :bundler => true)
+            runner = described_class.new(drb: true, bundler: true)
             runner.should be_drb
             runner.should_not be_bundler
           end
@@ -27,7 +27,7 @@ describe Guard::Test::Runner do
 
         context "with the :drb option set to false" do
           it "uses bundler but not drb" do
-            runner = described_class.new(:drb => false, :bundler => true)
+            runner = described_class.new(drb: false, bundler: true)
             runner.should_not be_drb
             runner.should be_bundler
           end
@@ -35,7 +35,7 @@ describe Guard::Test::Runner do
 
         context "with the :zeus option set to true" do
           it "uses zeus but not bundler" do
-            runner = described_class.new(:zeus => true, :bundler => true)
+            runner = described_class.new(zeus: true, bundler: true)
             runner.should be_zeus
             runner.should_not be_bundler
           end
@@ -43,7 +43,7 @@ describe Guard::Test::Runner do
 
         context "with the :zeus option set to false" do
           it "uses bundler but not zeus" do
-            runner = described_class.new(:zeus => false, :bundler => true)
+            runner = described_class.new(zeus: false, bundler: true)
             runner.should_not be_zeus
             runner.should be_bundler
           end
@@ -51,7 +51,7 @@ describe Guard::Test::Runner do
 
         context "with the :spring option set to true" do
           it "uses spring but not bundler" do
-            runner = described_class.new(:spring => true, :bundler => true)
+            runner = described_class.new(spring: true, bundler: true)
             runner.should be_spring
             runner.should_not be_bundler
           end
@@ -59,7 +59,7 @@ describe Guard::Test::Runner do
 
         context "with the :spring option set to false" do
           it "uses bundler but not spring" do
-            runner = described_class.new(:spring => false, :bundler => true)
+            runner = described_class.new(spring: false, bundler: true)
             runner.should_not be_spring
             runner.should be_bundler
           end
@@ -69,7 +69,7 @@ describe Guard::Test::Runner do
       describe ":rubygems option" do
         context "with the :bundler option set to true" do
           it "uses bundler but not rubygems" do
-            runner = described_class.new(:bundler => true, :rubygems => true)
+            runner = described_class.new(bundler: true, rubygems: true)
             runner.should be_bundler
             runner.should_not be_rubygems
           end
@@ -77,7 +77,7 @@ describe Guard::Test::Runner do
 
         context "with the :bundler option set to false" do
           it "uses rubygems but not bundler" do
-            runner = described_class.new(:bundler => false, :rubygems => true)
+            runner = described_class.new(bundler: false, rubygems: true)
             runner.should_not be_bundler
             runner.should be_rubygems
           end
@@ -86,35 +86,35 @@ describe Guard::Test::Runner do
 
       describe ":rvm option" do
         it "sets the option in the instance @options hash" do
-          runner = described_class.new(:rvm => '1.9.2')
+          runner = described_class.new(rvm: '1.9.2')
           runner.instance_variable_get(:@options)[:rvm].should eq '1.9.2'
         end
       end
 
       describe ":drb option" do
         it "uses drb" do
-          runner = described_class.new(:drb => true)
+          runner = described_class.new(drb: true)
           runner.should be_drb
         end
       end
 
       describe ":zeus option" do
         it "uses zeus" do
-          runner = described_class.new(:zeus => true)
+          runner = described_class.new(zeus: true)
           runner.should be_zeus
         end
       end
 
       describe ":spring option" do
         it "uses spring" do
-          runner = described_class.new(:spring => true)
+          runner = described_class.new(spring: true)
           runner.should be_spring
         end
       end
 
       describe ":cli option" do
         it "sets the option in the instance @options hash" do
-          runner = described_class.new(:cli => '--show-detail-immediately')
+          runner = described_class.new(cli: '--show-detail-immediately')
           runner.instance_variable_get(:@options)[:cli].should eq '--show-detail-immediately'
         end
       end
@@ -146,7 +146,7 @@ describe Guard::Test::Runner do
 
       context "when the :bundler option set to true on initialize" do
         subject do
-          runner = described_class.new(:bundler => true)
+          runner = described_class.new(bundler: true)
           runner
         end
 
@@ -184,7 +184,7 @@ describe Guard::Test::Runner do
 
       context "when the :bundler option set to false on initialize" do
         subject do
-          runner = described_class.new(:bundler => false)
+          runner = described_class.new(bundler: false)
           runner
         end
 
@@ -201,7 +201,7 @@ describe Guard::Test::Runner do
 
       context "when the :rubygems option set to true (and :bundler to false) on initialize" do
         subject do
-          runner = described_class.new(:bundler => false, :rubygems => true)
+          runner = described_class.new(bundler: false, rubygems: true)
           runner
         end
 
@@ -224,7 +224,7 @@ describe Guard::Test::Runner do
 
         it "displays message with the tests that will be fired" do
           Guard::UI.should_receive(:info).with(
-            "Running: test/unit/error/error_test.rb test/unit/failing_test.rb", :reset => true
+            "Running: test/unit/error/error_test.rb test/unit/failing_test.rb", reset: true
           )
 
           dev_null { subject.run(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]) }
@@ -244,7 +244,7 @@ describe Guard::Test::Runner do
 
       context "when the :rvm option is given" do
         subject do
-          runner = described_class.new(:rvm => ['1.8.7', '1.9.2'])
+          runner = described_class.new(rvm: ['1.8.7', '1.9.2'])
           runner
         end
 
@@ -263,7 +263,7 @@ describe Guard::Test::Runner do
 
       context "when the :include option is given" do
         subject do
-          runner = described_class.new(:include => %w[foo bar])
+          runner = described_class.new(include: %w[foo bar])
           runner
         end
 
@@ -280,7 +280,7 @@ describe Guard::Test::Runner do
 
         context "when the :zeus option is given" do
           subject do
-            runner = described_class.new(:zeus => true)
+            runner = described_class.new(zeus: true)
             runner
           end
 
@@ -293,7 +293,7 @@ describe Guard::Test::Runner do
 
         context "when the :spring option is given" do
           subject do
-            runner = described_class.new(:spring => true)
+            runner = described_class.new(spring: true)
             runner
           end
 
@@ -308,7 +308,7 @@ describe Guard::Test::Runner do
 
       context "when the :cli option is given" do
         subject do
-          runner = described_class.new(:cli => '--pretty')
+          runner = described_class.new(cli: '--pretty')
           runner
         end
 
@@ -327,10 +327,10 @@ describe Guard::Test::Runner do
 
       context "when the :message option is given" do
         it "displays it" do
-          Guard::UI.should_receive(:info).with("That test is failing!!!", :reset => true)
+          Guard::UI.should_receive(:info).with("That test is failing!!!", reset: true)
           runner = described_class.new
 
-          dev_null { runner.run(["test/unit/failing_test.rb"], :message => "That test is failing!!!") }
+          dev_null { runner.run(["test/unit/failing_test.rb"], message: "That test is failing!!!") }
         end
       end
 

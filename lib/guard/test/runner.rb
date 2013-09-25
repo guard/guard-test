@@ -7,21 +7,21 @@ module Guard
 
       def initialize(opts = {})
         @options = {
-          :bundler  => File.exist?("#{Dir.pwd}/Gemfile"),
-          :rubygems => false,
-          :rvm      => [],
-          :include  => %w[lib:test],
-          :drb      => false,
-          :zeus     => false,
-          :spring   => false,
-          :cli      => ''
+          bundler:  File.exist?("#{Dir.pwd}/Gemfile"),
+          rubygems: false,
+          rvm:      [],
+          include:  %w[lib:test],
+          drb:      false,
+          zeus:     false,
+          spring:   false,
+          cli:      ''
         }.merge(opts)
       end
 
       def run(paths, opts = {})
         return true if paths.empty?
 
-        ::Guard::UI.info(opts[:message] || "Running: #{paths.join(' ')}", :reset => true)
+        ::Guard::UI.info(opts[:message] || "Running: #{paths.join(' ')}", reset: true)
 
         system(test_unit_command(paths))
       end

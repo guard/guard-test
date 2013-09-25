@@ -13,9 +13,9 @@ describe Guard::Test do
 
     context "with options given" do
       it "passes fiven options to Guard::Test::Runner#new" do
-        Guard::Test::Runner.should_receive(:new).with(:rvm => ['1.8.7', '1.9.2'], :bundler => false).and_return(mock('runner', :bundler? => true))
+        Guard::Test::Runner.should_receive(:new).with(rvm: ['1.8.7', '1.9.2'], bundler: false).and_return(mock('runner', bundler?: true))
 
-        described_class.new([], :rvm => ['1.8.7', '1.9.2'], :bundler => false)
+        described_class.new(rvm: ['1.8.7', '1.9.2'], bundler: false)
       end
     end
   end
@@ -23,7 +23,7 @@ describe Guard::Test do
   describe "#start" do
     context ":all_on_start option not specified" do
       it "displays a start message" do
-        ::Guard::UI.should_receive(:info).with("Guard::Test #{Guard::TestVersion::VERSION} is running, with Test::Unit #{::Test::Unit::VERSION}!", :reset => true)
+        ::Guard::UI.should_receive(:info).with("Guard::Test #{Guard::TestVersion::VERSION} is running, with Test::Unit #{::Test::Unit::VERSION}!", reset: true)
         subject.stub(:run_all)
 
         subject.start
@@ -37,7 +37,7 @@ describe Guard::Test do
     end
 
     context ":all_on_start option is false" do
-      subject { described_class.new([], :all_on_start => false) }
+      subject { described_class.new(all_on_start: false) }
 
       it "doesn't call #run_all" do
         subject.should_not_receive(:run_all)
@@ -50,13 +50,13 @@ describe Guard::Test do
 
   describe "#run_all" do
     it "runs all tests specified by the default :test_paths with a message" do
-      runner.should_receive(:run).with(["test/succeeding_test.rb", "test/succeeding_tests.rb", "test/test_old.rb", "test/unit/error/error_test.rb",  "test/unit/failing_test.rb"],:message => "Running all tests"
+      runner.should_receive(:run).with(["test/succeeding_test.rb", "test/succeeding_tests.rb", "test/test_old.rb", "test/unit/error/error_test.rb",  "test/unit/failing_test.rb"],message: "Running all tests"
       )
       subject.run_all
     end
 
     context "when :test_paths option specified" do
-      subject { described_class.new([], :test_paths => ["test/unit/error"]) }
+      subject { described_class.new(test_paths: ["test/unit/error"]) }
 
       it "runs all tests in specific directory" do
         runner.should_receive(:run).with(["test/unit/error/error_test.rb"], anything)
@@ -68,7 +68,7 @@ describe Guard::Test do
       runner.should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(false)
       subject.run_on_changes(["test/unit"])
 
-      runner.should_receive(:run).with(["test/succeeding_test.rb", "test/succeeding_tests.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests").and_return(true)
+      runner.should_receive(:run).with(["test/succeeding_test.rb", "test/succeeding_tests.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], message: "Running all tests").and_return(true)
       subject.run_all
 
       runner.should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(true)
@@ -90,7 +90,7 @@ describe Guard::Test do
       subject.reload
 
       runner.should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(true)
-      runner.should_receive(:run).with(["test/succeeding_test.rb", "test/succeeding_tests.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests").and_return(true)
+      runner.should_receive(:run).with(["test/succeeding_test.rb", "test/succeeding_tests.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], message: "Running all tests").and_return(true)
       subject.run_on_changes(["test/unit"])
     end
   end
@@ -116,7 +116,7 @@ describe Guard::Test do
 
       it "calls #run_all by default if the changed specs pass after failing" do
         runner.should_receive(:run).with(["test/succeeding_test.rb"]).and_return(false, true)
-        runner.should_receive(:run).with(["test/succeeding_test.rb", "test/succeeding_tests.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests")
+        runner.should_receive(:run).with(["test/succeeding_test.rb", "test/succeeding_tests.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], message: "Running all tests")
 
         subject.run_on_changes(["test/succeeding_test.rb"])
         subject.run_on_changes(["test/succeeding_test.rb"])
@@ -124,17 +124,17 @@ describe Guard::Test do
 
       it "doesn't call #run_all if the changed specs pass without failing" do
         runner.should_receive(:run).with(["test/succeeding_test.rb"]).and_return(true)
-        runner.should_not_receive(:run).with(["test/succeeding_test.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests")
+        runner.should_not_receive(:run).with(["test/succeeding_test.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], message: "Running all tests")
         subject.run_on_changes(["test/succeeding_test.rb"])
       end
     end
 
     context ":all_after_pass option is false" do
-      subject { described_class.new([], :all_after_pass => false) }
+      subject { described_class.new(all_after_pass: false) }
 
       it "doesn't call #run_all if the changed specs pass after failing but the :all_after_pass option is false" do
         runner.should_receive(:run).with(["test/succeeding_test.rb"]).and_return(false, true)
-        runner.should_not_receive(:run).with(["test/succeeding_test.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], :message => "Running all tests")
+        runner.should_not_receive(:run).with(["test/succeeding_test.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], message: "Running all tests")
 
         subject.run_on_changes(["test/succeeding_test.rb"])
         subject.run_on_changes(["test/succeeding_test.rb"])
@@ -142,7 +142,7 @@ describe Guard::Test do
     end
 
     context ":keep_failed option not specified" do
-      subject { described_class.new([], :all_after_pass => false) }
+      subject { described_class.new(all_after_pass: false) }
 
       it "keeps failed specs and rerun later by default" do
         runner.should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(false)
@@ -157,7 +157,7 @@ describe Guard::Test do
     end
 
     context ":keep_failed option is false" do
-      subject { described_class.new([], :all_after_pass => false, :keep_failed => false) }
+      subject { described_class.new(all_after_pass: false, keep_failed: false) }
 
       it "doesn't keep failed specs" do
         runner.should_receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(false)

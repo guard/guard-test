@@ -1,22 +1,22 @@
 # encoding: utf-8
 require 'guard'
-require 'guard/guard'
+require 'guard/plugin'
 require 'guard/test/version'
 require 'test/unit/version'
 
 module Guard
-  class Test < Guard
+  class Test < Plugin
 
     require 'guard/test/runner'
     require 'guard/test/inspector'
 
-    def initialize(watchers = [], options = {})
+    def initialize(options = {})
       super
       @options = {
-        :all_on_start   => true,
-        :all_after_pass => true,
-        :keep_failed    => true,
-        :test_paths     => ['test']
+        all_on_start:   true,
+        all_after_pass: true,
+        keep_failed:    true,
+        test_paths:     ['test']
       }.update(options)
       @last_failed  = false
       @failed_paths = []
@@ -26,14 +26,14 @@ module Guard
 
     def start
       ::Guard::UI.info("Guard::Test #{TestVersion::VERSION} is running, " +
-                       "with Test::Unit #{::Test::Unit::VERSION}!", :reset => true)
+                       "with Test::Unit #{::Test::Unit::VERSION}!", reset: true)
       run_all if @options[:all_on_start]
     end
 
     def run_all
       Inspector.test_paths = @options[:test_paths]
       test_paths = @options[:test_paths].clone # because clean - cleaning variable
-      passed = @runner.run(Inspector.clean(test_paths), :message => 'Running all tests')
+      passed = @runner.run(Inspector.clean(test_paths), message: 'Running all tests')
 
       @failed_paths = [] if passed
       @last_failed  = !passed
