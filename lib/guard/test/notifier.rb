@@ -1,19 +1,19 @@
 # encoding: utf-8
 require 'rubygems'
 require 'guard'
-require 'guard/guard'
+require 'guard/plugin'
 require 'guard/notifier'
 
 module Guard
-  class Test < Guard
+  class Test < Plugin
     module Notifier
 
       class << self
         def notify(result, elapsed_time)
           ::Guard::Notifier.notify(
             summary(result) + "\n\n" + duration(elapsed_time),
-            :title => "Test::Unit results",
-            :image => result.passed? ? :success : :failed
+            title: "Test::Unit results",
+            image: result.passed? ? :success : :failed
           )
         end
 
