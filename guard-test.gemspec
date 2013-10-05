@@ -10,12 +10,12 @@ Gem::Specification.new do |s|
   s.author      = 'Rémy Coutable'
   s.email       = 'remy@rymai.me'
   s.homepage    = 'https://rubygems.org/gems/guard-test'
-  s.summary     = 'Guard gem for Test::Unit 2'
+  s.summary     = 'Guard plugin for Test::Unit 2'
   s.description = 'Guard::Test automatically run your tests on file modification.'
 
-  s.required_ruby_version = '>= 1.8.7'
+  s.required_ruby_version = '>= 1.9.2'
 
-  s.add_runtime_dependency 'guard',     '~> 1.8'
+  s.add_runtime_dependency 'guard',     '~> 2.0'
   s.add_runtime_dependency 'test-unit', '~> 2.2'
 
   s.add_development_dependency 'bundler'

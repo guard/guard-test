@@ -1,10 +1,11 @@
 # Guard::Test
+
 [![Gem Version](https://badge.fury.io/rb/guard-test.png)](http://badge.fury.io/rb/guard-test) [![Build Status](https://travis-ci.org/guard/guard-test.png?branch=master)](https://travis-ci.org/guard/guard-test) [![Dependency Status](https://gemnasium.com/guard/guard-test.png)](https://gemnasium.com/guard/guard-test) [![Code Climate](https://codeclimate.com/github/guard/guard-test.png)](https://codeclimate.com/github/guard/guard-test) [![Coverage Status](https://coveralls.io/repos/guard/guard-test/badge.png?branch=master)](https://coveralls.io/r/guard/guard-test)
 
-Test::Unit guard allows to automatically & intelligently launch tests when files are modified or created.
+Guard::Test allows to automatically & intelligently launch tests when files are modified or created.
 
 * Compatible with Test::Unit 2.
-* Tested against Ruby 1.8.7, 1.9.3, 2.0.0, JRuby (1.8 mode & 1.9 mode) & Rubinius (1.8 mode & 1.9 mode).
+* Tested against Ruby 1.9.3, 2.0.0, Rubinius & JRuby (1.9 mode only).
 
 ## Install
 
@@ -62,23 +63,23 @@ Please read the [Guard documentation](https://github.com/guard/guard#readme) for
 
 ## Options
 
-**Deprecation notice:** The `:runner` option is deprecated. If you had set it to "fastfail", it is now the default in test-unit 2, but if you want the opposite, you can pass the `:cli => '--no-show-detail-immediately'` option instead.
+**Deprecation notice:** The `:runner` option is deprecated. If you had set it to "fastfail", it is now the default in test-unit 2, but if you want the opposite, you can pass the `cli: '--no-show-detail-immediately'` option instead.
 
 ### Available options
 
 ``` ruby
-:bundler => false          # Whether or not to use `bundle exec` to run tests, default: true (if a you have a Gemfile in the current directory)
-:rubygems => true          # Whether or not to require rubygems (if bundler isn't used) when running the tests, default: false
-:rvm => ['1.9.3', 'jruby'] # Directly run your specs against multiple Rubies, default: nil
-:spring => true            # Run your tests with [`spring`](https://github.com/jonleighton/spring), default: false
-:zeus => true              # Run your tests with [`zeus`](https://github.com/burke/zeus), default: false
-:drb => true               # Run your tests with [`spork-testunit`](https://github.com/timcharper/spork-testunit), default: false
-:include => ['foo', 'bar'] # Pass arbitrary include paths to the command that runs the tests, default: ['test']
-:cli => 'color'            # Pass arbitrary CLI arguments to the command that runs the tests, default: nil
-:all_on_start => false     # Run all tests on Guard startup, default: true.
-:all_after_pass => false   # Run all tests after the current run tests pass, default: true
-:keep_failed => false      # Re-run failing tests until they pass, default: true
-:test_paths => ['spec']    # Array of paths that where are located the test files, default: ['test']
+bundler: false          # Whether or not to use `bundle exec` to run tests, default: true (if a you have a Gemfile in the current directory)
+rubygems: true          # Whether or not to require rubygems (if bundler isn't used) when running the tests, default: false
+rvm: ['1.9.3', 'jruby'] # Directly run your specs against multiple Rubies, default: nil
+spring: true            # Run your tests with [`spring`](https://github.com/jonleighton/spring), default: false
+zeus: true              # Run your tests with [`zeus`](https://github.com/burke/zeus), default: false
+drb: true               # Run your tests with [`spork-testunit`](https://github.com/timcharper/spork-testunit), default: false
+include: ['foo', 'bar'] # Pass arbitrary include paths to the command that runs the tests, default: ['test']
+cli: 'color'            # Pass arbitrary CLI arguments to the command that runs the tests, default: nil
+all_on_start: false     # Run all tests on Guard startup, default: true.
+all_after_pass: false   # Run all tests after the current run tests pass, default: true
+keep_failed: false      # Re-run failing tests until they pass, default: true
+test_paths: ['spec']    # Array of paths that where are located the test files, default: ['test']
 ```
 
 #### `spring` option
@@ -86,7 +87,7 @@ Please read the [Guard documentation](https://github.com/guard/guard#readme) for
 **Important:** The `spring testunit` command of official version 0.0.8 of spring is running only file specified as first argument, other are ignored. Fortunately this issue has been fixed recently in spring master and all test files given in arguments are invoked, see [#102](https://github.com/jonleighton/spring/pull/102). However that has not been packaged yet, therefore while waiting for spring 0.0.9 release we recommend to use (in your Gemfile):
 
 ```ruby
-gem 'spring', :github => 'jonleighton/spring'
+gem 'spring', github: 'jonleighton/spring'
 ```
 
 #### `zeus` option
@@ -110,7 +111,6 @@ Pull requests are very welcome! Please try to follow these simple rules if appli
 * Make sure your patches are well tested. All specs must pass on [Travis CI](https://travis-ci.org/guard/guard-test).
 * Update the [Yard](http://yardoc.org/) documentation.
 * Update the [README](https://github.com/guard/guard-test/blob/master/README.md).
-* Update the [CHANGELOG](https://github.com/guard/guard-test/blob/master/CHANGELOG.md) for noteworthy changes (don't forget to run `bundle exec pimpmychangelog` and watch the magic happen)!
 * Please **do not change** the version number.
 
 For questions please join us in our [Google group](http://groups.google.com/group/guard-dev) or on
@@ -122,4 +122,4 @@ For questions please join us in our [Google group](http://groups.google.com/grou
 
 ## Contributors
 
-https://github.com/guard/guard-test/contributors
+[https://github.com/guard/guard-test/graphs/contributors](https://github.com/guard/guard-test/graphs/contributors)

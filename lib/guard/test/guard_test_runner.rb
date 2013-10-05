@@ -11,8 +11,8 @@ class GuardTestRunner < ::Test::Unit::UI::Console::TestRunner
 
   def initialize(suite, options = {})
     super
-    @color_scheme["pass"]    = ::Test::Unit::Color.new("green", :foreground => true, :bold => true)
-    @color_scheme["failure"] = ::Test::Unit::Color.new("red", :foreground => true, :bold => true)
+    @color_scheme["pass"]    = ::Test::Unit::Color.new("green", foreground: true, bold: true)
+    @color_scheme["failure"] = ::Test::Unit::Color.new("red", foreground: true, bold: true)
   end
 
   protected

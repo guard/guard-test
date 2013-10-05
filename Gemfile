@@ -7,7 +7,6 @@ gem 'rake'
 group :development do
   gem 'ruby_gntp'
   gem 'guard-rspec'
-  gem 'pimpmychangelog'
 end
 
 # The test group will be
@@ -15,5 +14,5 @@ end
 #
 group :test do
   gem 'rspec'
-  gem 'coveralls', :require => false
+  gem 'coveralls', require: false
 end
