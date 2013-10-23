@@ -122,6 +122,8 @@ describe Guard::Test::Runner do
   end
 
   describe "#run" do
+    let(:guard_test_runner_require) { "-r #{@lib_path.join('guard/test/guard_test_runner')} " }
+
     context "in empty folder" do
       before(:each) do
         Dir.stub(:pwd).and_return("empty")
@@ -135,8 +137,7 @@ describe Guard::Test::Runner do
 
         it "runs without bundler" do
           subject.should_receive(:system).with(
-            "ruby -I\"lib:test\" -I\"#{@lib_path.join('guard/test')}\" " \
-            "-r guard_test_runner " \
+            "ruby -I\"lib:test\" #{guard_test_runner_require}" \
             "\"./test/succeeding_test.rb\" --use-color --runner=guard_test"
           )
 
@@ -153,8 +154,7 @@ describe Guard::Test::Runner do
         it "runs with bundler" do
           subject.should_receive(:system).with(
             "bundle exec " \
-            "ruby -I\"lib:test\" -I\"#{@lib_path.join('guard/test')}\" " \
-            "-r bundler/setup -r guard_test_runner " \
+            "ruby -I\"lib:test\" -r bundler/setup #{guard_test_runner_require}" \
             "\"./test/succeeding_test.rb\" --use-color --runner=guard_test"
           )
 
@@ -173,8 +173,7 @@ describe Guard::Test::Runner do
         it "runs with bundler" do
           subject.should_receive(:system).with(
             "bundle exec " \
-            "ruby -I\"lib:test\" -I\"#{@lib_path.join('guard/test')}\" " \
-            "-r bundler/setup -r guard_test_runner " \
+            "ruby -I\"lib:test\" -r bundler/setup #{guard_test_runner_require}" \
             "\"./test/succeeding_test.rb\" --use-color --runner=guard_test"
           )
 
@@ -190,8 +189,7 @@ describe Guard::Test::Runner do
 
         it "runs without bundler" do
           subject.should_receive(:system).with(
-            "ruby -I\"lib:test\" -I\"#{@lib_path.join('guard/test')}\" " \
-            "-r guard_test_runner " \
+            "ruby -I\"lib:test\" #{guard_test_runner_require}" \
             "\"./test/succeeding_test.rb\" --use-color --runner=guard_test"
           )
 
@@ -207,8 +205,7 @@ describe Guard::Test::Runner do
 
         it "runs without bundler and require rubygems" do
           subject.should_receive(:system).with(
-            "ruby -I\"lib:test\" -I\"#{@lib_path.join('guard/test')}\" " \
-            "-r rubygems -r guard_test_runner " \
+            "ruby -I\"lib:test\" -r rubygems #{guard_test_runner_require}" \
             "\"./test/succeeding_test.rb\" --use-color --runner=guard_test"
           )
 
@@ -233,8 +230,7 @@ describe Guard::Test::Runner do
         it "runs with the --runner options set to 'guard' and require default_guard_test_runner" do
           subject.should_receive(:system).with(
             "bundle exec " \
-            "ruby -I\"lib:test\" -I\"#{@lib_path.join('guard/test')}\" " \
-            "-r bundler/setup -r guard_test_runner " \
+            "ruby -I\"lib:test\" -r bundler/setup #{guard_test_runner_require}" \
             "\"./test/succeeding_test.rb\" --use-color --runner=guard_test"
           )
 
@@ -252,8 +248,7 @@ describe Guard::Test::Runner do
           subject.should_receive(:system).with(
             "rvm 1.8.7,1.9.2 exec " \
             "bundle exec " \
-            "ruby -I\"lib:test\" -I\"#{@lib_path.join('guard/test')}\" " \
-            "-r bundler/setup -r guard_test_runner " \
+            "ruby -I\"lib:test\" -r bundler/setup #{guard_test_runner_require}" \
             "\"./test/succeeding_test.rb\" --use-color --runner=guard_test"
           )
 
@@ -270,8 +265,7 @@ describe Guard::Test::Runner do
         it "adds the appropriate -I options" do
           subject.should_receive(:system).with(
           "bundle exec " \
-          "ruby -I\"foo\" -I\"bar\" -I\"#{@lib_path.join('guard/test')}\" " \
-          "-r bundler/setup -r guard_test_runner " \
+          "ruby -I\"foo\" -I\"bar\" -r bundler/setup #{guard_test_runner_require}" \
           "\"./test/succeeding_test.rb\" --use-color --runner=guard_test"
           )
 
@@ -315,9 +309,7 @@ describe Guard::Test::Runner do
         it "adds the cli option at the end of the command" do
           subject.should_receive(:system).with(
           "bundle exec " \
-          "ruby -I\"lib:test\" -I\"#{@lib_path.join('guard/test')}\" " \
-          "-r bundler/setup " \
-          "-r guard_test_runner " \
+          "ruby -I\"lib:test\" -r bundler/setup #{guard_test_runner_require}" \
           "\"./test/succeeding_test.rb\" --use-color --runner=guard_test --pretty"
           )
 
@@ -338,9 +330,7 @@ describe Guard::Test::Runner do
         runner = described_class.new
         runner.should_receive(:system).with(
           "bundle exec " \
-          "ruby -I\"lib:test\" -I\"#{@lib_path.join('guard/test')}\" " \
-          "-r bundler/setup " \
-          "-r guard_test_runner " \
+          "ruby -I\"lib:test\" -r bundler/setup #{guard_test_runner_require}" \
           "\"./test/error/error_test.rb\" \"./test/unit/failing_test.rb\" --use-color --runner=guard_test"
         )
 
