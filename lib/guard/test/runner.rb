@@ -91,10 +91,9 @@ module Guard
       def includes_and_requires(paths)
         parts = []
         parts << Array(options[:include]).map { |path| "-I\"#{path}\"" } unless zeus? || spring?
-        parts << "-I\"#{File.expand_path('..', __FILE__)}\""
         parts << '-r bundler/setup' if bundler?
         parts << '-r rubygems' if rubygems?
-        parts << '-r guard_test_runner' unless drb? || zeus? || spring?
+        parts << "-r #{File.expand_path("../guard_test_runner", __FILE__)}" unless drb? || zeus? || spring?
 
         parts
       end
