@@ -70,7 +70,6 @@ module Guard
       def test_unit_command(paths)
         cmd_parts = executables
         cmd_parts.concat(includes_and_requires(paths))
-        cmd_parts.concat(test_files_list(paths))
         cmd_parts.concat(command_options)
         cmd_parts << options[:cli]
 
@@ -93,20 +92,20 @@ module Guard
         parts << Array(options[:include]).map { |path| "-I\"#{path}\"" } unless zeus? || spring?
         parts << '-r bundler/setup' if bundler?
         parts << '-r rubygems' if rubygems?
-        parts << "-r #{File.expand_path("../guard_test_runner", __FILE__)}" unless drb? || zeus? || spring?
+
+        unless drb? || zeus? || spring?
+          parts << "-r #{File.expand_path("../guard_test_runner", __FILE__)}"
+          parts << "-e \"%w[#{paths.join(' ')}].each { |p| load p }\""
+        end
 
         parts
-      end
-
-      def test_files_list(paths)
-        paths.map { |path| "\"./#{path}\"" }
       end
 
       def command_options
         if drb? || zeus? || spring?
           []
         else
-          ['--use-color', '--runner=guard_test']
+          ['--', '--use-color', '--runner=guard_test']
         end
       end
 
