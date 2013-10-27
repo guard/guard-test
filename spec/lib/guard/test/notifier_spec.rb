@@ -9,7 +9,7 @@ describe Guard::Test::Notifier do
     context "no failure, no error" do
       it "displays a 'success' image" do
         result = create_mock_result
-        Guard::Notifier.should_receive(:notify).with(anything, title: "Test::Unit results", image: :success)
+        expect(Guard::Notifier).to receive(:notify).with(anything, title: "Test::Unit results", image: :success)
         described_class.notify(result, 0)
       end
     end
@@ -17,7 +17,7 @@ describe Guard::Test::Notifier do
     context "1 failure" do
       it "displays a 'failed' image" do
         result = create_mock_result(failure_count: 1)
-        Guard::Notifier.should_receive(:notify).with(anything, title: "Test::Unit results", image: :failed)
+        expect(Guard::Notifier).to receive(:notify).with(anything, title: "Test::Unit results", image: :failed)
         described_class.notify(result, 0)
       end
     end
@@ -25,7 +25,7 @@ describe Guard::Test::Notifier do
     context "1 error" do
       it "displays a 'failed' image" do
         result = create_mock_result(error_count: 1)
-        Guard::Notifier.should_receive(:notify).with(anything, title: "Test::Unit results", image: :failed)
+        expect(Guard::Notifier).to receive(:notify).with(anything, title: "Test::Unit results", image: :failed)
         described_class.notify(result, 0)
       end
     end

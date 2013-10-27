@@ -1,1 +1,1 @@
-require 'rubygems'
+require 'test/unit/autorunner'

@@ -1,18 +1,20 @@
-ENV['GUARD_ENV'] = 'test'
+require 'rspec'
+require 'guard/test'
 
 if ENV['CI']
   require 'coveralls'
   Coveralls.wear!
 end
 
-require 'rspec'
-require 'guard/test'
-
 RSpec.configure do |config|
   config.color_enabled = true
-  config.filter_run focus: true
-  config.run_all_when_everything_filtered = true
+  config.order = :random
+  config.filter_run focus: ENV['CI'] != 'true'
   config.treat_symbols_as_metadata_keys_with_true_values = true
+  config.run_all_when_everything_filtered = true
+  config.expect_with :rspec do |c|
+    c.syntax = :expect
+  end
 
   config.before(:all) do
     @lib_path = Pathname.new(File.expand_path('../../lib/', __FILE__))
