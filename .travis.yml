@@ -1,6 +1,6 @@
 language: ruby
 before_install: gem install bundler --pre
-install: bundle install --without development
+install: bundle install --without development -j4
 cache: bundler
 rvm:
   - 1.9.3
