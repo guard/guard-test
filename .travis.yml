@@ -1,5 +1,7 @@
 language: ruby
-bundler_args: --without development
+before_install: gem install bundler --pre
+install: bundle install --without development
+cache: bundler
 rvm:
   - 1.9.3
   - 2.0.0
