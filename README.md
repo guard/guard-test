@@ -118,7 +118,7 @@ For questions please join us in our [Google group](http://groups.google.com/grou
 
 ## Author
 
-[Rémy Coutable](https://github.com/rymai) ([@rymai](http://twitter.com/rymai), [rym.ai](http://rym.ai))
+[Rémy Coutable](https://github.com/rymai)
 
 ## Contributors
 
