@@ -66,13 +66,13 @@ describe Guard::Test do
 
     it "cleans failed memory if passed" do
       expect(runner).to receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(false)
-      subject.run_on_changes(["test/unit"])
+      subject.run_on_modifications(["test/unit"])
 
       expect(runner).to receive(:run).with(["test/succeeding_test.rb", "test/succeeding_tests.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], message: "Running all tests").and_return(true)
       subject.run_all
 
       expect(runner).to receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(true)
-      subject.run_on_changes(["test/unit"])
+      subject.run_on_modifications(["test/unit"])
     end
 
     it "init test_paths for Inspector" do
@@ -85,47 +85,47 @@ describe Guard::Test do
   describe "#reload" do
     it "should clear failed_path" do
       expect(runner).to receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(false)
-      subject.run_on_changes(["test/unit"])
+      subject.run_on_modifications(["test/unit"])
 
       subject.reload
 
       expect(runner).to receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(true)
       expect(runner).to receive(:run).with(["test/succeeding_test.rb", "test/succeeding_tests.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], message: "Running all tests").and_return(true)
-      subject.run_on_changes(["test/unit"])
+      subject.run_on_modifications(["test/unit"])
     end
   end
 
-  describe "#run_on_changes" do
+  describe "#run_on_modifications" do
     it "runs test after run_all" do
       expect(runner).to receive(:run)
       subject.run_all
       expect(runner).to receive(:run).with(["test/unit/error/error_test.rb"])
-      subject.run_on_changes(["test/unit/error/error_test.rb"])
+      subject.run_on_modifications(["test/unit/error/error_test.rb"])
     end
 
     it "init test_paths for Inspector" do
       expect(Guard::Test::Inspector).to receive(:test_paths=).with(["test"])
-      subject.run_on_changes([])
+      subject.run_on_modifications([])
     end
 
     context ":all_after_pass option not specified" do
       it "runs test with under given paths, recursively" do
         expect(runner).to receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"])
-        subject.run_on_changes(["test/unit"])
+        subject.run_on_modifications(["test/unit"])
       end
 
       it "calls #run_all by default if the changed specs pass after failing" do
         expect(runner).to receive(:run).with(["test/succeeding_test.rb"]).and_return(false, true)
         expect(runner).to receive(:run).with(["test/succeeding_test.rb", "test/succeeding_tests.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], message: "Running all tests")
 
-        subject.run_on_changes(["test/succeeding_test.rb"])
-        subject.run_on_changes(["test/succeeding_test.rb"])
+        subject.run_on_modifications(["test/succeeding_test.rb"])
+        subject.run_on_modifications(["test/succeeding_test.rb"])
       end
 
       it "doesn't call #run_all if the changed specs pass without failing" do
         expect(runner).to receive(:run).with(["test/succeeding_test.rb"]).and_return(true)
         expect(runner).to_not receive(:run).with(["test/succeeding_test.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], message: "Running all tests")
-        subject.run_on_changes(["test/succeeding_test.rb"])
+        subject.run_on_modifications(["test/succeeding_test.rb"])
       end
     end
 
@@ -136,8 +136,8 @@ describe Guard::Test do
         expect(runner).to receive(:run).with(["test/succeeding_test.rb"]).and_return(false, true)
         expect(runner).to_not receive(:run).with(["test/succeeding_test.rb", "test/test_old.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"], message: "Running all tests")
 
-        subject.run_on_changes(["test/succeeding_test.rb"])
-        subject.run_on_changes(["test/succeeding_test.rb"])
+        subject.run_on_modifications(["test/succeeding_test.rb"])
+        subject.run_on_modifications(["test/succeeding_test.rb"])
       end
     end
 
@@ -146,13 +146,13 @@ describe Guard::Test do
 
       it "keeps failed specs and rerun later by default" do
         expect(runner).to receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(false)
-        subject.run_on_changes(["test/unit"])
+        subject.run_on_modifications(["test/unit"])
 
         expect(runner).to receive(:run).with(["test/succeeding_test.rb", "test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(true)
-        subject.run_on_changes(["test/succeeding_test.rb"])
+        subject.run_on_modifications(["test/succeeding_test.rb"])
 
         expect(runner).to receive(:run).with(["test/succeeding_test.rb"]).and_return(true)
-        subject.run_on_changes(["test/succeeding_test.rb"])
+        subject.run_on_modifications(["test/succeeding_test.rb"])
       end
     end
 
@@ -161,13 +161,13 @@ describe Guard::Test do
 
       it "doesn't keep failed specs" do
         expect(runner).to receive(:run).with(["test/unit/error/error_test.rb", "test/unit/failing_test.rb"]).and_return(false)
-        subject.run_on_changes(["test/unit"])
+        subject.run_on_modifications(["test/unit"])
 
         expect(runner).to receive(:run).with(["test/succeeding_test.rb"]).and_return(true)
-        subject.run_on_changes(["test/succeeding_test.rb"])
+        subject.run_on_modifications(["test/succeeding_test.rb"])
 
         expect(runner).to receive(:run).with(["test/succeeding_test.rb"]).and_return(true)
-        subject.run_on_changes(["test/succeeding_test.rb"])
+        subject.run_on_modifications(["test/succeeding_test.rb"])
       end
     end
 
