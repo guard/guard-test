@@ -1,4 +1,3 @@
-# encoding: utf-8
 module Guard
   class Test
     module Inspector

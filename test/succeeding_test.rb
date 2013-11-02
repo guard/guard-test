@@ -1,6 +1,5 @@
 require 'test_helper'
 
-# encoding: utf-8
 class SucceedingTest < Test::Unit::TestCase
   def test_succeeding1
     assert_equal(true, true)

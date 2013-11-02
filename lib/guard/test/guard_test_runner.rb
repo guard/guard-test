@@ -1,4 +1,3 @@
-# encoding: utf-8
 require 'test/unit/ui/console/testrunner'
 require 'guard/test/notifier'
 
