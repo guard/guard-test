@@ -81,7 +81,7 @@ module Guard
         parts << 'bundle exec' if bundler?
         parts << case true
                  when drb? then 'testdrb'
-                 when zeus? then "zeus test #{options[:test_paths].join(" ") if options[:test_paths]}"
+                 when zeus? then 'zeus test'
                  when spring? then 'spring testunit'
                  else 'ruby'; end
       end
