@@ -1,14 +1,12 @@
 language: ruby
-before_install:
-  - gem install bundler --pre
-  - bundle --version
 bundler_args: --without development -j4
 cache: bundler
 rvm:
   - 1.9.3
   - 2.0.0
+  - 2.1.0
   - jruby-19mode
-  - rbx-19mode
+  - rbx
 notifications:
   recipients:
     - remy@rymai.me
