@@ -9,6 +9,12 @@ group :development do
   gem 'guard-rspec'
 end
 
+platforms :rbx do
+  gem 'racc'
+  gem 'rubysl', '~> 2.0'
+  gem 'psych'
+end
+
 # The test group will be
 # installed on Travis CI
 #
