@@ -82,8 +82,17 @@ module Guard
         parts << case true
                  when drb? then 'testdrb'
                  when zeus? then 'zeus test'
-                 when spring? then 'spring testunit'
+                 when spring? then spring_command
                  else 'ruby'; end
+      end
+
+      def spring_command
+        if Gem.loaded_specs["rails"] && Gem.loaded_specs["rails"].version < Gem::Version.create('4.0')
+          'spring testunit'
+        else
+          # rails > 4.0 supports passing a path to rake test
+          'spring rake test'
+        end
       end
 
       def includes_and_requires(paths)
