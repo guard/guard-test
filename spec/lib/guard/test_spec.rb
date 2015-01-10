@@ -23,7 +23,7 @@ describe Guard::Test do
     context ":all_on_start option not specified" do
       it "displays a start message" do
         expect(::Guard::UI).to receive(:info).with("Guard::Test #{Guard::TestVersion::VERSION} is running, with Test::Unit #{::Test::Unit::VERSION}!", reset: true)
-        subject.stub(:run_all)
+        expect(subject).to receive(:run_all)
 
         subject.start
       end
