@@ -1,4 +1,4 @@
-require 'rspec'
+require 'guard/compat/test/helper'
 require 'guard/test'
 
 if ENV['CI']

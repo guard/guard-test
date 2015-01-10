@@ -1,7 +1,4 @@
-require 'rubygems'
-require 'guard'
-require 'guard/plugin'
-require 'guard/notifier'
+require 'guard/compat/plugin'
 
 module Guard
   class Test < Plugin

@@ -1,5 +1,7 @@
+require 'guard/compat/plugin'
+
 module Guard
-  class Test
+  class Test < Plugin
     class Runner
 
       attr_reader :options
