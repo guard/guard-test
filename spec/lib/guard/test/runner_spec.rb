@@ -6,12 +6,12 @@ describe Guard::Test::Runner do
     describe "sets the @runner instance variable from options" do
       it "sets default options" do
         runner = described_class.new
-        expect(runner.instance_variable_get(:@options)[:bundler]).to be_true
-        expect(runner.instance_variable_get(:@options)[:rubygems]).to be_false
+        expect(runner.instance_variable_get(:@options)[:bundler]).to be_truthy
+        expect(runner.instance_variable_get(:@options)[:rubygems]).to be_falsey
         expect(runner.instance_variable_get(:@options)[:rvm]).to be_empty
-        expect(runner.instance_variable_get(:@options)[:drb]).to be_false
-        expect(runner.instance_variable_get(:@options)[:zeus]).to be_false
-        expect(runner.instance_variable_get(:@options)[:spring]).to be_false
+        expect(runner.instance_variable_get(:@options)[:drb]).to be_falsey
+        expect(runner.instance_variable_get(:@options)[:zeus]).to be_falsey
+        expect(runner.instance_variable_get(:@options)[:spring]).to be_falsey
         expect(runner.instance_variable_get(:@options)[:cli]).to eq ""
       end
 
@@ -125,7 +125,7 @@ describe Guard::Test::Runner do
 
     context "in empty folder" do
       before(:each) do
-        Dir.stub(:pwd).and_return("empty")
+        allow(Dir).to receive(:pwd).and_return("empty")
       end
 
       context "when no :bundler option was given on initialize" do

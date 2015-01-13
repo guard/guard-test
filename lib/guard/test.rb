@@ -1,6 +1,4 @@
-require 'guard'
-require 'guard/plugin'
-require 'guard/test/version'
+require 'guard/compat/plugin'
 require 'test/unit/version'
 
 module Guard

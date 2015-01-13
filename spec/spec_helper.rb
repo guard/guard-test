@@ -1,4 +1,4 @@
-require 'rspec'
+require 'guard/compat/test/helper'
 require 'guard/test'
 
 if ENV['CI']
@@ -9,7 +9,6 @@ end
 RSpec.configure do |config|
   config.order = :random
   config.filter_run focus: ENV['CI'] != 'true'
-  config.treat_symbols_as_metadata_keys_with_true_values = true
   config.run_all_when_everything_filtered = true
   config.expect_with :rspec do |c|
     c.syntax = :expect
@@ -21,11 +20,11 @@ RSpec.configure do |config|
 
   config.before(:each) do
     # Stub all UI methods, so no visible output appears for the UI class
-    ::Guard::UI.stub(:info)
-    ::Guard::UI.stub(:warning)
-    ::Guard::UI.stub(:error)
-    ::Guard::UI.stub(:debug)
-    ::Guard::UI.stub(:deprecation)
+    allow(::Guard::UI).to receive(:info)
+    allow(::Guard::UI).to receive(:warning)
+    allow(::Guard::UI).to receive(:error)
+    allow(::Guard::UI).to receive(:debug)
+    allow(::Guard::UI).to receive(:deprecation)
   end
 end
 
