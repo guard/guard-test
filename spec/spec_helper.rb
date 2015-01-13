@@ -1,10 +1,8 @@
 require 'guard/compat/test/helper'
 require 'guard/test'
 
-if ENV['CI']
-  require 'coveralls'
-  Coveralls.wear!
-end
+require 'codeclimate-test-reporter'
+CodeClimate::TestReporter.start
 
 RSpec.configure do |config|
   config.order = :random
