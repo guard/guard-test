@@ -1,7 +1,6 @@
-require 'spec_helper'
 require 'guard/test/notifier'
 
-describe Guard::Test::Notifier do
+RSpec.describe Guard::Test::Notifier do
 
   describe "#notify(result, duration)" do
     context "no failure, no error" do

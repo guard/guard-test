@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'guard/test/inspector'
 
-describe Guard::Test::Inspector do
+RSpec.describe Guard::Test::Inspector do
 
   describe "clean" do
     before { subject.test_paths = ["test"] }

@@ -1,8 +1,12 @@
-require 'spec_helper'
+require 'guard/test'
 
-describe Guard::Test do
+RSpec.describe Guard::Test do
   subject { described_class.new }
   let(:runner) { subject.instance_variable_get(:@runner) }
+
+  before do
+    allow(Guard::Compat::UI).to receive(:info)
+  end
 
   describe "#initialize" do
     it "instantiates a new Runner" do

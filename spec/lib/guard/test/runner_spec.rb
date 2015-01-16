@@ -1,6 +1,9 @@
-require 'spec_helper'
+require 'guard/test/runner'
 
-describe Guard::Test::Runner do
+RSpec.describe Guard::Test::Runner do
+  before do
+    allow(Guard::Compat::UI).to receive(:info)
+  end
 
   describe "#initialize" do
     describe "sets the @runner instance variable from options" do
