@@ -1,8 +1,12 @@
-require 'spec_helper'
+require 'guard/test'
 
-describe Guard::Test do
+RSpec.describe Guard::Test do
   subject { described_class.new }
   let(:runner) { subject.instance_variable_get(:@runner) }
+
+  before do
+    allow(Guard::Compat::UI).to receive(:info)
+  end
 
   describe "#initialize" do
     it "instantiates a new Runner" do
@@ -22,7 +26,7 @@ describe Guard::Test do
   describe "#start" do
     context ":all_on_start option not specified" do
       it "displays a start message" do
-        expect(::Guard::UI).to receive(:info).with("Guard::Test #{Guard::TestVersion::VERSION} is running, with Test::Unit #{::Test::Unit::VERSION}!", reset: true)
+        expect(Guard::Compat::UI).to receive(:info).with("Guard::Test #{Guard::TestVersion::VERSION} is running, with Test::Unit #{::Test::Unit::VERSION}!", reset: true)
         expect(subject).to receive(:run_all)
 
         subject.start

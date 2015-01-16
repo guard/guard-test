@@ -22,7 +22,7 @@ module Guard
       def run(paths, opts = {})
         return true if paths.empty?
 
-        ::Guard::UI.info(opts[:message] || "Running: #{paths.join(' ')}", reset: true)
+        Compat::UI.info(opts[:message] || "Running: #{paths.join(' ')}", reset: true)
 
         system(test_unit_command(paths))
       end
@@ -45,7 +45,7 @@ module Guard
             require 'spork-testunit'
           rescue LoadError
           end
-          ::Guard::UI.info('Using testdrb to run the tests') if @drb
+          Compat::UI.info('Using testdrb to run the tests') if @drb
         end
         @drb
       end
@@ -53,7 +53,7 @@ module Guard
       def zeus?
         if @zeus.nil?
           @zeus = options[:zeus]
-          ::Guard::UI.info('Using zeus to run the tests') if @zeus
+          Compat::UI.info('Using zeus to run the tests') if @zeus
         end
         @zeus
       end
@@ -61,7 +61,7 @@ module Guard
       def spring?
         if @spring.nil?
           @spring = options[:spring]
-          ::Guard::UI.info('Using spring to run the tests') if @spring
+          Compat::UI.info('Using spring to run the tests') if @spring
         end
         @spring
       end

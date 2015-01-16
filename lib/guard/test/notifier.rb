@@ -6,7 +6,7 @@ module Guard
 
       class << self
         def notify(result, elapsed_time)
-          ::Guard::Notifier.notify(
+          Compat::UI.notify(
             summary(result) + "\n\n" + duration(elapsed_time),
             title: "Test::Unit results",
             image: result.passed? ? :success : :failed
