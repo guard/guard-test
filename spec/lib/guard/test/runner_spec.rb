@@ -224,7 +224,7 @@ describe Guard::Test::Runner do
         end
 
         it "displays message with the tests that will be fired" do
-          expect(Guard::UI).to receive(:info).with(
+          expect(Guard::Compat::UI).to receive(:info).with(
             "Running: test/unit/error/error_test.rb test/unit/failing_test.rb", reset: true
           )
 
@@ -327,7 +327,7 @@ describe Guard::Test::Runner do
 
       context "when the :message option is given" do
         it "displays it" do
-          expect(Guard::UI).to receive(:info).with("That test is failing!!!", reset: true)
+          expect(Guard::Compat::UI).to receive(:info).with("That test is failing!!!", reset: true)
           runner = described_class.new
 
           dev_null { runner.run(["test/unit/failing_test.rb"], message: "That test is failing!!!") }
