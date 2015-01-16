@@ -9,6 +9,10 @@ group :development do
   gem 'guard-rspec'
 end
 
+group :test do
+  gem 'rspec', '~> 3.1'
+end
+
 platforms :rbx do
   gem 'racc'
   gem 'rubysl', '~> 2.0'
