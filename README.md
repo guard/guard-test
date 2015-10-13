@@ -1,11 +1,13 @@
+:exclamation: [Guard::Minitest](https://github.com/guard/guard-minitest) is a better alternative to Guard::Test, you should definitely check it out: https://github.com/guard/guard-minitest. :exclamation:
+
 # Guard::Test
 
 [![Gem Version](https://img.shields.io/gem/v/guard-test.svg?style=flat)](https://rubygems.org/gems/guard-test) [![Build Status](https://travis-ci.org/guard/guard-test.svg?branch=master)](https://travis-ci.org/guard/guard-test) [![Dependency Status](https://gemnasium.com/guard/guard-test.svg)](https://gemnasium.com/guard/guard-test) [![Code Climate](https://codeclimate.com/github/guard/guard-test/badges/gpa.svg)](https://codeclimate.com/github/guard/guard-test) [![Test Coverage](https://codeclimate.com/github/guard/guard-test/badges/coverage.svg)](https://codeclimate.com/github/guard/guard-test)
 
-Guard::Test allows to automatically & intelligently launch tests when files are modified or created.
+Guard::Test allows to automatically & intelligently launch tests when you create or modify files.
 
 * Compatible with Test::Unit 2.
-* Tested against Ruby 1.9.3, 2.0.0, 2.1.0, 2.2.0, Rubinius & JRuby (1.9 mode only).
+* Tested against Ruby 2.1, 2.2, Rubinius & JRuby (1.9 mode only).
 
 ## Install
 
@@ -53,7 +55,7 @@ Or remove the test if it isn't necessary.
 
 Please read the [Guard usage doc](https://github.com/guard/guard#readme).
 
-By default, Guard::Test watch for files matching `test_*.rb` or `*_test{s,}.rb` in the `test` directory (this directory can be changed with the `test_paths` option, see below).
+By default, Guard::Test watch for files matching `test_*.rb` or `*_test{s,}.rb` in the `test` directory (you can change this directory with the `test_paths` option, see below).
 
 ## Guardfile
 
