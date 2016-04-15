@@ -1,3 +1,4 @@
+require 'test/unit/autorunner'
 require 'test/unit/ui/console/testrunner'
 require 'guard/test/notifier'
 
