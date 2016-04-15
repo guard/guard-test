@@ -3,10 +3,9 @@ cache: bundler
 rvm:
   - 2.1
   - 2.2
-  - 2.3
+  - 2.3.0
   - jruby-19mode
   - rbx-2
-  - rbx-3
 addons:
   code_climate:
     repo_token: c2fc6d91a4f61b11207fc145b35c379fc6b3514c74f2a53905dd4d21405332d8
